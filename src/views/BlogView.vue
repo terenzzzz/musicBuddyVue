@@ -1,7 +1,9 @@
 <template>
     <div>
         <TopHeader></TopHeader>
-        BlogView
+        <SingleBlog></SingleBlog>
+        <SingleBlog></SingleBlog>
+        <SingleBlog></SingleBlog>
         <BottomFooter></BottomFooter>
     </div>
 </template>
@@ -9,11 +11,13 @@
 <script>
 import TopHeader from '@/components/TopHeader';
 import BottomFooter from '@/components/BottomFooter';
+import SingleBlog from '@/components/SingleBlog';
 
 export default {
     components: {
         TopHeader,
-        BottomFooter
+        BottomFooter,
+        SingleBlog
     }
 }
 </script>

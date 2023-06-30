@@ -7,7 +7,7 @@ Vue.config.productionTip = false
 
 import {
   Button, Field, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Search,
-  Card,Tab, Tabs,SwipeCell,NavBar,Cell,CellGroup,Col,Row,Dialog } from 'vant'
+  Card,Tab, Tabs,SwipeCell,NavBar,Cell,CellGroup,Col,Row,Dialog,Tag } from 'vant'
 import 'vant/lib/index.css'
 Vue.use(Button)
 Vue.use(Field)
@@ -27,7 +27,7 @@ Vue.use(Col);
 Vue.use(Row);
 Vue.use(Lazyload);
 Vue.use(Dialog);
-
+Vue.use(Tag);
 
 new Vue({
   router,
