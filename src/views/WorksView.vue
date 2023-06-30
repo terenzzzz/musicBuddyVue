@@ -3,11 +3,10 @@
         <TopHeader></TopHeader>
         
         <div id="swipe-container">
-            <van-swipe :autoplay="3000" indicator-color="#FF6666">
+            <van-swipe :autoplay="3000" indicator-color="#FF6666" >
+                <van-swipe-item class="img-container"><img src="../assets/dissertation.png" alt=""></van-swipe-item>
                 <van-swipe-item class="img-container"><img src="../assets/birdwatching.png" alt=""></van-swipe-item>
-                <van-swipe-item class="img-container"><img src="../assets/avatar.png" alt=""></van-swipe-item>
-                <van-swipe-item class="img-container"><img src="../assets/PVE.png" alt=""></van-swipe-item>
-                <van-swipe-item class="img-container"><img src="../assets/PVE.png" alt=""></van-swipe-item>
+                <van-swipe-item class="img-container"><img src="../assets/android.png" alt=""></van-swipe-item>
             </van-swipe>
         </div>
         
