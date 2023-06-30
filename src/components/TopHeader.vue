@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="header">
-      <a href="/"><img src="../assets/name.png" alt=""></a>
+      <a href="/"><img src="../assets/name.png" height="100"></a>
       <div id="right">
         <router-link to="/works" class="item">项目</router-link>
         <router-link to="/blog" class="item">博客</router-link>
@@ -24,8 +24,8 @@
 #header{
   width: 100%;
   box-sizing: border-box;
-  height: 43px;
-  line-height: 43px;
+  height: 100px;
+  line-height: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

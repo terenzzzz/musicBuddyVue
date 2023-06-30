@@ -20,7 +20,8 @@ export default {
   padding-inline: 100px;
   box-sizing: border-box;
 }
-a{
+
+#app a{
   text-decoration: none;
   color: inherit;
 }
