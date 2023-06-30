@@ -3,9 +3,9 @@
     <div id="header">
       <a href="/"><img src="../assets/name.png" alt=""></a>
       <div id="right">
-        <a href="/" class="item">项目</a>
-        <a href="/" class="item">博客</a>
-        <a href="/" class="item">联系</a>
+        <router-link to="/works" class="item">项目</router-link>
+        <router-link to="/blog" class="item">博客</router-link>
+        <router-link to="/contact" class="item">联系</router-link>
         <a href="/" class="item">语言</a>
       </div>
     </div>
@@ -24,7 +24,6 @@
 #header{
   width: 100%;
   box-sizing: border-box;
-  padding: 20px;
   height: 43px;
   line-height: 43px;
   display: flex;

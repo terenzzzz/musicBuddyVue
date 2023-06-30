@@ -4,6 +4,9 @@ Vue.use(VueRouter)
 
 // 引入页面
 import HomeView from '@/views/HomeView'
+import WorksView from '@/views/WorksView'
+import BlogView from '@/views/BlogView'
+import ContactView from '@/views/ContactView'
 
 // 规则数组
 const routes = [
@@ -11,6 +14,19 @@ const routes = [
     path: "/",
     component: HomeView
   },
+  {
+    path: "/works",
+    component: WorksView
+  },
+  {
+    path: "/blog",
+    component: BlogView
+  },
+  {
+    path: "/contact",
+    component: ContactView
+  },
+
 //   {
 //     path: '/layout',
 //     component: Layout,

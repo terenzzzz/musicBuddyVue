@@ -59,10 +59,6 @@
             </WorkContent>
         </div>
 
-        <div class="line_container">
-            <div class="line"></div>
-        </div>
-
         <BottomFooter></BottomFooter>
         
     </div>
@@ -115,16 +111,5 @@
     flex-direction: row;
 }
 
-.line_container{
-    display: flex;
-    justify-content: center;
-}
-
-.line_container .line{
-    width: 80%;
-    height: 1px;
-    background-color: #e0e0e0;
-    
-}
 
 </style>

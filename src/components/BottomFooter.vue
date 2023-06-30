@@ -1,5 +1,9 @@
 <template>
     <div id="Bottom-Footer">
+        <div class="line_container">
+            <div class="line"></div>
+        </div>
+
         <div id="top">
             <a href="/" @click="toggleWechat" ><img src="../assets/Wechat.png" width="30" height="30"></a>
             <a href="/" @click="toggleWhatsapp" ><img src="../assets/whatsapp.png" width="30" height="30"></a>
@@ -72,6 +76,7 @@
 
 <style lang="css" scoped>
 #Bottom-Footer{
+    box-sizing: border-box;
     width: 100%;
     margin-block: 50px;
     display: flex;
@@ -91,6 +96,20 @@
 .info-container{
     display: flex;
     justify-content: center;
+}
+
+#Bottom-Footer .line_container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#Bottom-Footer .line_container .line{
+    width: 80%;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin-bottom: 50px;
+    
 }
 
 </style>
