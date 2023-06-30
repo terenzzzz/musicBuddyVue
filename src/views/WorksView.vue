@@ -3,11 +3,11 @@
         <TopHeader></TopHeader>
         
         <div id="swipe-container">
-            <van-swipe :autoplay="3000" indicator-color="skyblue">
-                <van-swipe-item><img src="../assets/birdwatching.png" alt=""></van-swipe-item>
-                <van-swipe-item><img src="../assets/avatar.png" alt=""></van-swipe-item>
-                <van-swipe-item><img src="../assets/PVE.png" alt=""></van-swipe-item>
-                <van-swipe-item><img src="../assets/PVE.png" alt=""></van-swipe-item>
+            <van-swipe :autoplay="3000" indicator-color="#FF6666">
+                <van-swipe-item class="img-container"><img src="../assets/birdwatching.png" alt=""></van-swipe-item>
+                <van-swipe-item class="img-container"><img src="../assets/avatar.png" alt=""></van-swipe-item>
+                <van-swipe-item class="img-container"><img src="../assets/PVE.png" alt=""></van-swipe-item>
+                <van-swipe-item class="img-container"><img src="../assets/PVE.png" alt=""></van-swipe-item>
             </van-swipe>
         </div>
         
@@ -36,14 +36,16 @@ export default {
 
 <style lang="css" scoped>
 #swipe-container{
-    height: 500px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    margin-block: 50px;
+}
+
+
+#swipe-container .img-container{
     display: flex;
     justify-content: center;
 }
 
-#swipe-container img{
-    width: 100%;
-    height: auto;
-
-}
 </style>
