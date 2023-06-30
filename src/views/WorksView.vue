@@ -9,11 +9,27 @@
                 <van-swipe-item class="img-container"><img src="../assets/android.png" alt=""></van-swipe-item>
             </van-swipe>
         </div>
+
+        <h1>项目列表</h1>
         
+        <div class="row">
+            <div class="col-6">
+                <SingleWork></SingleWork>
+            </div>
+            <div class="col-6">
+                <SingleWork></SingleWork>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <SingleWork></SingleWork>
+            </div>
+            <div class="col-6">
+                <SingleWork></SingleWork>
+            </div>
+        </div>
         
-        <SingleBlog></SingleBlog>
-        <SingleBlog></SingleBlog>
-        <SingleBlog></SingleBlog>
         <BottomFooter></BottomFooter>
     </div>
 </template>
@@ -21,13 +37,13 @@
 <script>
 import TopHeader from '@/components/TopHeader';
 import BottomFooter from '@/components/BottomFooter';
-import SingleBlog from '@/components/SingleBlog';
+import SingleWork from '@/components/SingleWork';
 
 export default {
     components: {
         TopHeader,
         BottomFooter,
-        SingleBlog
+        SingleWork
     },
     
 }
