@@ -3,7 +3,7 @@
         <TopHeader></TopHeader>
         
         <div id="swipe-container">
-            <van-swipe :autoplay="3000" indicator-color="#FF6666" >
+            <van-swipe :autoplay="1500" indicator-color="#FF6666" >
                 <van-swipe-item class="img-container"><img src="../assets/dissertation.png" alt=""></van-swipe-item>
                 <van-swipe-item class="img-container"><img src="../assets/birdwatching.png" alt=""></van-swipe-item>
                 <van-swipe-item class="img-container"><img src="../assets/android.png" alt=""></van-swipe-item>
@@ -13,19 +13,25 @@
         <h1>项目列表</h1>
         
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <SingleWork></SingleWork>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <SingleWork></SingleWork>
+            </div>
+            <div class="col-4">
                 <SingleWork></SingleWork>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <SingleWork></SingleWork>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <SingleWork></SingleWork>
+            </div>
+            <div class="col-4">
                 <SingleWork></SingleWork>
             </div>
         </div>
