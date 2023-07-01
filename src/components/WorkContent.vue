@@ -1,8 +1,8 @@
 <template>
     <div id="work-content">
         <slot name="img"></slot>
-        <slot name="title"></slot>
-        <slot name="content"></slot>
+        <h3><slot name="title"></slot></h3>
+        <p><slot name="content"></slot></p>
     </div>
 </template>
 

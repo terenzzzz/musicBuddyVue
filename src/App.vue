@@ -16,7 +16,7 @@ export default {
 
 <style>
 #app{
-  padding-block: 50px;
+
   box-sizing: border-box;
 }
 
