@@ -3,10 +3,10 @@
         <TopHeader></TopHeader>
 
         <div id="intro" class="row d-flex justify-content-center mt-5">
-            <div class="col-7 col-sm-5 col-md-4 col-lg-3 col-xl-3 d-flex justify-content-center">
+            <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 d-flex justify-content-center">
                 <img src="../assets/avatar.png" class="img-fluid">
             </div>
-            <div class="col-10 col-lg-5 pt-5">
+            <div class="col-10 col-xl-5 pt-5">
                 <div id="intro-text">
                     <h1>嗨，我是Terenzzzz，一位充满激情的软件工程学生</h1>
                     <p>本科就读于英国谢菲尔德大学主修软件工程,目前正专注于攻读高级计算机科学硕士学位，以深入研究计算机科学的前沿领域，致力于在软件开发和计算机工程领域不断学习和成长。</p>
@@ -49,7 +49,7 @@
             <div class="col-12 col-sm-12 col-md-6 col-xl-3">
                 <WorkContent>
                     <template v-slot:img>
-                        <img src="../assets/mobile.png" width="55" height="55">
+                        <img src="../assets/repair.png" width="55" height="55">
                     </template>
                     <template v-slot:title>软件测试与质量保证</template>
                     <template v-slot:content>便携测试计划和测试用例，执行功能测试、性能测试和安全测试，以验证软件的正确性和性能。</template>
