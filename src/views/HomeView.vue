@@ -3,22 +3,22 @@
         <TopHeader></TopHeader>
 
         <div id="intro" class="row d-flex justify-content-center mt-5">
-            <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 d-flex justify-content-center">
+            <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
                 <img src="../assets/avatar.png" class="img-fluid">
             </div>
-            <div class="col-10 col-xl-5 pt-5">
-                <div id="intro-text">
-                    <h1>嗨，我是Terenzzzz，一位充满激情的软件工程学生</h1>
+            <div class="col-10 col-xl-5 d-flex flex-column justify-content-center mt-4">
+                <div id="intro-text" class="text-start">
+                    <h1>嗨，我是Terenzzzz，一位充满激情的软件工程学生。</h1>
                     <p>本科就读于英国谢菲尔德大学主修软件工程,目前正专注于攻读高级计算机科学硕士学位，以深入研究计算机科学的前沿领域，致力于在软件开发和计算机工程领域不断学习和成长。</p>
-                    <van-button color="#FF6464" class="dl-btn">下载简历</van-button>
+                    <van-button color="#FF6464" class="dl-btn float-end">下载简历</van-button>
                 </div>
             </div>
             
         </div>
 
 
-        <h1 class="px-3 my-3">专注领域</h1>
-        <div id="works-contents" class="row px-3">
+        <h1 class="px-5 my-3">专注领域</h1>
+        <div id="works-contents" class="row px-5">
             <div class="col-12 col-sm-12 col-md-6 col-xl-3">
                 <WorkContent>
                     <template v-slot:img>
@@ -77,16 +77,6 @@
 </script>
 
 <style lang="css" scoped>
-#intro{
-  
-    
-}
-
-#intro-text{
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-}
 
 
 /* 

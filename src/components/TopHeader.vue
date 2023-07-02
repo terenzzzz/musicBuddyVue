@@ -2,7 +2,13 @@
   <div>
 	<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a href="/"><img src="../assets/name.png" alt="Terenzzzz" width="250" height="120"></a>
+    <div class="row w-50">
+      <div class="col-6 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+        <a href="/" class="navbar-brand"><img src="../assets/logo2.png" alt="Terenzzzz" class="img-fluid" ></a>
+      </div>
+
+    </div>
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
