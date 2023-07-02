@@ -29,14 +29,14 @@
 
 
         <van-dialog v-model="wechatIsShow" title="微信二维码" class="dialog">
-            <div class="info-container">
-                <img src="../assets/wechat_qr.jpg" width="300" height="300"/>
+            <div class="info-container ">
+                <img src="../assets/wechat_qr.jpg" class="img-fluid"/>
             </div>
         </van-dialog>
 
         <van-dialog v-model="whatsappIsShow" title="Whatsapp二维码" class="dialog">
             <div class="info-container">
-                <img src="../assets/whatsapp_qr.jpg" width="300" height="300"/>
+                <img src="../assets/whatsapp_qr.jpg" class="img-fluid"/>
             </div>
         </van-dialog>
 
@@ -46,9 +46,9 @@
             </div>
         </van-dialog>
 
-        <van-dialog v-model="instaIsShow" title="Whatsapp二维码" class="dialog">
+        <van-dialog v-model="instaIsShow" title="Instagram二维码" class="dialog">
             <div class="info-container">
-                <img src="../assets/insta_qr.jpg" width="300" height="300"/>
+                <img src="../assets/insta_qr.jpg" class="img-fluid"/>
             </div>
         </van-dialog>
     </div>
