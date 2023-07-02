@@ -17,7 +17,7 @@
         </div>
 
 
-        <h1 class="px-5 my-3">专注领域</h1>
+        <h1 class="px-5 mt-5 my-3">专注领域</h1>
         <div id="works-contents" class="row px-4">
             <div class="col-12 col-sm-12 col-md-6 col-xl-3">
                 <WorkContent>
@@ -77,8 +77,6 @@
 </script>
 
 <style lang="css" scoped>
-
-
 /* 
 
 #intro-text h1{
