@@ -2,39 +2,37 @@
     <div>
         <TopHeader></TopHeader>
         
-        <div id="swipe-container">
-            <van-swipe :autoplay="1500" indicator-color="#FF6666" >
-                <van-swipe-item class="img-container"><img src="../assets/dissertation.png" alt=""></van-swipe-item>
-                <van-swipe-item class="img-container"><img src="../assets/birdwatching.png" alt=""></van-swipe-item>
-                <van-swipe-item class="img-container"><img src="../assets/android.png" alt=""></van-swipe-item>
-            </van-swipe>
-        </div>
+        <!-- <div id="swipe-container" class="row d-flex justify-content-center">
+            <div class="col-10 col-md-6 col-lg-5">
+                    <van-swipe :autoplay="1500" indicator-color="#FF6666">
+                        <van-swipe-item class="img-container"><img src="../assets/dissertation.png" class="img-fluid"></van-swipe-item>
+                        <van-swipe-item class="img-container"><img src="../assets/birdwatching.png" class="img-fluid"></van-swipe-item>
+                        <van-swipe-item class="img-container"><img src="../assets/android.png" class="img-fluid"></van-swipe-item>
+                    </van-swipe>
+            </div>
+           
+        </div> -->
 
-        <h1>项目列表</h1>
+        <div class="title mt-3">
+            <h1 class="px-5 mt-5 my-3">项目列表</h1>
+        </div>
         
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork></SingleWork>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork></SingleWork>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <SingleWork></SingleWork>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork></SingleWork>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-4">
-                <SingleWork></SingleWork>
-            </div>
-            <div class="col-4">
-                <SingleWork></SingleWork>
-            </div>
-            <div class="col-4">
-                <SingleWork></SingleWork>
-            </div>
-        </div>
+
         
         <BottomFooter></BottomFooter>
     </div>
@@ -57,7 +55,6 @@ export default {
 
 <style lang="css" scoped>
 #swipe-container{
-    height: 400px;
     display: flex;
     justify-content: center;
     margin-block: 50px;
@@ -67,6 +64,18 @@ export default {
 #swipe-container .img-container{
     display: flex;
     justify-content: center;
+}
+
+.title{
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title h1{
+    border-bottom: 3px solid #FF6666;
 }
 
 </style>

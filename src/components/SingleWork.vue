@@ -2,7 +2,7 @@
     <div id="SingleWork">
         <a href="/">
             <div class="card" >
-                <img src="../assets/dissertation.png" class="card-img-top">
+                <img src="../assets/works/background1.jpg" class="card-img-top ">
                 <div class="card-body">
                     <h5 class="card-title">HealthExpert</h5>
                     <p class="card-text">设计和开发一个协作的移动传感系统，连接移动或可穿戴设备，以支持普遍的健康应用</p>
@@ -28,13 +28,16 @@ export default {
     margin: 20px;
 }
 .card{
-    padding: 20px;
-    border-radius: 50px;
+    border-radius: 30px;
+}
+
+.card img{
+    border-radius: 30px 30px 0px 0px;
 }
 
 .link-text p{
     display: inline;
     font-weight: bold;
-    border-bottom: 5px solid #FF6666; 
+    border-bottom: 3px solid #FF6666; 
 }
 </style>
