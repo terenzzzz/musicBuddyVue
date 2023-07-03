@@ -1,9 +1,24 @@
 <template>
     <div>
         <TopHeader></TopHeader>
-        <SingleBlog></SingleBlog>
-        <SingleBlog></SingleBlog>
-        <SingleBlog></SingleBlog>
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                <SingleBlog></SingleBlog>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                <SingleBlog></SingleBlog>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                <SingleBlog></SingleBlog>
+            </div>
+        </div>
+
         <BottomFooter></BottomFooter>
     </div>
 </template>

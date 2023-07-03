@@ -1,10 +1,10 @@
 <template>
-    <div id="SingleBlog">
-        <div id="container">
-            <div id="left">
-                <img src="../assets/PVE.png" alt="">
+    <div id="SingleBlog" class="my-3">
+        <div id="container" class="row">
+            <div class="col-12 col-lg-4 col-xl-3">
+                <img src="../assets/PVE.png" class="img-fluid">
             </div>
-            <div id="right">
+            <div id="right" class="col-12 col-lg-8 col-xl-9" >
                 <h1>All in One搭建记录</h1>
                 <div id="tags">
                     <van-tag round color="#ff6666" size="large" class="tag"><span class="tag-text">Kotlin</span></van-tag>
@@ -31,32 +31,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
-#container{
-    width: 100%;
-    margin-block: 40px;
-    display: flex;
-    justify-content: center;
-}
-
-#left{
-    position: relative;
-    width: 50%;
-}
-
-#left img{
-    position: absolute; /* 设置绝对定位，以相对于父元素定位 */
-    width: 100%; /* 设置宽度为父元素的100% */
-    height: 100%; /* 设置高度为父元素的100% */
-    top: 0; /* 将子元素顶部与父元素顶部对齐 */
-    left: 0; /* 将子元素左侧与父元素左侧对齐 */
-    object-fit: cover; /* 保持图片比例并填满元素，可能会裁剪部分图片 */
-}
 
 #right{
     display: flex;
     flex-direction: column;
     padding-block: 10px;
-    padding-left: 50px;
 }
 
 #right #tags{
