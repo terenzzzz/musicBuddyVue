@@ -16,9 +16,11 @@
             
         </div>
 
-
-        <h1 class="px-5 mt-5 my-3">专注领域</h1>
-        <div id="works-contents" class="row px-4">
+        <div class="title mt-5">
+            <h1 class="px-5 mt-5 my-3">专注领域</h1>
+        </div>
+        
+        <div id="works-contents" class="row px-4 mt-5">
             <div class="col-12 col-sm-12 col-md-6 col-xl-3">
                 <WorkContent>
                     <template v-slot:img>
@@ -72,11 +74,31 @@
             TopHeader,
             WorkContent,
             BottomFooter
+        },
+        data() {
+            return {
+                tag1: [
+                    { id: 1, text: 'PVE' },
+                    { id: 2, text: 'Linux' },
+                ]
+            };
         }
     }
 </script>
 
 <style lang="css" scoped>
+
+.title{
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title h1{
+    border-bottom: 3px solid #FF6666;
+}
 /* 
 
 #intro-text h1{
