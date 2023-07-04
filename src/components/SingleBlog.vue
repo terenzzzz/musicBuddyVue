@@ -1,7 +1,7 @@
 <template>
     <div id="SingleBlog" class="my-3">
         <div id="container" class="row">
-            <div class="col-12 col-md-5 col-lg-4 col-xl-3 d-flex justify-content-center">
+            <div class="col-12 col-md-5 col-lg-4 col-xl-3">
                     <slot name="img" ></slot>
             </div>
             <div id="right" class="col-12 col-md-7 col-lg-8 col-xl-9" >
@@ -34,11 +34,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-.img-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#SingleBlog img{
+    height: 200px;
+    max-height: 200px;
+    object-fit: cover;
 }
 
 #right{

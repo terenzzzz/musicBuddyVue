@@ -2,10 +2,15 @@
     <div id="SingleWork">
         <a href="/">
             <div class="card" >
-                <img src="../assets/works/background1.jpg" class="card-img-top ">
+                <!-- <div class="img-container">
+                    <slot name="img" class="card-img-top img-fluid"></slot>
+                </div> -->
+                <slot name="img" class="card-img-top img-fluid"></slot>
+                
+                
                 <div class="card-body">
-                    <h5 class="card-title">HealthExpert</h5>
-                    <p class="card-text">设计和开发一个协作的移动传感系统，连接移动或可穿戴设备，以支持普遍的健康应用</p>
+                    <h5 class="card-title fw-bold"><slot name="title" ></slot></h5>
+                    <p class="card-text"><slot name="text" ></slot></p>
                     <div class="link-text">
                         <p>查看细节</p>
                         <div class="line"></div>
@@ -30,9 +35,15 @@ export default {
 .card{
     border-radius: 30px;
 }
+/* .card .img-container{
+    width: 100%;
+} */
 
 .card img{
     border-radius: 30px 30px 0px 0px;
+    height: 200px;
+    max-height: 200px;
+    object-fit: cover;
 }
 
 .link-text p{
@@ -40,4 +51,6 @@ export default {
     font-weight: bold;
     border-bottom: 3px solid #FF6666; 
 }
+
+
 </style>
