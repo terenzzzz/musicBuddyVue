@@ -23,7 +23,7 @@ export default {
 #SingleStack h4{
     color: white; 
     margin: 0px;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
 }
 </style>

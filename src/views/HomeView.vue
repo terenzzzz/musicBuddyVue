@@ -15,82 +15,6 @@
             </div>
             
         </div>
-
-        <div class="title mt-5">
-            <h1 class="px-5 mt-5 my-3">技术栈</h1>
-        </div>
-        <div id="stack-contents" class="row px-4 mt-3 g-1">
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
-                    stackName="Git" bgc="#f05032"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/android.png')" 
-                    stackName="ANDROID" bgc="#3ddc84"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/linux.png')" 
-                    stackName="LINUX" bgc="#fcc624"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/python.png')" 
-                    stackName="PYTHON" bgc="#3776ab"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/html.png')" 
-                    stackName="HTML" bgc="#239120"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/css.png')" 
-                    stackName="CSS" bgc="#239120"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/java-script.png')" 
-                    stackName="JAVASCRIPT" bgc="#f7df1e"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/node-js.png')" 
-                    stackName="NODE.JS" bgc="#43853d"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/java.png')" 
-                    stackName="JAVA" bgc="#ed8b00"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/java.png')" 
-                    stackName="KOTLIN" bgc="#0095d5"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
-                    stackName="RUBY" bgc="#cc342d"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
-                    stackName="RUBY ON RAILS" bgc="#cc0000"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
-                    stackName="VUE.JS" bgc="#35495e"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/bootstrap.png')" 
-                    stackName="BOOTSTRAP" bgc="#563d7c"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/mysql.png')" 
-                    stackName="MYSQL" bgc="#00000f"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/postgresql.png')" 
-                    stackName="POSTGRESQL" bgc="#316192"></SingleStack>
-            </div>
-            <div class="col-4 col-sm-3 col-md-2 col-lg-1">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
-                    stackName="SQLITE" bgc="#07405e"></SingleStack>
-            </div>
-
-           
-        </div>
         
 
         <div class="title mt-5">
@@ -134,6 +58,76 @@
                     <template v-slot:content>便携测试计划和测试用例，执行功能测试、性能测试和安全测试，以验证软件的正确性和性能。</template>
                 </WorkContent>
             </div>
+        </div>
+
+        <div class="title mt-5">
+            <h1 class="px-5 mt-5 my-3">技术栈</h1>
+        </div>
+        <div id="stack-contents" class="row px-4 mt-3 g-1">
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
+                    stackName="Git" bgc="#f05032"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/android.png')" 
+                    stackName="ANDROID" bgc="#3ddc84"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/linux.png')" 
+                    stackName="LINUX" bgc="#fcc624"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/python.png')" 
+                    stackName="PYTHON" bgc="#3776ab"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/html.png')" 
+                    stackName="HTML" bgc="#239120"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/css.png')" 
+                    stackName="CSS" bgc="#239120"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2 ">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/java-script.png')" 
+                    stackName="JAVASCRIPT" bgc="#f7df1e"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/node-js.png')" 
+                    stackName="NODE.JS" bgc="#43853d"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2 ">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/java.png')" 
+                    stackName="JAVA" bgc="#ed8b00"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/java.png')" 
+                    stackName="KOTLIN" bgc="#0095d5"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
+                    stackName="RUBY" bgc="#cc342d"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
+                    stackName="VUE.JS" bgc="#35495e"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/bootstrap.png')" 
+                    stackName="BOOTSTRAP" bgc="#563d7c"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/mysql.png')" 
+                    stackName="MYSQL" bgc="#00000f"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/postgresql.png')" 
+                    stackName="POSTGRESQL" bgc="#316192"></SingleStack>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
+                    stackName="SQLITE" bgc="#07405e"></SingleStack>
+            </div>  
         </div>
 
         <BottomFooter></BottomFooter>

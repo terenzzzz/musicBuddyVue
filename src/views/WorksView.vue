@@ -96,7 +96,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <!-- <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork>
                     <template v-slot:img>
                         <img src="../assets/works/background1.png"/>
@@ -108,11 +108,11 @@
                         设计和开发一个协作的移动传感系统，连接移动或可穿戴设备，以支持普遍的健康应用
                     </template>
                 </SingleWork>
-            </div>
+            </div> -->
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork>
                     <template v-slot:img>
-                        <img src="../assets/works/background1.png"/>
+                        <img src="../assets/works/wyy.jpg"/>
                     </template>
                     <template v-slot:title>
                         仿网易云音乐
@@ -125,7 +125,7 @@
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork>
                     <template v-slot:img>
-                        <img src="../assets/works/background1.png"/>
+                        <img src="../assets/works/eleme.png"/>
                     </template>
                     <template v-slot:title>
                         仿饿了么
