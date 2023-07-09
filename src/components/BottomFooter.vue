@@ -4,26 +4,39 @@
             <div class="line"></div>
         </div>
 
-        <div id="top">
-            <a href="/" @click="toggleWechat" ><img src="../assets/Wechat.png" width="30" height="30"></a>
-            <a href="/" @click="toggleWhatsapp" ><img src="../assets/whatsapp.png" width="30" height="30"></a>
-            <a href="https://github.com/terenzzzz" target="_blank"><img src="../assets/Github.png" width="30" height="30"></a>
-            <a href="/" @click="toggleGmail"><img src="../assets/gmail.png" width="30" height="30"></a>
-            <a href="/" @click="toggleInsta"><img src="../assets/insta.png" width="30" height="30"></a>
-            <a href="https://www.linkedin.com/in/zhicong-jiang-074537281/" target="_blank"><img src="../assets/Linkedin.png" width="30" height="30"></a>
+        <div id="top" class="row m-0">
+            <div class="col-2 ">
+                <a href="/" @click="toggleWechat" ><img src="../assets/Wechat.png" width="30" height="30"></a>
+            </div>
+            <div class="col-2">
+                <a href="/" @click="toggleWhatsapp" ><img src="../assets/whatsapp.png" width="30" height="30"></a>
+            </div>
+            <div class="col-2">
+                <a href="https://github.com/terenzzzz" target="_blank"><img src="../assets/Github.png" width="30" height="30"></a>
+            </div>
+            <div class="col-2">
+                <a href="/" @click="toggleGmail"><img src="../assets/gmail.png" width="30" height="30"></a>
+            </div>
+            <div class="col-2">
+                <a href="/" @click="toggleInsta"><img src="../assets/insta.png" width="30" height="30"></a>
+            </div>
+            <div class="col-2">
+                <a href="https://www.linkedin.com/in/zhicong-jiang-074537281/" target="_blank"><img src="../assets/Linkedin.png" width="30" height="30"></a>
+            </div>
+            
         </div>
         <div id="bottom"><p>Copyright @2023 All rights reserved</p></div>
 
 
         <van-dialog v-model="wechatIsShow" title="微信二维码" class="dialog">
-            <div class="info-container">
-                <img src="../assets/wechat_qr.jpg" width="300" height="300"/>
+            <div class="info-container ">
+                <img src="../assets/wechat_qr.jpg" class="img-fluid"/>
             </div>
         </van-dialog>
 
         <van-dialog v-model="whatsappIsShow" title="Whatsapp二维码" class="dialog">
             <div class="info-container">
-                <img src="../assets/whatsapp_qr.jpg" width="300" height="300"/>
+                <img src="../assets/whatsapp_qr.jpg" class="img-fluid"/>
             </div>
         </van-dialog>
 
@@ -33,9 +46,9 @@
             </div>
         </van-dialog>
 
-        <van-dialog v-model="instaIsShow" title="Whatsapp二维码" class="dialog">
+        <van-dialog v-model="instaIsShow" title="Instagram二维码" class="dialog">
             <div class="info-container">
-                <img src="../assets/insta_qr.jpg" width="300" height="300"/>
+                <img src="../assets/insta_qr.jpg" class="img-fluid"/>
             </div>
         </van-dialog>
     </div>
