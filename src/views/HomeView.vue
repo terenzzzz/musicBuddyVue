@@ -10,7 +10,7 @@
                 <div id="intro-text" class="text-start">
                     <h1>嗨，我是Terenzzzz，一位充满激情的软件工程学生。</h1>
                     <p>本科就读于英国谢菲尔德大学主修软件工程,目前正专注于攻读高级计算机科学硕士学位，以深入研究计算机科学的前沿领域，致力于在软件开发和计算机工程领域不断学习和成长。</p>
-                    <van-button color="#FF6464" class="dl-btn float-end">下载简历</van-button>
+                    <van-button color="#FF6464" class="dl-btn float-end" @click="downloadPDF">下载简历</van-button>
                 </div>
             </div>
             
@@ -63,7 +63,7 @@
         <div class="title mt-5">
             <h1 class="px-5 mt-5 my-3">技术栈</h1>
         </div>
-        <div id="stack-contents" class="row px-4 mt-3 g-1">
+        <div id="stack-contents" class="row px-4 mt-3 gy-2 gx-3">
             <div class="col-6 col-sm-3 col-md-2">
                 <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
                     stackName="Git" bgc="#f05032"></SingleStack>
@@ -148,13 +148,14 @@
             BottomFooter,
             SingleStack
         },
-        data() {
-            return {
-                tag1: [
-                    { id: 1, text: 'PVE' },
-                    { id: 2, text: 'Linux' },
-                ]
-            };
+        methods: {
+            downloadPDF() {
+                const fileUrl = '/Zhicong_CV_old.pdf'; // 替换为你的静态 PDF 文件路径
+                const link = document.createElement('a');
+                link.href = fileUrl;
+                link.download = 'Zhicong_CV.pdf'; // 设置下载文件的名称
+                link.click();
+            }
         }
     }
 </script>

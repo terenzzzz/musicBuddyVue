@@ -10,7 +10,7 @@
                 
                 <div class="card-body">
                     <h5 class="card-title fw-bold"><slot name="title" ></slot></h5>
-                    <p class="card-text"><slot name="text" ></slot></p>
+                    <p class="card-text content"><slot name="text" ></slot></p>
                     <div class="link-text">
                         <p>查看细节</p>
                         <div class="line"></div>
@@ -50,6 +50,11 @@ export default {
     display: inline;
     font-weight: bold;
     border-bottom: 3px solid #FF6666; 
+}
+
+.content{
+    height: 70px;
+    max-height: 70px;
 }
 
 
