@@ -101,15 +101,15 @@
                     stackName="JAVA" bgc="#ed8b00"></SingleStack>
             </div>
             <div class="col-6 col-sm-3 col-md-2">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/java.png')" 
+                <SingleStack :imgSrc="require('@/assets/stackLogo/kotlin.png')" 
                     stackName="KOTLIN" bgc="#0095d5"></SingleStack>
             </div>
             <div class="col-6 col-sm-3 col-md-2">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
+                <SingleStack :imgSrc="require('@/assets/stackLogo/ruby.png')" 
                     stackName="RUBY" bgc="#cc342d"></SingleStack>
             </div>
             <div class="col-6 col-sm-3 col-md-2">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
+                <SingleStack :imgSrc="require('@/assets/stackLogo/vue.png')" 
                     stackName="VUE.JS" bgc="#35495e"></SingleStack>
             </div>
             <div class="col-6 col-sm-3 col-md-2">
@@ -125,8 +125,16 @@
                     stackName="POSTGRESQL" bgc="#316192"></SingleStack>
             </div>
             <div class="col-6 col-sm-3 col-md-2">
-                <SingleStack :imgSrc="require('@/assets/stackLogo/git.png')" 
-                    stackName="SQLITE" bgc="#07405e"></SingleStack>
+                <SingleStack :imgSrc="require('@/assets/stackLogo/mongoDb.png')" 
+                    stackName="MONGODB" bgc="#499D4A"></SingleStack>
+            </div>  
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/nginx.png')" 
+                    stackName="NGINX" bgc="#009639"></SingleStack>
+            </div>  
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/haskell.png')" 
+                    stackName="HASKELL" bgc="#8F4E8B"></SingleStack>
             </div>  
         </div>
 

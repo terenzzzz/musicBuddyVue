@@ -27,7 +27,7 @@
           <router-link to="/contact" class="item">联系</router-link>
         </li>
         <li class="nav-item">
-          <a href="/" class="item">语言</a>
+          <a href="/" class="item"><img src="../assets/counrty/cn.png"></a>
         </li>
       </ul>
     </div>
