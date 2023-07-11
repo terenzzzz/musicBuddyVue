@@ -173,10 +173,6 @@
                 </SingleWork>
             </div>
         </div>
-
-
-        
-        <BottomFooter></BottomFooter>
     </div>
 </template>
 
