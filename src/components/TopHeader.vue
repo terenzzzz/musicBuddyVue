@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <div class="row w-50">
       <div class="col-6 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
-        <a href="/" class="navbar-brand"><img src="../assets/logo2.png" alt="Terenzzzz" class="img-fluid" ></a>
+        <a href="/" class="navbar-brand"><img src="../assets/logo/logo2.png" alt="Terenzzzz" class="img-fluid" ></a>
       </div>
 
     </div>
