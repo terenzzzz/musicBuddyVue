@@ -14,7 +14,7 @@
     </button>
     <div class="collapse navbar-collapse flex-row-reverse" id="collapsibleNavbar">
       <ul class="navbar-nav">
-        <li class="nav-item">
+        <li class="nav-item ">
           <router-link to="/" class="item">主页</router-link>
         </li>
         <li class="nav-item">
@@ -42,7 +42,29 @@
 
 <script>
   export default {
-    
+    mounted() {
+        // 获取所有的 nav-item 元素
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('selected'));
+
+      const routes = ["/", "/works", "/blog", "/contact"];
+      const currentRouteIndex = routes.indexOf(this.$route.path);
+
+      if (currentRouteIndex >= 0) {
+        navItems[currentRouteIndex].classList.add('selected');
+      }
+
+      // 为每个 nav-item 添加点击事件监听器
+      navItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // 先移除所有 nav-item 的 selected 类
+          navItems.forEach(item => item.classList.remove('selected'));
+          
+          // 为当前点击的 nav-item 添加 selected 类
+          this.classList.add('selected');
+        });
+      });
+    }
   }
 </script>
 
@@ -65,6 +87,10 @@
 
 .navbar-nav .nav-item{
 	padding: 10px;
+}
+
+.selected{
+  border-bottom: 3px solid #FF6666;
 }
 
 </style>
