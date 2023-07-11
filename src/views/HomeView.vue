@@ -1,7 +1,5 @@
 <template>
     <div id="HomeView">
-        <TopHeader></TopHeader>
-
         <div id="intro" class="row d-flex justify-content-center mt-5">
             <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
                 <img src="../assets/avatar.png" class="img-fluid">
@@ -137,23 +135,16 @@
                     stackName="HASKELL" bgc="#8F4E8B"></SingleStack>
             </div>  
         </div>
-
-        <BottomFooter></BottomFooter>
-        
     </div>
 </template>
 
 <script>
-    import TopHeader from '@/components/TopHeader';
     import WorkContent from '@/components/WorkContent';
-    import BottomFooter from '@/components/BottomFooter';
     import SingleStack from '@/components/SingleStack';
 
     export default {
         components: {
-            TopHeader,
             WorkContent,
-            BottomFooter,
             SingleStack
         },
         methods: {

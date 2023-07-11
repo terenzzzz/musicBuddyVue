@@ -1,7 +1,5 @@
 <template>
     <div>
-        <TopHeader></TopHeader>
-        
         <!-- <div id="swipe-container" class="row d-flex justify-content-center">
             <div class="col-10" style="width: 300px;" >
                     <van-swipe :autoplay="1500" indicator-color="#FF6666">
@@ -14,7 +12,7 @@
         </div> -->
 
         <div class="title mt-3">
-            <h1 class="px-5 mt-5 my-3">项目列表</h1>
+            <h1 class="px-5 my-3">项目列表</h1>
         </div>
         
         <div class="row">
@@ -183,14 +181,10 @@
 </template>
 
 <script>
-import TopHeader from '@/components/TopHeader';
-import BottomFooter from '@/components/BottomFooter';
 import SingleWork from '@/components/SingleWork';
 
 export default {
     components: {
-        TopHeader,
-        BottomFooter,
         SingleWork
     },
     

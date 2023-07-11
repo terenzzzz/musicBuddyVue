@@ -1,6 +1,5 @@
 <template>
     <div>
-        <TopHeader></TopHeader>
         <div id="container" class="mt-5">
             <!-- <div class="btn btn-primary">芜湖</div> -->
             <div class="title">
@@ -30,19 +29,16 @@
                 </div>
             </div>
         </div>
-        
-        <BottomFooter></BottomFooter>
+
     </div>
 </template>
 
 <script>
-import TopHeader from '@/components/TopHeader';
-import BottomFooter from '@/components/BottomFooter';
+
 
 export default {
     components: {
-        TopHeader,
-        BottomFooter
+
     }
 }
 </script>
