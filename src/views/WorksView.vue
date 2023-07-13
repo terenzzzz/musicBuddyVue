@@ -10,6 +10,7 @@
             </div>
            
         </div> -->
+        <router-view></router-view>
 
         <div class="title mt-3">
             <h1 class="px-5 my-3">项目列表</h1>
@@ -17,7 +18,7 @@
         
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                             <img src="../assets/works/healthyExpertPromo.png"/>
                     </template>
@@ -30,7 +31,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/birdWatching.png"/>
                     </template>
@@ -43,7 +44,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/tourVisit.png"/>
                     </template>
@@ -56,7 +57,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/robotic.png"/>
                     </template>
@@ -69,7 +70,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/dataDriven.png"/>
                     </template>
@@ -82,7 +83,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/java.png"/>
                     </template>
@@ -95,7 +96,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/haskell.png"/>
                     </template>
@@ -108,7 +109,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/theBigWalk.png"/>
                     </template>
@@ -121,7 +122,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/textProcessing.png"/>
                     </template>
@@ -147,7 +148,7 @@
                 </SingleWork>
             </div> -->
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/wyy.png"/>
                     </template>
@@ -160,7 +161,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
+                <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/eleme.png"/>
                     </template>
@@ -183,7 +184,6 @@ export default {
     components: {
         SingleWork
     },
-    
 }
 </script>
 

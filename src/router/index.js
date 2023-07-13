@@ -8,16 +8,26 @@ import WorksView from '@/views/WorksView'
 import BlogView from '@/views/BlogView'
 import ContactView from '@/views/ContactView'
 
+import HealthyExpert from '@/views/Works/HealthyExpertView'
+
 // 规则数组
 const routes = [
   {
     path: "/",
-    component: HomeView
+    component: HomeView,
   },
+
   {
     path: "/works",
-    component: WorksView
+    component: WorksView,
   },
+  {
+    path: '/works/HealthyExpert',
+    component: HealthyExpert,
+  },
+
+
+
   {
     path: "/blog",
     component: BlogView

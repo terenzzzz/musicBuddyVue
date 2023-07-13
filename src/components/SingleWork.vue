@@ -1,30 +1,28 @@
 <template>
     <div id="SingleWork">
-        <a href="/">
-            <div class="card" >
-                <!-- <div class="img-container">
-                    <slot name="img" class="card-img-top img-fluid"></slot>
-                </div> -->
-                <slot name="img" class="card-img-top img-fluid"></slot>
-                
-                
-                <div class="card-body">
-                    <h5 class="card-title fw-bold"><slot name="title" ></slot></h5>
-                    <p class="card-text content"><slot name="text" ></slot></p>
+        <div class="card" >
+            <slot name="img" class="card-img-top img-fluid"></slot>
+            
+            <div class="card-body">
+                <h5 class="card-title fw-bold"><slot name="title" ></slot></h5>
+                <p class="card-text content"><slot name="text" ></slot></p>
+                <router-link :to="toURL">
                     <div class="link-text">
                         <p>查看细节</p>
                         <div class="line"></div>
                     </div>
-                </div>
+                </router-link>
             </div>
-        </a>
+        </div>
         
     </div>
 </template>
 
 <script>
 export default {
-
+    props: {
+        toURL:String,
+    }
 };
 </script>
 
