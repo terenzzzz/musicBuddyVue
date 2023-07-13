@@ -149,10 +149,10 @@
         },
         methods: {
             downloadPDF() {
-                const fileUrl = '/Zhicong_CV_old.pdf'; // 替换为你的静态 PDF 文件路径
+                const fileUrl = '/Zhicong_CV_zh.pdf'; // 替换为你的静态 PDF 文件路径
                 const link = document.createElement('a');
                 link.href = fileUrl;
-                link.download = 'Zhicong_CV.pdf'; // 设置下载文件的名称
+                link.download = '蒋志聪_中文简历.pdf'; // 设置下载文件的名称
                 link.click();
             }
         }
