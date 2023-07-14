@@ -9,6 +9,7 @@ import BlogView from '@/views/BlogView'
 import ContactView from '@/views/ContactView'
 
 import HealthyExpert from '@/views/Works/HealthyExpertView'
+import BirdWatching from '@/views/Works/BirdWatchingView'
 
 // 规则数组
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
     component: HomeView,
   },
 
+  // 项目路由
   {
     path: "/works",
     component: WorksView,
@@ -25,9 +27,13 @@ const routes = [
     path: '/works/HealthyExpert',
     component: HealthyExpert,
   },
+  {
+    path: '/works/BirdWatching',
+    component: BirdWatching,
+  },
 
 
-
+  //博客路由
   {
     path: "/blog",
     component: BlogView

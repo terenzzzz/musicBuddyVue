@@ -31,7 +31,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork toURL='/works/HealthyExpert'>
+                <SingleWork toURL='/works/BirdWatching'>
                     <template v-slot:img>
                         <img src="../assets/works/birdWatching.png"/>
                     </template>
