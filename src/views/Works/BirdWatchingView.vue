@@ -1,5 +1,5 @@
 <template>
-    <div id="HealthyExpertView" class="mt-3">
+    <div class="mt-3">
        <WorkHeader title="BirdWatching 观鸟论坛渐进式网页应用" date="2023/07/15"/>
         <div class="row d-flex justify-content-center">
             <div class="col-10 col-lg-8 d-flex flex-column align-items-center">
@@ -79,11 +79,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
-#HealthyExpertView img{
-    max-height: 300px;
-    object-fit: cover;
-}
 
 table {
     border-collapse: collapse;

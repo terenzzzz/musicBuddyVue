@@ -129,7 +129,7 @@ export default {
 <style lang="css" scoped>
 
 #HealthyExpertView img{
-    max-height: 300px;
+    max-height: 500px;
     object-fit: cover;
 }
 
