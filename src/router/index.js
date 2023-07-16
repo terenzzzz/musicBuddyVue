@@ -10,7 +10,8 @@ import ContactView from '@/views/ContactView'
 
 import HealthyExpert from '@/views/Works/HealthyExpertView'
 import BirdWatching from '@/views/Works/BirdWatchingView'
-import TourVisitView from '@/views/Works/TourVisitView'
+import TourVisit from '@/views/Works/TourVisitView'
+import Robotic from '@/views/Works/RoboticView'
 
 // 规则数组
 const routes = [
@@ -34,7 +35,11 @@ const routes = [
   },
   {
     path: '/works/TourVisitView',
-    component: TourVisitView,
+    component: TourVisit,
+  },
+  {
+    path: '/works/Robotic',
+    component: Robotic,
   },
 
 
