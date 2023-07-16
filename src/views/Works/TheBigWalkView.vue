@@ -1,6 +1,6 @@
 <template>
     <div class="mt-3">
-       <WorkHeader title="Robotic ROS机器人项目" date="2023/07/15"/>
+       <WorkHeader title="TheBigWalk 马拉松活动跟踪系统" date="2023/07/15"/>
         <div class="row d-flex justify-content-center">
             <div class="col-10 col-lg-8">
                 <div class="d-flex justify-content-center">
