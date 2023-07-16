@@ -2,9 +2,11 @@
     <div class="mt-3">
        <WorkHeader title="BirdWatching 观鸟论坛渐进式网页应用" date="2023/07/15"/>
         <div class="row d-flex justify-content-center">
-            <div class="col-10 col-lg-8 d-flex flex-column align-items-center">
-                <img src="@/assets/worksDetail/birdWatching/birdWatching.png" class="img-fluid w-100">
-
+            <div class="col-10 col-lg-8">
+                <div class="d-flex justify-content-center">
+                    <img src="@/assets/worksDetail/birdWatching/birdWatching.png" class="img-fluid w-100">
+                </div>
+                
                 <table class="my-5">
                     <tr>
                         <th>#</th>

@@ -13,6 +13,7 @@ import BirdWatching from '@/views/Works/BirdWatchingView'
 import TourVisit from '@/views/Works/TourVisitView'
 import Robotic from '@/views/Works/RoboticView'
 import TheBigWalk from '@/views/Works/TheBigWalkView'
+import TextProcessing from '@/views/Works/TextProcessingView'
 
 // 规则数组
 const routes = [
@@ -45,6 +46,10 @@ const routes = [
   {
     path: '/works/TheBigWalk',
     component: TheBigWalk,
+  },
+  {
+    path: '/works/TextProcessing',
+    component: TextProcessing,
   },
 
 

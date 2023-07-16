@@ -83,6 +83,19 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <SingleWork toURL='/works/TextProcessing'>
+                    <template v-slot:img>
+                        <img src="../assets/works/textProcessing.png"/>
+                    </template>
+                    <template v-slot:title>
+                        Text Processing
+                    </template>
+                    <template v-slot:text>
+                        利用机器学习构建一个文本分析系统，对文本进行信息提取，信息检索以及文本情感语义分析
+                    </template>
+                </SingleWork>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                         <img src="../assets/works/dataDriven.png"/>
@@ -121,19 +134,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork toURL='/works/HealthyExpert'>
-                    <template v-slot:img>
-                        <img src="../assets/works/textProcessing.png"/>
-                    </template>
-                    <template v-slot:title>
-                        Text Processing
-                    </template>
-                    <template v-slot:text>
-                        利用机器学习构建一个文本分析系统，对文本进行信息提取，信息检索以及文本情感语义分析
-                    </template>
-                </SingleWork>
-            </div>
+
             <!-- <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork>
                     <template v-slot:img>
