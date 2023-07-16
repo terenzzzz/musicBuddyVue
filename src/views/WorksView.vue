@@ -23,7 +23,7 @@
                             <img src="../assets/works/healthyExpertPromo.png"/>
                     </template>
                     <template v-slot:title>
-                        HealthyExpert
+                        健康监测安卓APP
                     </template>
                     <template v-slot:text>
                         设计和开发一个协作的移动传感系统，连接移动或可穿戴设备，以支持普遍的健康应用
@@ -36,7 +36,7 @@
                         <img src="../assets/works/birdWatching.png"/>
                     </template>
                     <template v-slot:title>
-                        BirdWatching System
+                        观鸟论坛PWA
                     </template>
                     <template v-slot:text>
                         一个“观鸟”渐进式web应用程序，为用户记录和观察鸟类，并帮助辨认。
@@ -62,7 +62,7 @@
                         <img src="../assets/works/robotic.png"/>
                     </template>
                     <template v-slot:title>
-                        Robotic
+                        ROS机器人
                     </template>
                     <template v-slot:text>
                         使用ROS在TurtleBot3华夫饼上开发一系列机器人行为，以满足多项任务如自主避障，迷宫导航，自主检测搜索等。
@@ -75,7 +75,7 @@
                         <img src="../assets/works/theBigWalk.png"/>
                     </template>
                     <template v-slot:title>
-                        The Big Walk
+                        马拉松管理系统
                     </template>
                     <template v-slot:text>
                         为马拉松活动设计一个系统，从而有效的跟踪参与者提高参与者的安全和福祉，确保活动顺利进行。
@@ -88,7 +88,7 @@
                         <img src="../assets/works/textProcessing.png"/>
                     </template>
                     <template v-slot:title>
-                        Text Processing
+                        文本分析
                     </template>
                     <template v-slot:text>
                         利用机器学习构建一个文本分析系统，对文本进行信息提取，信息检索以及文本情感语义分析
@@ -96,12 +96,12 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork toURL='/works/HealthyExpert'>
+                <SingleWork toURL='/works/DataDriven'>
                     <template v-slot:img>
                         <img src="../assets/works/dataDriven.png"/>
                     </template>
                     <template v-slot:title>
-                        Data Driven
+                        棋盘图分类器
                     </template>
                     <template v-slot:text>
                         构建并评估一个系统，通过数据驱动等方法分析具有噪音的的棋盘图并报告每个方格上的棋子。
