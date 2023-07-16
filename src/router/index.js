@@ -16,6 +16,7 @@ import TheBigWalk from '@/views/Works/TheBigWalkView'
 import TextProcessing from '@/views/Works/TextProcessingView'
 import DataDriven from '@/views/Works/DataDrivenView'
 import RentSystem from '@/views/Works/RentSystemView'
+import EightOff from '@/views/Works/EightOffView'
 
 // 规则数组
 const routes = [
@@ -60,6 +61,10 @@ const routes = [
   {
     path: '/works/RentSystem',
     component: RentSystem,
+  },
+  {
+    path: '/works/EightOff',
+    component: EightOff,
   },
 
 
