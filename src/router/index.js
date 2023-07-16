@@ -12,6 +12,7 @@ import HealthyExpert from '@/views/Works/HealthyExpertView'
 import BirdWatching from '@/views/Works/BirdWatchingView'
 import TourVisit from '@/views/Works/TourVisitView'
 import Robotic from '@/views/Works/RoboticView'
+import TheBigWalk from '@/views/Works/TheBigWalkView'
 
 // 规则数组
 const routes = [
@@ -41,6 +42,10 @@ const routes = [
     path: '/works/Robotic',
     component: Robotic,
   },
+  {
+    path: '/works/TheBigWalk',
+    component: TheBigWalk,
+  },
 
 
   //博客路由
@@ -52,30 +57,6 @@ const routes = [
     path: "/contact",
     component: ContactView
   },
-
-//   {
-//     path: '/layout',
-//     component: Layout,
-//     redirect:'/layout/home',
-//     children: [
-//       {
-//         path: 'home',
-//         component: Home,
-//         meta: {
-//           title: "首页",
-//           name:'home'
-//         }
-//       },
-//       {
-//         path: 'mission',
-//         component: Mission,
-//         meta: {
-//             title:"任务",
-//             name:'mission'
-//         }
-//       },
-//     ]
-//   },
 
 ]
 
