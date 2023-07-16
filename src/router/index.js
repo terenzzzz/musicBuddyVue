@@ -15,6 +15,7 @@ import Robotic from '@/views/Works/RoboticView'
 import TheBigWalk from '@/views/Works/TheBigWalkView'
 import TextProcessing from '@/views/Works/TextProcessingView'
 import DataDriven from '@/views/Works/DataDrivenView'
+import RentSystem from '@/views/Works/RentSystemView'
 
 // 规则数组
 const routes = [
@@ -55,6 +56,10 @@ const routes = [
   {
     path: '/works/DataDriven',
     component: DataDriven,
+  },
+  {
+    path: '/works/RentSystem',
+    component: RentSystem,
   },
 
 

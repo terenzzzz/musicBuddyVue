@@ -19,12 +19,12 @@
                         <td>Python</td>
                     </tr>
                     <tr>
-                        <td>4</td>
+                        <td>1</td>
                         <td>源代码编辑器</td>
                         <td>VScode</td>
                     </tr>
                     <tr>
-                        <td>5</td>
+                        <td>3</td>
                         <td>版本控制</td>
                         <td>GitHub</td>
                     </tr>
