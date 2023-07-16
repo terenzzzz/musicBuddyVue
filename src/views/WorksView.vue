@@ -72,6 +72,19 @@
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
+                        <img src="../assets/works/theBigWalk.png"/>
+                    </template>
+                    <template v-slot:title>
+                        The Big Walk
+                    </template>
+                    <template v-slot:text>
+                        为马拉松活动设计一个系统，从而有效的跟踪参与者提高参与者的安全和福祉，确保活动顺利进行。
+                    </template>
+                </SingleWork>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <SingleWork toURL='/works/HealthyExpert'>
+                    <template v-slot:img>
                         <img src="../assets/works/dataDriven.png"/>
                     </template>
                     <template v-slot:title>
@@ -105,19 +118,6 @@
                     </template>
                     <template v-slot:text>
                         使用Haskell语言编写8-off纸牌游戏和蜘蛛纸牌游戏的代码，并分析其性能
-                    </template>
-                </SingleWork>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork toURL='/works/HealthyExpert'>
-                    <template v-slot:img>
-                        <img src="../assets/works/theBigWalk.png"/>
-                    </template>
-                    <template v-slot:title>
-                        The Big Walk
-                    </template>
-                    <template v-slot:text>
-                        为马拉松活动设计一个系统，从而有效的跟踪参与者提高参与者的安全和福祉，确保活动顺利进行。
                     </template>
                 </SingleWork>
             </div>

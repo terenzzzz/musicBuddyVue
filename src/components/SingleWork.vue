@@ -22,6 +22,11 @@
 export default {
     props: {
         toURL:String,
+    },
+    methods: {
+        // flushCom(){
+        //     this.$router.go(0)
+        // }
     }
 };
 </script>

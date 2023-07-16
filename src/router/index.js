@@ -74,11 +74,24 @@ const routes = [
 
 ]
 
+
 //生成路由对象
 const router = new VueRouter({
+  mode: 'history',
     // routes: routes
-    routes //routes 时固定key(传入规则数组)
+    // scrollBehavior: () => ({y: 0}),
+    routes, //routes 时固定key(传入规则数组)
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) {
+        // 恢复滚动位置
+        return savedPosition
+      } else {
+        // 滚动到页面顶部
+        return { selector: 'body', behavior: 'smooth' };
+      }
+    }
 })
+
 
 // // //路由守卫
 // router.beforeEach((to, from, next) => {
