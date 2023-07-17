@@ -17,6 +17,8 @@ import TextProcessing from '@/views/Works/TextProcessingView'
 import DataDriven from '@/views/Works/DataDrivenView'
 import RentSystem from '@/views/Works/RentSystemView'
 import EightOff from '@/views/Works/EightOffView'
+import NeteaseMusic from '@/views/Works/NeteaseMusicView'
+import Eleme from '@/views/Works/ElemeView'
 
 // 规则数组
 const routes = [
@@ -65,6 +67,14 @@ const routes = [
   {
     path: '/works/EightOff',
     component: EightOff,
+  },
+  {
+    path: '/works/NeteaseMusic',
+    component: NeteaseMusic,
+  },
+  {
+    path: '/works/Eleme',
+    component: Eleme,
   },
 
 

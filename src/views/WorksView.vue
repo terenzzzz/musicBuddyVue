@@ -135,21 +135,8 @@
                 </SingleWork>
             </div>
 
-            <!-- <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork>
-                    <template v-slot:img>
-                        <img src="../assets/works/background1.png"/>
-                    </template>
-                    <template v-slot:title>
-                        OscarBar Order System
-                    </template>
-                    <template v-slot:text>
-                        设计和开发一个协作的移动传感系统，连接移动或可穿戴设备，以支持普遍的健康应用
-                    </template>
-                </SingleWork>
-            </div> -->
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork toURL='/works/HealthyExpert'>
+                <SingleWork toURL='/works/NeteaseMusic'>
                     <template v-slot:img>
                         <img src="../assets/works/wyy.png"/>
                     </template>
@@ -162,7 +149,7 @@
                 </SingleWork>
             </div>
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <SingleWork toURL='/works/HealthyExpert'>
+                <SingleWork toURL='/works/Eleme'>
                     <template v-slot:img>
                         <img src="../assets/works/eleme.png"/>
                     </template>
