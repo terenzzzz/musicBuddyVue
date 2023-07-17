@@ -4,7 +4,7 @@
         <div class="row d-flex justify-content-center">
             <div class="col-10 col-lg-8">
                 <div class="d-flex justify-content-center">
-                    <img src="@/assets/worksDetail/eleme/eleme.png" class="img-fluid w-100">
+                    <img src="@/assets/worksDetail/eleme/elemeShow.png" class="img-fluid w-100">
                 </div>
                 
                 <table class="my-5">
