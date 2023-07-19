@@ -1,20 +1,22 @@
 <template>
     <div id="SingleBlog" class="my-3">
-        <div id="container" class="row">
-            <div class="col-12 col-md-5 col-lg-4 col-xl-3">
-                    <slot name="img" ></slot>
-            </div>
-            <div id="right" class="col-12 col-md-7 col-lg-8 col-xl-9" >
-                <h3><slot name="title"></slot></h3>
-                <div id="tags" >
-                    <van-tag round color="#ff6666" size="large" class="tag" 
-                        v-for="tag in tags" :key="tag.id"><span class="tag-text">
-                            {{ tag.text }}</span>
-                    </van-tag>
+        <router-link :to="toURL">
+            <div id="container" class="row">
+                <div class="col-12 col-md-5 col-lg-4 col-xl-3">
+                        <slot name="img" ></slot>
                 </div>
-                <p><slot name="content"></slot></p>
+                <div id="right" class="col-12 col-md-7 col-lg-8 col-xl-9" >
+                    <h3><slot name="title"></slot></h3>
+                    <div id="tags" >
+                        <van-tag round color="#ff6666" size="large" class="tag" 
+                            v-for="tag in tags" :key="tag.id"><span class="tag-text">
+                                {{ tag.text }}</span>
+                        </van-tag>
+                    </div>
+                    <p><slot name="content"></slot></p>
+                </div>
             </div>
-        </div>
+        </router-link>
         <div class="line_container">
             <div class="line"></div>
         </div>
@@ -28,7 +30,8 @@ export default {
     tags: {
       type: Array,
       required: true
-    }
+    },
+    toURL:String
   }
 };
 </script>

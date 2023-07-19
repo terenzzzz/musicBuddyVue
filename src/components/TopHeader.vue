@@ -21,7 +21,7 @@
           <router-link to="/works" class="item">项目</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/blog" class="item">博客</router-link>
+          <router-link to="/blogs" class="item">博客</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/contact" class="item">联系</router-link>
