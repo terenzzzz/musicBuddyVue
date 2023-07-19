@@ -19,7 +19,9 @@ import RentSystem from '@/views/Works/RentSystemView'
 import EightOff from '@/views/Works/EightOffView'
 import NeteaseMusic from '@/views/Works/NeteaseMusicView'
 import Eleme from '@/views/Works/ElemeView'
+
 import AIO from '@/views/Blogs/AIOView'
+import PVE from '@/views/Blogs/PVEView'
 
 // 规则数组
 const routes = [
@@ -87,6 +89,10 @@ const routes = [
   {
     path: '/blogs/AIO',
     component: AIO,
+  },
+  {
+    path: '/blogs/PVE',
+    component: PVE,
   },
 
 

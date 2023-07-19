@@ -39,9 +39,9 @@
                             OpenWrt 具备一个好的路由器应该具备的所有有用功能。</template>
                     </SingleBlog>
 
-                    <SingleBlog :tags="tag1" toURL='/blogs/AIO'>
+                    <SingleBlog :tags="tag1" toURL='/blogs/PVE'>
                         <template v-slot:img>
-                            <img src="../assets/blog/pve.png" class="img-fluid">
+                            <img src="@/assets/blog/PVE/pve.png" class="img-fluid">
                         </template>
                         <template v-slot:title>All in One搭建记录 2: PVE</template>
                         <template v-slot:content>Proxmox全称Proxmox Virtual Environment简称PVE是基于Debian的虚拟机平台。利用它安装任何
