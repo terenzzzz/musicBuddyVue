@@ -30,9 +30,9 @@
                         <template v-slot:content>本文准备从0开始，一步步搭建一套属于自己的Linux系统环境，这将是后续学Linux、用Linux、Linux环境编程、应用和项目部署、工具实验等一系列学习和实践的基石.</template>
                     </SingleBlog>
 
-                    <SingleBlog :tags="tag1" toURL='/blogs/AIO'>
+                    <SingleBlog :tags="tag1" toURL='/blogs/OpenWrt'>
                         <template v-slot:img>
-                            <img src="../assets/blog/openwrt.png" class="img-fluid">
+                            <img src="../assets/blog/OpenWrt/openwrt.png" class="img-fluid">
                         </template>
                         <template v-slot:title>All in One搭建记录 3: Openwrt路由</template>
                         <template v-slot:content>OpenWrt 是一个基于 Linux 的、针对嵌入式网络设备的开源操作系统。它主要用于替代各种家用路由器上的原始固件。

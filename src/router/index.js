@@ -22,6 +22,7 @@ import Eleme from '@/views/Works/ElemeView'
 
 import AIO from '@/views/Blogs/AIOView'
 import PVE from '@/views/Blogs/PVEView'
+import OpenWrt from '@/views/Blogs/OpenWrtView'
 
 // 规则数组
 const routes = [
@@ -93,6 +94,10 @@ const routes = [
   {
     path: '/blogs/PVE',
     component: PVE,
+  },
+  {
+    path: '/blogs/OpenWrt',
+    component: OpenWrt,
   },
 
 
