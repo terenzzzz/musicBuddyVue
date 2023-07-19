@@ -22,12 +22,12 @@
                         <template v-slot:content>NAS（Network Attached Storage：网络附属存储）按字面简单说就是连接在网络上，具备资料存储功能的装置，因此也称为“网络存储器”。它是一种专用数据存储服务器。</template>
                     </SingleBlog>
 
-                    <SingleBlog :tags="tag1" toURL='/blogs/AIO'>
+                    <SingleBlog :tags="tag1" toURL='/blogs/Linux'>
                         <template v-slot:img>
-                            <img src="../assets/blog/linux.png" class="img-fluid">
+                            <img src="../assets/blog/Linux/linux.png" class="img-fluid">
                         </template>
                         <template v-slot:title>All in One搭建记录 4: Linux服务器</template>
-                        <template v-slot:content>本文准备从0开始，一步步搭建一套属于自己的Linux系统环境，这将是后续学Linux、用Linux、Linux环境编程、应用和项目部署、工具实验等一系列学习和实践的基石.</template>
+                        <template v-slot:content>Linux 服务器是运行 Linux 开源操作系统某种衍生版本的服务器，专门用于能够处理需求最苛刻的业务应用，例如 Web 服务和数据库。</template>
                     </SingleBlog>
 
                     <SingleBlog :tags="tag1" toURL='/blogs/OpenWrt'>
