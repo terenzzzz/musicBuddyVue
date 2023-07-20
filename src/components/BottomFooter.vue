@@ -25,7 +25,7 @@
             </div>
             
         </div>
-        <div id="bottom"><p>Copyright @2023 All rights reserved</p></div>
+        <div id="bottom"><a href="https://beian.miit.gov.cn/">粤ICP备2023082055号-1</a></div>
 
 
         <van-dialog v-model="wechatIsShow" title="微信二维码" class="dialog">
@@ -127,5 +127,7 @@
 
 #bottom{
     margin-top: 30px;
+    color: gray;
+    font-size: 12px;
 }
 </style>
