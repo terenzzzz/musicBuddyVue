@@ -14,9 +14,9 @@
         <div class="row d-flex justify-content-center">
             <div class="col-10">
 
-                    <SingleBlog :tags="tag1" toURL='/blogs/AIO'>
+                    <SingleBlog :tags="tag1" toURL='/blogs/Synology'>
                         <template v-slot:img>
-                            <img src="../assets/blog/nas.png" class="img-fluid">
+                            <img src="../assets/blog/Synology/nas.png" class="img-fluid">
                         </template>
                         <template v-slot:title>All in One搭建记录 5: 黑群晖</template>
                         <template v-slot:content>NAS（Network Attached Storage：网络附属存储）按字面简单说就是连接在网络上，具备资料存储功能的装置，因此也称为“网络存储器”。它是一种专用数据存储服务器。</template>

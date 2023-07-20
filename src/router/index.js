@@ -24,6 +24,7 @@ import AIO from '@/views/Blogs/AIOView'
 import PVE from '@/views/Blogs/PVEView'
 import OpenWrt from '@/views/Blogs/OpenWrtView'
 import Linux from '@/views/Blogs/LinuxView'
+import Synology from '@/views/Blogs/SynologyView'
 
 // 规则数组
 const routes = [
@@ -104,10 +105,10 @@ const routes = [
     path: '/blogs/Linux',
     component: Linux,
   },
-  // {
-  //   path: '/blogs/OpenWrt',
-  //   component: OpenWrt,
-  // },
+  {
+    path: '/blogs/Synology',
+    component: Synology,
+  },
 
 
   {
