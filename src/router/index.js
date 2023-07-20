@@ -121,7 +121,7 @@ const routes = [
 
 //生成路由对象
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
     // routes: routes
     // scrollBehavior: () => ({y: 0}),
     routes, //routes 时固定key(传入规则数组)
