@@ -47,7 +47,7 @@
 
       const routes = ["/", "/works", "/blog", "/contact"];
       const currentRouteIndex = routes.indexOf(this.$route.path);
-
+      // 高亮目前显示的页面
       if (currentRouteIndex >= 0) {
         navItems[currentRouteIndex].classList.add('selected');
       }
@@ -55,9 +55,13 @@
       // 为每个 nav-item 添加点击事件监听器
       navItems.forEach(item => {
         item.addEventListener('click', function() {
+          // 获取按钮元素
+          var button = document.querySelector(".navbar-toggler");
+          // 模拟点击按钮
+          button.click();
+          
           // 先移除所有 nav-item 的 selected 类
           navItems.forEach(item => item.classList.remove('selected'));
-          
           // 为当前点击的 nav-item 添加 selected 类
           this.classList.add('selected');
         });
