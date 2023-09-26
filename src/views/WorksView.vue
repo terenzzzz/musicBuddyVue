@@ -191,7 +191,6 @@ export default {
 /* .img-container{
     width: 100%;
 } */
-
 .title{
     margin-top: 50px;
     width: 100%;

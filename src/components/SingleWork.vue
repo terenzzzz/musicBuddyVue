@@ -5,16 +5,15 @@
             
             <div class="card-body">
                 <h5 class="card-title fw-bold"><slot name="title" ></slot></h5>
-                <p class="card-text content"><slot name="text" ></slot></p>
+                <span class="card-text content"><slot name="text" ></slot></span>
                 <router-link :to="toURL">
                     <div class="link-text">
-                        <p>查看细节</p>
+                        <p><span class="under_line">查看细节</span></p>
                         <div class="line"></div>
                     </div>
                 </router-link>
             </div>
         </div>
-        
     </div>
 </template>
 
@@ -34,13 +33,25 @@ export default {
 <style lang="css" scoped>
 #SingleWork{
     margin: 20px;
+    height: 90%;
 }
 .card{
     border-radius: 30px;
+    height: 100%;
 }
 /* .card .img-container{
     width: 100%;
 } */
+
+.content{
+    background: linear-gradient(to right, #bebcbc,#bebcbc) no-repeat left bottom;
+    background-size: 0px 2px;
+    transition: 0.5s;
+}
+
+.card:hover .content{
+    background-size: 100% 2px;
+}
 
 .card img{
     border-radius: 30px 30px 0px 0px;
@@ -49,16 +60,19 @@ export default {
     object-fit: cover;
 }
 
-.link-text p{
-    display: inline;
+
+.under_line{
+    display: inline; 
     font-weight: bold;
-    border-bottom: 3px solid #FF6666; 
+    border-bottom: 3px solid #FF6666;
 }
 
-.content{
-    height: 70px;
-    max-height: 70px;
+.link-text{
+    margin-top: 10px;
 }
+
+
+
 
 
 </style>
