@@ -141,7 +141,7 @@
 <script>
     import WorkContent from '@/components/WorkContent';
     import SingleStack from '@/components/SingleStack';
-    import { postIpAPI } from '@/api';
+    import { postVisitorAPI } from '@/api';
 
     export default {
         components: {
@@ -149,8 +149,51 @@
             SingleStack
         },
         async mounted() {
-            const res = await postIpAPI()
-            console.log(res);
+
+        var latitude = "0"
+        var longitude = "0"
+        // 检查浏览器是否支持Geolocation API
+        if ("geolocation" in navigator) {
+            // 支持Geolocation
+            navigator.geolocation.getCurrentPosition(async function(position) {
+                // 获取经度和纬度
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+
+                const params = new URLSearchParams();
+                params.append('Latitude', latitude);
+                params.append('Longitude', longitude);
+                const res = await postVisitorAPI(params)
+                console.log(res);
+
+
+                console.log("纬度：" + latitude);
+                console.log("经度：" + longitude);
+            }, function(error) {
+                // 处理获取位置失败的情况
+                switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    console.error("用户拒绝了位置请求");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    console.error("位置信息不可用");
+                    break;
+                case error.TIMEOUT:
+                    console.error("获取位置信息超时");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    console.error("发生未知错误");
+                    break;
+                }
+            });
+        } else {
+            // 不支持Geolocation
+            console.error("浏览器不支持Geolocation API");
+        }
+        
+
+
+            
         },
         methods: {
             downloadPDF() {
@@ -160,11 +203,6 @@
                 link.download = '蒋志聪_中文简历.pdf'; // 设置下载文件的名称
                 link.click();
             },
-
-            async getClientIp(){
-                const res = await postIpAPI()
-                console.log(res);
-            }
         }
     }
 </script>
