@@ -159,37 +159,27 @@
                 // 获取经度和纬度
                 latitude = position.coords.latitude;
                 longitude = position.coords.longitude;
-
-                const params = new URLSearchParams();
-                params.append('Latitude', latitude);
-                params.append('Longitude', longitude);
-                const res = await postVisitorAPI(params)
-                console.log(res);
-
-
+                postVisitor(latitude,longitude)
                 console.log("纬度：" + latitude);
                 console.log("经度：" + longitude);
             }, function(error) {
-                // 处理获取位置失败的情况
-                switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    console.error("用户拒绝了位置请求");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    console.error("位置信息不可用");
-                    break;
-                case error.TIMEOUT:
-                    console.error("获取位置信息超时");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    console.error("发生未知错误");
-                    break;
-                }
+                postVisitor(latitude,longitude)
             });
         } else {
             // 不支持Geolocation
+            postVisitor(latitude,longitude)
             console.error("浏览器不支持Geolocation API");
         }
+
+        async function postVisitor(latitude,longitude){
+            const params = new URLSearchParams();
+            params.append('Latitude', latitude);
+            params.append('Longitude', longitude);
+            const res = await postVisitorAPI(params)
+            console.log(res);
+        }
+
+
         
 
 
