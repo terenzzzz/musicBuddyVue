@@ -141,11 +141,16 @@
 <script>
     import WorkContent from '@/components/WorkContent';
     import SingleStack from '@/components/SingleStack';
+    import { postIpAPI } from '@/api';
 
     export default {
         components: {
             WorkContent,
             SingleStack
+        },
+        async mounted() {
+            const res = await postIpAPI()
+            console.log(res);
         },
         methods: {
             downloadPDF() {
@@ -154,6 +159,11 @@
                 link.href = fileUrl;
                 link.download = '蒋志聪_中文简历.pdf'; // 设置下载文件的名称
                 link.click();
+            },
+
+            async getClientIp(){
+                const res = await postIpAPI()
+                console.log(res);
             }
         }
     }
