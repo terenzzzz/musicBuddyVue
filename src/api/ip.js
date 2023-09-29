@@ -3,7 +3,7 @@ import request from "@/utils/request"
 
 
 // 查询ip
-export const gerVisitors = params => request({
+export const getVisitors = params => request({
     url: `/api/gerVisitors`,
     params
 })

@@ -164,6 +164,7 @@
                 console.log("经度：" + longitude);
             }, function(error) {
                 postVisitor(latitude,longitude)
+                console.log(error)
             });
         } else {
             // 不支持Geolocation
