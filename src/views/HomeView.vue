@@ -150,8 +150,8 @@
             SingleStack
         },
         async mounted() {
-        var latitude = "0"
-        var longitude = "0"
+        var latitude = 0
+        var longitude = 0
         // 检查浏览器是否支持Geolocation API
         if ("geolocation" in navigator) {
             // 支持Geolocation
