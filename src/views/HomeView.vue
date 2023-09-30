@@ -1,4 +1,5 @@
 <template>
+    
     <div id="HomeView">
         <div id="intro" class="row d-flex justify-content-center mt-5">
             <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
@@ -137,7 +138,7 @@
         </div>
     </div>
 </template>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJtnXvWVd_aeGOUN3Ei6k1q3_iOv142TE&libraries=geometry,places" async defer></script>
 <script>
     import WorkContent from '@/components/WorkContent';
     import SingleStack from '@/components/SingleStack';
@@ -150,53 +151,72 @@
             SingleStack
         },
         async mounted() {
-        var latitude = 0
-        var longitude = 0
-        // 检查浏览器是否支持Geolocation API
-        if ("geolocation" in navigator) {
-            // 支持Geolocation
-            navigator.geolocation.getCurrentPosition(async function(position) {
-                // 获取经度和纬度
-                latitude = position.coords.latitude;
-                longitude = position.coords.longitude;
-                postVisitor(latitude,longitude)
-                console.log("纬度：" + latitude);
-                console.log("经度：" + longitude);
-            }, function(error) {
-                postVisitor(latitude,longitude)
-                console.log(error)
-            });
-        } else {
-            // 不支持Geolocation
-            postVisitor(latitude,longitude)
-            console.error("浏览器不支持Geolocation API");
-        }
+            // 等待Google Maps API加载完成
+            await this.loadGoogleMapsAPI();
+            var latitude = 0
+            var longitude = 0
+            // 创建一个新的地理编码器实例
+            const geocoder = new google.maps.Geocoder();
+            // 检查浏览器是否支持Geolocation API
+            if ("geolocation" in navigator) {
+                // 支持Geolocation
+                navigator.geolocation.getCurrentPosition(async function(position) {
+                    // 获取经度和纬度
+                    latitude = position.coords.latitude;
+                    longitude = position.coords.longitude;
+                    // 创建一个 LatLng 对象
+                    const latLng = new google.maps.LatLng(latitude, longitude);
+                    // 执行逆地理编码
+                    geocoder.geocode({ location: latLng }, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                        // 获取第一个结果的地理位置信息
+                        const locationInfo = results[0].formatted_address;
+                        postVisitor(latitude,longitude,locationInfo)
+                        console.log("地理位置信息：", locationInfo);
+                        } else {
+                        console.error("未找到结果");
+                        }
+                    } else {
+                        console.error("逆地理编码失败：" + status);
+                        postVisitor(latitude,longitude,"未知地址")
+                    }
+                    });
+                    console.log("纬度：" + latitude);
+                    console.log("经度：" + longitude);
+                }, function(error) {
+                    postVisitor(latitude,longitude)
+                    console.log(error)
+                });
+            } else {
+                // 不支持Geolocation
+                postVisitor(latitude,longitude,"未知地址")
+                console.error("浏览器不支持Geolocation API");
+            }
 
-        async function postVisitor(latitude,longitude){
-            const params = new URLSearchParams();
-            params.append('Latitude', latitude);
-            params.append('Longitude', longitude);
-            const res = await postVisitorAPI(params)
-            const notification = `[${latitude.toFixed(2)},${longitude.toFixed(2)}] in ${today.toDateTime()}`
-            const res1 = await pushVisitor("网站访问者提醒",notification)
-            console.log(res);
-            console.log(res1);
-        }
+            async function postVisitor(latitude,longitude,location){
+                const params = new URLSearchParams();
+                params.append('Latitude', latitude);
+                params.append('Longitude', longitude);
+                params.append('Location', location);
+                const res = await postVisitorAPI(params)
+                const notification = `[${latitude.toFixed(2)},${longitude.toFixed(2)}]: ${location} ON ${today.toDateTime()}`
+                const res1 = await pushVisitor("网站访问者提醒",notification)
+                console.log(res);
+                console.log(res1);
+            }
 
-        async function pushVisitor(title,body){
-            const params = new URLSearchParams();
-            params.append('title', title);
-            params.append('body', body);
-            params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
-            params.append('url', "http://terenzzzz.cn");
-            params.append('sound', "calypso");
-            const res = await pushVisitorAPI(params)
-            console.log(res);
-        }
+            async function pushVisitor(title,body){
+                const params = new URLSearchParams();
+                params.append('title', title);
+                params.append('body', body);
+                params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
+                params.append('url', "http://terenzzzz.cn");
+                params.append('sound', "calypso");
+                const res = await pushVisitorAPI(params)
+                console.log(res);
+            }
 
-
-    
-            
         },
         methods: {
             downloadPDF() {
@@ -206,6 +226,18 @@
                 link.download = '蒋志聪_中文简历.pdf'; // 设置下载文件的名称
                 link.click();
             },
+            async loadGoogleMapsAPI() {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAEWKP6g2pWXqE4kKDnM_sUsw6qmI3_tCc&libraries=geometry,places`;
+                    script.async = true;
+                    script.defer = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+
         }
     }
 </script>
