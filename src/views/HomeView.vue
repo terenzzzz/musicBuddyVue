@@ -201,9 +201,9 @@
                 params.append('Location', location);
                 const res = await postVisitorAPI(params)
                 const notification = `[${latitude.toFixed(2)},${longitude.toFixed(2)}]: ${location} ON ${today.toDateTime()}`
-                const res1 = await pushVisitor("网站访问者提醒",notification)
+                // const res1 = await pushVisitor("网站访问者提醒",notification)
                 console.log(res);
-                console.log(res1);
+                // console.log(res1);
             }
 
             async function pushVisitor(title,body){
