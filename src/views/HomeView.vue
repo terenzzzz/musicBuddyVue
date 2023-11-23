@@ -200,22 +200,18 @@
                 params.append('Longitude', longitude);
                 params.append('Location', location);
                 const res = await postVisitorAPI(params)
-                const notification = `[${latitude.toFixed(2)},${longitude.toFixed(2)}]: ${location} ON ${today.toDateTime()}`
-                // const res1 = await pushVisitor("网站访问者提醒",notification)
-                console.log(res);
-                // console.log(res1);
             }
 
-            async function pushVisitor(title,body){
-                const params = new URLSearchParams();
-                params.append('title', title);
-                params.append('body', body);
-                params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
-                params.append('url', "http://terenzzzz.cn");
-                params.append('sound', "calypso");
-                const res = await pushVisitorAPI(params)
-                console.log(res);
-            }
+            // async function pushVisitor(title,body){
+            //     const params = new URLSearchParams();
+            //     params.append('title', title);
+            //     params.append('body', body);
+            //     params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
+            //     params.append('url', "http://terenzzzz.cn");
+            //     params.append('sound', "calypso");
+            //     const res = await pushVisitorAPI(params)
+            //     console.log(res);
+            // }
 
         },
         methods: {

@@ -8,7 +8,10 @@ import axios from 'axios'
 // axios.defaults.baseURL = "http://47.106.139.89:592"
 
 // TerenzDroplet
-axios.defaults.baseURL = "http://159.65.20.220:592"
+// axios.defaults.baseURL = "http://159.65.20.220:592"
+
+// TerenzDroplet https
+axios.defaults.baseURL = "https://terenzzzz.com:5921"
 
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
