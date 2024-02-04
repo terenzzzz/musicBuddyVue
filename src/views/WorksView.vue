@@ -18,6 +18,32 @@
         
         <div class="row">
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <SingleWork toURL='/works/nGrams'>
+                    <template v-slot:img>
+                            <img src="../assets/works/ngrams.png"/>
+                    </template>
+                    <template v-slot:title>
+                        创建传统的 n-grams 语言模型
+                    </template>
+                    <template v-slot:text>
+                        从构建哈希表结构开始, 搭建一个基础的n-grams语言模型并通过Swing图形界面可视化。
+                    </template>
+                </SingleWork>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <SingleWork toURL='/works/OpenGL'>
+                    <template v-slot:img>
+                            <img src="../assets/works/openGL.png"/>
+                    </template>
+                    <template v-slot:title>
+                        使用现代OpenGL渲染场景
+                    </template>
+                    <template v-slot:text>
+                        使用数据结构和数学来表示和操作3D对象,使用现代OpenGL渲染场景(照明，纹理，动画等)并制作使用图形API的交互式软件。
+                    </template>
+                </SingleWork>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                             <img src="../assets/works/healthyExpertPromo.png"/>

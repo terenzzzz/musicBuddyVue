@@ -8,6 +8,8 @@ import WorksView from '@/views/WorksView'
 import BlogView from '@/views/BlogView'
 import ContactView from '@/views/ContactView'
 
+import OpenGL from '@/views/Works/OpenGL'
+import NGrams from '@/views/Works/NGrams'
 import HealthyExpert from '@/views/Works/HealthyExpertView'
 import BirdWatching from '@/views/Works/BirdWatchingView'
 import TourVisit from '@/views/Works/TourVisitView'
@@ -37,6 +39,14 @@ const routes = [
   {
     path: "/works",
     component: WorksView,
+  },
+  {
+    path: '/works/nGrams',
+    component: NGrams,
+  },
+  {
+    path: '/works/OpenGL',
+    component: OpenGL,
   },
   {
     path: '/works/HealthyExpert',

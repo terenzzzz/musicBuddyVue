@@ -3,7 +3,7 @@
     <div id="HomeView">
         <div id="intro" class="row d-flex justify-content-center mt-5">
             <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
-                <img src="../assets/logo/avatar.png" class="img-fluid">
+                <img src="../assets/logo/avatar1.png" class="img-fluid">
             </div>
             <div class="col-10 col-xl-5 d-flex flex-column justify-content-center mt-4">
                 <div id="intro-text" class="text-start">
@@ -135,6 +135,10 @@
                 <SingleStack :imgSrc="require('@/assets/stackLogo/haskell.png')" 
                     stackName="HASKELL" bgc="#8F4E8B"></SingleStack>
             </div>  
+            <div class="col-6 col-sm-3 col-md-2">
+                <SingleStack :imgSrc="require('@/assets/stackLogo/opengl.png')" 
+                    stackName="OpenGL" bgc="#4a7ca9"></SingleStack>
+            </div> 
         </div>
     </div>
 </template>
