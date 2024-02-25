@@ -3,9 +3,9 @@ module.exports = defineConfig({
   transpileDependencies: true
 })
 
-module.exports = {
-  outputDir: 'dist',
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/terenzWebsite/'
-    : '/'
-}
+// module.exports = {
+//   outputDir: 'dist',
+//   publicPath: process.env.NODE_ENV === 'production'
+//     ? '/terenzWebsite/'
+//     : '/'
+// }
