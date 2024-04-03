@@ -1,19 +1,21 @@
 <template>
     <div id="SingleWork">
-        <div class="card" >
+        <div class="card h-100" >
             <slot name="img" class="card-img-top img-fluid"></slot>
             
             <div class="card-body">
                 <h5 class="card-title fw-bold"><slot name="title" ></slot></h5>
                 <span class="card-text content"><slot name="text" ></slot></span>
-                <router-link :to="toURL">
-                    <div class="link-text">
+            </div>
+            <router-link :to="toURL">
+                    <div class="ps-3">
                         <p><span class="under_line">查看细节</span></p>
                         <div class="line"></div>
                     </div>
                 </router-link>
-            </div>
         </div>
+
+
     </div>
 </template>
 

@@ -10,7 +10,7 @@
 <script>
 import TopHeader from '@/components/TopHeader';
 import BottomFooter from '@/components/BottomFooter';
-import particlesJson from '../particles.json'
+// import particlesJson from '../particles.json'
 
 export default {
   name: 'App',
@@ -19,9 +19,9 @@ export default {
     BottomFooter,
   },
   mounted() {
-    require('particles.js')
-    // eslint-disable-next-line no-undef
-    particlesJS('particles', particlesJson)
+    // require('particles.js')
+    // // eslint-disable-next-line no-undef
+    // particlesJS('particles', particlesJson)
   }
 
 }

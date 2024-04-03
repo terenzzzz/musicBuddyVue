@@ -17,7 +17,7 @@
         </div>
         
         <div class="row">
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/nGrams'>
                     <template v-slot:img>
                             <img src="../assets/works/ngrams.png"/>
@@ -30,7 +30,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/OpenGL'>
                     <template v-slot:img>
                             <img src="../assets/works/openGL.png"/>
@@ -43,7 +43,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/HealthyExpert'>
                     <template v-slot:img>
                             <img src="../assets/works/healthyExpertPromo.png"/>
@@ -56,7 +56,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/BirdWatching'>
                     <template v-slot:img>
                         <img src="../assets/works/birdWatching.png"/>
@@ -69,7 +69,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/TourVisitView'>
                     <template v-slot:img>
                         <img src="../assets/works/tourVisit.png"/>
@@ -82,7 +82,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/Robotic'>
                     <template v-slot:img>
                         <img src="../assets/works/robotic.png"/>
@@ -95,7 +95,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/TheBigWalk'>
                     <template v-slot:img>
                         <img src="../assets/works/theBigWalk.png"/>
@@ -108,7 +108,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/TextProcessing'>
                     <template v-slot:img>
                         <img src="../assets/works/textProcessing.png"/>
@@ -121,7 +121,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/DataDriven'>
                     <template v-slot:img>
                         <img src="../assets/works/dataDriven.png"/>
@@ -134,7 +134,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/RentSystem'>
                     <template v-slot:img>
                         <img src="../assets/works/java.png"/>
@@ -147,7 +147,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/EightOff'>
                     <template v-slot:img>
                         <img src="../assets/works/haskell.png"/>
@@ -161,7 +161,7 @@
                 </SingleWork>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/NeteaseMusic'>
                     <template v-slot:img>
                         <img src="../assets/works/wyy.png"/>
@@ -174,7 +174,7 @@
                     </template>
                 </SingleWork>
             </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/Eleme'>
                     <template v-slot:img>
                         <img src="../assets/works/eleme.png"/>
