@@ -154,70 +154,71 @@
             WorkContent,
             SingleStack
         },
-        // async mounted() {
-        //     // 等待Google Maps API加载完成
-        //     await this.loadGoogleMapsAPI();
-        //     var latitude = 0
-        //     var longitude = 0
-        //     // 创建一个新的地理编码器实例
-        //     const geocoder = new google.maps.Geocoder();
-        //     // 检查浏览器是否支持Geolocation API
-        //     if ("geolocation" in navigator) {
-        //         // 支持Geolocation
-        //         navigator.geolocation.getCurrentPosition(async function(position) {
-        //             // 获取经度和纬度
-        //             latitude = position.coords.latitude;
-        //             longitude = position.coords.longitude;
-        //             // 创建一个 LatLng 对象
-        //             const latLng = new google.maps.LatLng(latitude, longitude);
-        //             // 执行逆地理编码
-        //             geocoder.geocode({ location: latLng }, function(results, status) {
-        //             if (status === google.maps.GeocoderStatus.OK) {
-        //                 if (results[0]) {
-        //                 // 获取第一个结果的地理位置信息
-        //                 const locationInfo = results[0].formatted_address;
-        //                 postVisitor(latitude,longitude,locationInfo)
-        //                 console.log("地理位置信息：", locationInfo);
-        //                 } else {
-        //                 console.error("未找到结果");
-        //                 }
-        //             } else {
-        //                 console.error("逆地理编码失败：" + status);
-        //                 postVisitor(latitude,longitude,"未知地址")
-        //             }
-        //             });
-        //             console.log("纬度：" + latitude);
-        //             console.log("经度：" + longitude);
-        //         }, function(error) {
-        //             postVisitor(latitude,longitude)
-        //             console.log(error)
-        //         });
-        //     } else {
-        //         // 不支持Geolocation
-        //         postVisitor(latitude,longitude,"未知地址")
-        //         console.error("浏览器不支持Geolocation API");
-        //     }
+        async mounted() {
+            // 等待Google Maps API加载完成
+            await this.loadGoogleMapsAPI();
+            var latitude = 0
+            var longitude = 0
+            var location = "未知地址"
 
-        //     async function postVisitor(latitude,longitude,location){
-        //         const params = new URLSearchParams();
-        //         params.append('Latitude', latitude);
-        //         params.append('Longitude', longitude);
-        //         params.append('Location', location);
-        //         const res = await postVisitorAPI(params)
-        //     }
+            // 创建一个新的地理编码器实例
+            const geocoder = new google.maps.Geocoder();
+            // 检查浏览器是否支持Geolocation API
+            if ("geolocation" in navigator) {
+                // 支持Geolocation
+                navigator.geolocation.getCurrentPosition(async function(position) {
+                    // 获取经度和纬度
+                    latitude = position.coords.latitude;
+                    longitude = position.coords.longitude;
+                    
+                    // 创建一个 LatLng 对象
+                    const latLng = new google.maps.LatLng(latitude, longitude);
+                    // 执行逆地理编码
+                    geocoder.geocode({ location: latLng }, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                        // 获取第一个结果的地理位置信息
+                        location = results[0].formatted_address;
+                        console.log("地理位置信息：", location);
+                        pushVisitor(`${latitude},${latitude}  ${location}`)
+                        } else {
+                            console.error("未找到结果");
+                        }
+                    } else {
+                        console.error("逆地理编码失败：" + status);
+                    }
+                    });
+                    console.log("纬度：" + latitude);
+                    console.log("经度：" + longitude);
+                }, function(error) {
+                    console.log(error)
+                });
+                
+            } else {
+                // 不支持Geolocation
+                console.error("浏览器不支持Geolocation API");
+            }
 
-        //     // async function pushVisitor(title,body){
-        //     //     const params = new URLSearchParams();
-        //     //     params.append('title', title);
-        //     //     params.append('body', body);
-        //     //     params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
-        //     //     params.append('url', "http://terenzzzz.cn");
-        //     //     params.append('sound', "calypso");
-        //     //     const res = await pushVisitorAPI(params)
-        //     //     console.log(res);
-        //     // }
+            // async function postVisitor(latitude,longitude,location){
+            //     const params = new URLSearchParams();
+            //     params.append('Latitude', latitude);
+            //     params.append('Longitude', longitude);
+            //     params.append('Location', location);
+            //     const res = await postVisitorAPI(params)
+            // }
 
-        // },
+            async function pushVisitor(body){
+                const params = new URLSearchParams();
+                params.append('title', "新的访问者");
+                params.append('body', body);
+                params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
+                params.append('url', "http://terenzzzz.cn");
+                params.append('sound', "calypso");
+                const res = await pushVisitorAPI(params)
+                console.log(res);
+            }
+
+        },
         methods: {
             downloadPDF() {
                 const fileUrl = '/Zhicong_CV_zh.pdf'; // 替换为你的静态 PDF 文件路径
@@ -226,17 +227,17 @@
                 link.download = '蒋志聪_中文简历.pdf'; // 设置下载文件的名称
                 link.click();
             },
-            // async loadGoogleMapsAPI() {
-            //     return new Promise((resolve, reject) => {
-            //         const script = document.createElement('script');
-            //         script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAEWKP6g2pWXqE4kKDnM_sUsw6qmI3_tCc&libraries=geometry,places`;
-            //         script.async = true;
-            //         script.defer = true;
-            //         script.onload = resolve;
-            //         script.onerror = reject;
-            //         document.head.appendChild(script);
-            //     });
-            // }
+            async loadGoogleMapsAPI() {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAEWKP6g2pWXqE4kKDnM_sUsw6qmI3_tCc&libraries=geometry,places`;
+                    script.async = true;
+                    script.defer = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
 
         }
     }
