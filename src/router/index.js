@@ -7,6 +7,7 @@ import HomeView from '@/views/HomeView'
 import WorksView from '@/views/WorksView'
 import BlogView from '@/views/BlogView'
 import ContactView from '@/views/ContactView'
+import GalleryView from '@/views/GalleryView'
 
 import OpenGL from '@/views/Works/OpenGL'
 import NGrams from '@/views/Works/NGrams'
@@ -125,6 +126,12 @@ const routes = [
     path: "/contact",
     component: ContactView
   },
+
+    //相册路由
+    {
+      path: "/gallery",
+      component: GalleryView
+    },
 
 ]
 
