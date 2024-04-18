@@ -48,7 +48,7 @@
       const navItems = document.querySelectorAll('.nav-item');
       navItems.forEach(item => item.classList.remove('selected'));
 
-      const routes = ["/", "/works", "/blog", "/contact"];
+      const routes = ["/", "/works", "/blog", "/gallery", "/contact"];
       const currentRouteIndex = routes.indexOf(this.$route.path);
       // 高亮目前显示的页面
       if (currentRouteIndex >= 0) {
