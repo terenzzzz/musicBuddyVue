@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-6 offset-3">
+        <div class="row ">
+            <div class="col-12 d-flex justify-content-center">
                     <span class="gochi-hand-regular fs-1" v-on:click="toggleView">Kitty
                     </span> 
                     <span class="fs-3 mx-3">|</span>
