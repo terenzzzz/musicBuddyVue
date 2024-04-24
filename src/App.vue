@@ -32,6 +32,7 @@ export default {
 <style>
 #app{
   box-sizing: border-box;
+  width: 100%;
 }
 
 #app a{

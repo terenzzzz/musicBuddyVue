@@ -20,7 +20,7 @@
             <h1 class="px-5 mt-5 my-3">专注领域</h1>
         </div>
         
-        <div id="works-contents" class="row px-4 mt-5">
+        <div id="works-contents" class="row mx-4 mt-5">
             <div class="col-12 col-sm-12 col-md-6 col-xl-3">
                 <WorkContent>
                     <template v-slot:img>
