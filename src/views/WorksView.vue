@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
-                <SingleWork toURL='/works/gpu'>
+                <SingleWork toURL='/works/GPUParallelComputing'>
                     <template v-slot:img>
                             <img src="../assets/logo/cuda.jpeg"/>
                     </template>

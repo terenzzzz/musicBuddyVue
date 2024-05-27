@@ -9,6 +9,8 @@ import BlogView from '@/views/BlogView'
 import ContactView from '@/views/ContactView'
 import GalleryView from '@/views/GalleryView'
 
+import GPUParallelComputing from '@/views/Works/GPUParallelComputing.vue'
+import EWaste from '@/views/Works/EWaste'
 import OpenGL from '@/views/Works/OpenGL'
 import NGrams from '@/views/Works/NGrams'
 import HealthyExpert from '@/views/Works/HealthyExpertView'
@@ -92,6 +94,14 @@ const routes = [
   {
     path: '/works/Eleme',
     component: Eleme,
+  },
+  {
+    path: '/works/EWaste',
+    component: EWaste,
+  },
+  {
+    path: '/works/GPUParallelComputing',
+    component:  GPUParallelComputing,
   },
 
 
