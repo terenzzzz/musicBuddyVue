@@ -1,22 +1,43 @@
 <template>
     
     <div id="HomeView">
-        <div id="intro" class="row d-flex justify-content-center mt-5">
-            <div class="col-7 col-sm-5 col-md-4 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
+        <div id="intro" class="row d-flex justify-content-center mt-5 mx-0 gap-5">
+            <div class="col-7 col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-2 d-flex justify-content-center">
                 <img src="../assets/logo/avatar1.png" class="img-fluid">
             </div>
-            <div class="col-10 col-xl-5 d-flex flex-column justify-content-center mt-4">
-                <div id="intro-text" class="text-start">
-                    <h1>嗨，我是Terenzzzz，一位充满激情的软件工程学生。</h1>
-                    <p>本科就读于英国谢菲尔德大学主修软件工程,目前正专注于攻读高级计算机科学硕士学位，以深入研究计算机科学的前沿领域，致力于在软件开发和计算机工程领域不断学习和成长。</p>
+            <div class="col-10 col-md-6 col-xl-5 d-flex flex-column justify-content-center mt-4">
+                <div id="intro-text" >
+                    <h1>嗨，我是Terenzzzz!</h1>
+                    <h3>Web / Software Developer</h3>
+                    <p class="mt-2">本科就读于英国谢菲尔德大学主修软件工程,目前正专注于攻读高级计算机科学硕士学位，以深入研究计算机科学的前沿领域，致力于在软件开发和计算机工程领域不断学习和成长。</p>
                     <!-- <van-button color="#FF6464" class="dl-btn float-end" @click="downloadPDF" >下载简历</van-button> -->
+
                 </div>
             </div>
             
         </div>
-        
 
         <div class="title mt-5">
+            <h1 class="px-5 mt-5 my-3">教育经历</h1>
+        </div>
+        <div id="educations" class="row mx-4 mt-5 text-center d-flex justify-content-center mx-0 gap-5">
+            <div class="col-10 col-md-5 row d-flex justify-content-center mx-0">
+                <div class="col-4 mb-1"><img src="../assets/logo/tuoslogo.png" class="img-fluid"></div>
+                <h3>The University of Sheffield</h3>
+                <p><i class="bi bi-star-fill mx-1"></i>BEng Software Engineering (2020 - 2023)</p>
+                <p><i class="bi bi-star-fill mx-1"></i>Class One Honours</p>
+            </div>
+
+            <div class="col-10 col-md-5 row d-flex justify-content-center mx-0">
+                <div class="col-4 mb-1"><img src="../assets/logo/UOSLogo.png" class="img-fluid"></div>
+                <h3>The University of Sheffield</h3>
+                <p><i class="bi bi-star-fill mx-1"></i>Msc Advance Computer Science (2023 - 2024)</p>
+                <p><i class="bi bi-star-fill mx-1"></i>Distinction</p>
+            </div>
+
+        </div>
+
+        <div class="title mt-5 ">
             <h1 class="px-5 mt-5 my-3">专注领域</h1>
         </div>
         
@@ -214,8 +235,8 @@
                 params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
                 params.append('url', "http://terenzzzz.cn");
                 params.append('sound', "calypso");
-                const res = await pushVisitorAPI(params)
-                console.log(res);
+                // const res = await pushVisitorAPI(params)
+                // console.log(res);
             }
 
         },

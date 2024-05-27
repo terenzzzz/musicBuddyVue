@@ -33,6 +33,7 @@ export default {
 #app{
   box-sizing: border-box;
   width: 100%;
+  margin: 0;
 }
 
 #app a{
@@ -46,6 +47,10 @@ export default {
   height: 100%;
 
   /* z-index: -1; */
+}
+
+.red-text {
+  color: #FF6666;
 }
 
 

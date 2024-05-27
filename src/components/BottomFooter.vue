@@ -2,20 +2,38 @@
     <div id="Bottom-Footer">
         <div class="line_container"><div class="line my-5"></div></div>
 
-        <div id="contact">
-            <div class="row">
-                <div class="col-12 ps-3 col-sm-6 ps-m-0"><i class="bi bi-wechat me-1"></i><span>Terenz_</span></div>
-                <div class="col-12 ps-3 col-sm-6 ps-m-0"><i class="bi bi-whatsapp me-1"></i><span>+44 07529928070</span></div>
-                <div class="col-12 ps-3 col-sm-6 ps-m-0"><i class="bi bi-github me-1"></i><span><a href="https://github.com/terenzzzz">https://github.com/terenzzzz</a></span></div>
-                <div class="col-12 ps-3 col-sm-6 ps-m-0"><i class="bi bi-envelope me-1"></i><span>terence592592@gmail.com</span></div>
-                <div class="col-12 ps-3 col-sm-6 ps-m-0"><i class="bi bi-instagram me-1"></i><span>terenzzzz_</span></div>
-                <div class="col-12 ps-3 col-sm-6 ps-m-0"><i class="bi bi-browser-chrome me-1"></i><span><a href="https://www.terenzzzz.cn">https://www.terenzzzz.cn</a></span></div>
+            <div class="row justify-content-center text-center ">
+            <div class="col-12 col-sm-6 col-md-3">
+                <i class="bi bi-wechat"></i>
+                <p>Terenz_</p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <i class="bi bi-github"></i>
+                <p><a href="https://github.com/terenzzzz">https://github.com/terenzzzz</a></p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <i class="bi bi-envelope"></i>
+                <p><a href="mailto:terence592592@gmail.com">terence592592@gmail.com</a></p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <i class="bi bi-instagram"></i>
+                <p>terenzzzz_</p>
             </div>
         </div>
-
-        <div id="bottom"><a href="https://beian.miit.gov.cn/">粤ICP备2023082055号-1</a></div>
+        <div class="row justify-content-center text-center mt-3">
+            <div class="col-12">
+                <p>粤ICP备2023082055号-1</p>
+            </div>
+        </div>
     </div>
 
+    <!-- <i class="bi bi-wechat me-1"></i>
+    <div class="col-10 col-md-5 row d-flex justify-content-center mx-0">
+                <div class="col-4 mb-1"><img src="../assets/logo/tuoslogo.png" class="img-fluid"></div>
+                <h3>The University of Sheffield</h3>
+                <p><i class="bi bi-star-fill mx-1"></i>BEng Software Engineering (2020 - 2023)</p>
+                <p><i class="bi bi-star-fill mx-1"></i>Class One Honours</p>
+            </div> -->
     
 </template>
 
@@ -46,14 +64,14 @@
 }
 
 #Bottom-Footer .line_container .line{
-    width: 80%;
+    width: 90%;
     height: 1px;
     background-color: #e0e0e0;
     margin-block: 50px;
 }
 
 #contact{
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
 }
 
