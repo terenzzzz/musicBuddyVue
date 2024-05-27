@@ -2,10 +2,10 @@
     <div>
         <div class="row ">
             <div class="col-12 d-flex justify-content-center">
-                    <span class="gochi-hand-regular fs-1" v-on:click="toggleView">Kitty
+                    <span :class="{'red-text': showKitty, 'gochi-hand-regular': true, 'fs-1': true}"  v-on:click="toggleView">Kitty
                     </span> 
                     <span class="fs-3 mx-3">|</span>
-                    <span class="gochi-hand-regular fs-1" v-on:click="toggleView">Cocktail</span>
+                    <span :class="{'red-text': !showKitty, 'gochi-hand-regular': true, 'fs-1': true}" v-on:click="toggleView">Cocktail</span>
                 </div>
         </div>
         
@@ -96,7 +96,7 @@ export default {
             const dateString = `${year}-${month}-${day}`;
             
             // 添加到list数组中
-            this.kittyList.push({
+            this.kittyList.unshift({
                 date: dateString,
                 src: files(key)
             });

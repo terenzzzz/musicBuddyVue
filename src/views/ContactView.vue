@@ -5,6 +5,7 @@
             <div class="title">
                 <h1>准备好聊天了吗?</h1>
                 <div class="line"></div>
+                <p class="red-text">Note: This form is not implemented yet.</p>
             </div>
             
             <div id="form" class="row d-flex flex-column align-items-center">
