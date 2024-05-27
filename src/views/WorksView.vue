@@ -13,10 +13,38 @@
         <router-view></router-view>
 
         <div class="title mt-3">
-            <h1 class="px-5 my-3">项目列表</h1>
+            <h1 class="px-5 my-3">项目</h1>
         </div>
         
-        <div class="row">
+        <div class="row mx-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
+                <SingleWork toURL='/works/eWaste'>
+                    <template v-slot:img>
+                            <img src="../assets/works/ewaste.png"/>
+                    </template>
+                    <template v-slot:title>
+                        E-Waste 设备回收系统
+                    </template>
+                    <template v-slot:text>
+                        该项目旨在提供一个中心，可以根据设备的年龄和需求识别设备，并为所有者提供支付数据检索费用的选项
+                    </template>
+                </SingleWork>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
+                <SingleWork toURL='/works/gpu'>
+                    <template v-slot:img>
+                            <img src="../assets/logo/cuda.jpeg"/>
+                    </template>
+                    <template v-slot:title>
+                        使用OpenMp和Cuda对算法进行并行优化
+                    </template>
+                    <template v-slot:text>
+                        利用使用OpenMp和Cuda对三个算法的单线程实现进行优化
+                    </template>
+                </SingleWork>
+            </div>
+
             <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 p-0">
                 <SingleWork toURL='/works/nGrams'>
                     <template v-slot:img>
