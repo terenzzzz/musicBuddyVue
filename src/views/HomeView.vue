@@ -220,13 +220,13 @@
                 console.error("浏览器不支持Geolocation API");
             }
 
-            // async function postVisitor(latitude,longitude,location){
-            //     const params = new URLSearchParams();
-            //     params.append('Latitude', latitude);
-            //     params.append('Longitude', longitude);
-            //     params.append('Location', location);
-            //     const res = await postVisitorAPI(params)
-            // }
+            async function postVisitor(latitude,longitude,location){
+                const params = new URLSearchParams();
+                params.append('Latitude', latitude);
+                params.append('Longitude', longitude);
+                params.append('Location', location);
+                const res = await postVisitorAPI(params)
+            }
 
             async function pushVisitor(body){
                 const params = new URLSearchParams();
@@ -235,8 +235,8 @@
                 params.append('icon', "https://static.tvtropes.org/pmwiki/pub/images/beluga.jpg");
                 params.append('url', "http://terenzzzz.cn");
                 params.append('sound', "calypso");
-                // const res = await pushVisitorAPI(params)
-                // console.log(res);
+                const res = await pushVisitorAPI(params)
+                console.log(res);
             }
 
         },
