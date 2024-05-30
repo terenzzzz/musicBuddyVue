@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <TopHeader></TopHeader>
+    <NavBar></NavBar>
     <!-- <div id="particles"></div> -->
     <router-view></router-view>
     <BottomFooter></BottomFooter>
@@ -8,14 +8,15 @@
 </template>
 
 <script>
-import TopHeader from '@/components/TopHeader';
-import BottomFooter from '@/components/BottomFooter';
-// import particlesJson from '../particles.json'
+
+import BottomFooter from "@/components/BottomFooter.vue";
+import NavBar from "@/components/NavBar.vue";
+
 
 export default {
   name: 'App',
   components: {
-    TopHeader,
+    NavBar,
     BottomFooter,
   },
   mounted() {
@@ -41,18 +42,43 @@ export default {
   color: inherit;
 }
 
-#particles{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  /* z-index: -1; */
+.page-container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .red-text {
   color: #FF6666;
 }
 
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+    height: 8px; /* 调整滚动条高度 */
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* 滚动条的颜色 */
+    border-radius: 10px; /* 滚动条圆角 */
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1); /* 滚动条轨道的颜色 */
+    border-radius: 10px; /* 滚动条轨道圆角 */
+}
 
 
 </style>

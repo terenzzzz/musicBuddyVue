@@ -15,6 +15,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 
 Vue.config.productionTip = false
 
+
 import {
   Button, Field, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Search,
   Card,Tab, Tabs,SwipeCell,NavBar,Cell,CellGroup,Col,Row,Dialog,Tag } from 'vant'
