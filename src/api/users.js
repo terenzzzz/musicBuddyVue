@@ -14,3 +14,9 @@ export const signup = data => request({
     data
 });
 
+export const getUser = data => request({
+    url: '/app/getUser',
+    method: 'get',
+    data
+});
+

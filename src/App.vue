@@ -2,7 +2,7 @@
   <div id="app">
     <NavBar></NavBar>
     <!-- <div id="particles"></div> -->
-    <router-view></router-view>
+    <router-view class="min-vh-100"></router-view>
     <BottomFooter></BottomFooter>
   </div>
 </template>
@@ -42,11 +42,12 @@ export default {
   color: inherit;
 }
 
+#app p{
+    margin: 0;
+}
+
 .page-container {
     width: 80%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
 }
 
 .red-text {
@@ -80,5 +81,20 @@ export default {
     border-radius: 10px; /* 滚动条轨道圆角 */
 }
 
+.footer-bottom {
+    position: relative; /* Make footer relative to the parent container */
+    left: 0;
+    bottom: 0;
+}
 
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
 </style>

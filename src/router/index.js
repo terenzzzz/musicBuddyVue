@@ -7,6 +7,7 @@ import DashBoard from "@/views/DashBoard.vue";
 import LandingPage from "@/views/LandingPage.vue";
 import LogIn from "@/views/LogIn.vue";
 import SignUp from "@/views/SignUp.vue";
+import ProfilePage from "@/views/ProfilePage.vue";
 
 // 规则数组
 const routes = [
@@ -17,6 +18,10 @@ const routes = [
     {
         path: "/dashboard",
         component: DashBoard,
+    },
+    {
+        path: "/profile",
+        component: ProfilePage,
     },
     {
         path: "/login",
