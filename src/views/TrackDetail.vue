@@ -2,12 +2,12 @@
     <div class="TrackDetailmy-5 container-fluid" >
         <div v-if="track">
 <!--        Track Basic Info-->
-            <div class="card track-detail-container shadow my-5 page-container mx-auto "  :style="containerStyle">
-                <div class="row">
-                    <div class="col-6 col-md-4 col-xl-3 mx-auto">
+            <div class="card track-detail-container shadow page-container mx-auto rounded-bottom-0 p-2" :style="containerStyle">
+                <div class="row" >
+                    <div class="col-6 col-md-3 col-xl-2 m-auto">
                         <img :src="track.cover" class="img-fluid">
                     </div>
-                    <div class="col-12 col-md-8 col-xl-9 d-flex flex-column justify-content-center">
+                    <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
                         <div>
                             <strong class="fs-2 text-white">{{ track.name }}</strong>
                             <p class="fs-5 text-white">{{ track.artist.name }}</p>
@@ -28,10 +28,58 @@
                     </div>
                 </div>
             </div>
+            <div class="card shadow page-container mx-auto rounded-top-0" >
+                <div class="row text-center py-3">
+                    <div class="col-4 d-flex flex-column" v-if="track.album">
+                        <strong>Album</strong>
+                        {{ track.album }}
+                    </div>
 
-    <!--Lyric and MetaData-->
-            <div class="row row-gap-3 container-fluid" >
-                <div class="left col-12 col-md-6 card shadow p-2 my-4" >
+                    <div class="col-4 d-flex flex-column" v-if="track.year">
+                        <strong>Year Publish</strong>
+                        {{ track.year }}
+                    </div>
+
+                    <div class="col-4 d-flex flex-column" v-if="track.duration">
+                        <strong>Duration</strong>
+                        {{ millisecondsToMMss(track.duration) }}
+                    </div>
+                </div>
+            </div>
+
+<!--            Artist Card-->
+            <div class="card shadow my-5 page-container mx-auto p-2" >
+                <div class="row">
+                    <div class="col-6 col-md-3 col-xl-2 m-auto">
+                        <img :src="track.artist.avatar" class="img-fluid rounded-circle">
+                    </div>
+                    <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
+                        <div class="d-flex flex-row justify-content-between">
+                            <strong class="fs-2">{{ track.artist.name }}</strong>
+                            <div class="d-flex text-center">
+                                <div class="d-flex flex-column mx-2">
+                                    <strong>Familiarity</strong>
+                                    {{ (track.artist.familiarity * 100).toFixed(2) }}%
+                                </div>
+                                <div class="d-flex flex-column mx-2">
+                                    <strong>Hotness</strong>
+                                    {{ (track.artist.hotness * 100).toFixed(2) }}%
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row d-flex flex-row">
+                            <div class="col-auto" v-for="tag in track.tags" :key="tag.id">
+                                <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!--    Lyric-->
+            <div class="row row-gap-3 page-container mx-auto" >
+                <div class="col-12 card shadow p-2 my-4" >
                     <h3 class="text-center">Lyric</h3>
                     <div v-if="formattedLyrics.length === 0" >
                         <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
@@ -40,44 +88,8 @@
                     </div>
                     <div v-else class="mx-auto">No lyric is privided for this track</div>
                 </div>
-                <div class="right col-12 col-md-6">
-                    <div class="card p-2 row border-0">
-                        <div class="col-12 ">
-                            <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5>Artist Encyclopedia</h5>
-                                </div>
-                                <div class="row">
-                                    <div class="col-4 col-md-3 mx-auto"><img :src="track.artist.avatar" class="img-fluid rounded-3" ></div>
-                                    <div class="col-12 col-md-9">
-                                        <p><strong>Artist:</strong> {{ track.artist.name }}</p>
-                                        <p><strong>Familiarity:</strong> {{ (track.artist.familiarity * 100).toFixed(2) }}%</p>
-                                        <p><strong>Hotness:</strong> {{ (track.artist.hotness * 100).toFixed(2) }}%</p>
-                                        <div class="row d-flex flex-row">
-                                            <div class="col-auto" v-for="tag in track.artist.tags" :key="tag.id">
-                                                <button class="rounded-3 btn btn-secondary btn-sm my-1">{{ tag.tag.name }}</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card p-2 row border-0">
-                        <div class="col-12 ">
-                            <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5>Track Encyclopedia</h5>
-                                </div>
-                                <p v-if="track.album"><strong>Album:</strong> {{ track.album }}</p>
-                                <p v-if="track.year"><strong>Year Published:</strong> {{ track.year }}</p>
-                                <p v-if="track.duration"><strong>Duration:</strong> {{ millisecondsToMMss(track.duration) }}</p>
-                                <p v-if="track.summary"><strong>Summary:</strong> {{ track.summary }}</p>
-                            </div>
-                    </div>
-                </div>
-                </div>
             </div>
+
     <!--Recommandation-->
             <div class="row container-fluid my-2" >
                 <h3>Recommended Tracks for「{{track.name}}」</h3>
@@ -193,13 +205,6 @@ export default {
 </script>
 
 <style>
-.track-detail-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color: white;
-    padding: 20px;
-}
 
 .track-info {
     max-width: 50%; /* 可根据需要调整 */
