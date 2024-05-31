@@ -8,3 +8,9 @@ export const getRandomTrack = params => request({
     params
 })
 
+export const getTrackById = params => request({
+    url: `/app/getTrackById`,
+    method: 'get',
+    params
+})
+

@@ -18,8 +18,7 @@
     </div>
 
 
-    <div class="container-fluid object-fit-cover ">
-      <div class="row bg-light pb-3 d-flex justify-content-center">
+    <div class="row bg-light pb-3 d-flex justify-content-center">
         <div class="col-md-12">
           <!-- Carousel Section -->
           <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
@@ -31,7 +30,6 @@
           </div>
         </div>
       </div>
-    </div>
 
 
     <!-- Features Section -->

@@ -8,6 +8,9 @@ import LandingPage from "@/views/LandingPage.vue";
 import LogIn from "@/views/LogIn.vue";
 import SignUp from "@/views/SignUp.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
+import SearchPage from "@/views/SearchPage.vue";
+import TagsPage from "@/views/TagsPage.vue";
+import TrackDetail from "@/views/TrackDetail.vue";
 
 // 规则数组
 const routes = [
@@ -18,6 +21,14 @@ const routes = [
     {
         path: "/dashboard",
         component: DashBoard,
+    },
+    {
+        path: "/search",
+        component: SearchPage,
+    },
+    {
+        path: "/tags",
+        component: TagsPage,
     },
     {
         path: "/profile",
@@ -31,6 +42,10 @@ const routes = [
         path: "/signup",
         component: SignUp,
     },
+    {
+        path: '/track/:id',
+        component: TrackDetail
+    },
 ]
 
 
@@ -40,6 +55,13 @@ const router = new VueRouter({
     // routes: routes
     // scrollBehavior: () => ({y: 0}),
     routes, //routes 时固定key(传入规则数组)
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return { x: 0, y: 0 };
+        }
+    }
     // scrollBehavior(to, from, savedPosition) {
     //   if (savedPosition) {
     //     // 恢复滚动位置

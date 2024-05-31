@@ -1,15 +1,16 @@
 <template>
-  <div id="app">
-    <NavBar></NavBar>
-    <!-- <div id="particles"></div> -->
-    <router-view class="min-vh-100"></router-view>
-    <BottomFooter></BottomFooter>
-  </div>
+    <div id="app" >
+        <NavBar></NavBar>
+
+        <router-view class="my-5"></router-view>
+
+<!--        <BottomFooter></BottomFooter>-->
+    </div>
 </template>
 
 <script>
 
-import BottomFooter from "@/components/BottomFooter.vue";
+// import BottomFooter from "@/components/BottomFooter.vue";
 import NavBar from "@/components/NavBar.vue";
 
 
@@ -17,7 +18,7 @@ export default {
   name: 'App',
   components: {
     NavBar,
-    BottomFooter,
+    // BottomFooter,
   },
   mounted() {
     // require('particles.js')
@@ -47,11 +48,7 @@ export default {
 }
 
 .page-container {
-    width: 80%;
-}
-
-.red-text {
-  color: #FF6666;
+    width: 90%;
 }
 
 .cover-image {
@@ -85,16 +82,5 @@ export default {
     position: relative; /* Make footer relative to the parent container */
     left: 0;
     bottom: 0;
-}
-
-body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-main {
-    flex: 1;
 }
 </style>
