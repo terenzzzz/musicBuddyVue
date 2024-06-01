@@ -7,38 +7,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js' //引用bootstrap的js
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 
-
-
-
-// import particles from 'particles.js'
-// Vue.use(particles)
-
 Vue.config.productionTip = false
 
-
-import {
-  Button, Field, Tabbar, TabbarItem, Swipe, SwipeItem, Lazyload, Search,
-  Card,Tab, Tabs,SwipeCell,NavBar,Cell,CellGroup,Col,Row,Dialog,Tag } from 'vant'
-import 'vant/lib/index.css'
-Vue.use(Button)
-Vue.use(Field)
-Vue.use(Tabbar)
-Vue.use(TabbarItem)
-Vue.use(Swipe)
-Vue.use(SwipeItem)
-Vue.use(Search)
-Vue.use(Card)
-Vue.use(Tab);
-Vue.use(Tabs);
-Vue.use(SwipeCell);
-Vue.use(NavBar);
-Vue.use(Cell);
-Vue.use(CellGroup);
-Vue.use(Col);
-Vue.use(Row);
-Vue.use(Lazyload);
-Vue.use(Dialog);
-Vue.use(Tag);
 
 new Vue({
   router,

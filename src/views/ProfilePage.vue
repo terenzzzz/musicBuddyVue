@@ -40,46 +40,24 @@
                             <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
                                 <div>
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h5>Playing History</h5>
-                                        <a href="#" class="text-white">All</a>
+                                        <h5>Recently Played</h5>
+                                        <a href="#" >All</a>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-1 d-flex justify-content-center align-items-center">1</div>
-                                        <div class="col-2">
-                                            <img src="https://via.placeholder.com/50" alt="Album Cover">
-                                        </div>
-                                        <div class="col-7">
-                                            <div><strong>Redemption</strong></div>
-                                            <div>Write This Down</div>
-                                        </div>
-                                        <div class="col-2 play-count">
-                                            <div>5</div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1 d-flex justify-content-center align-items-center">2</div>
-                                        <div class="col-2">
-                                            <img src="https://via.placeholder.com/50" class="img-fluid">
-                                        </div>
-                                        <div class="col-7">
-                                            <div><strong>Redemption</strong></div>
-                                            <div>Write This Down</div>
-                                        </div>
-                                        <div class="col-2 play-count">
-                                            <div>5</div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1 d-flex justify-content-center align-items-center">3</div>
-                                        <div class="col-2">
-                                            <img src="https://via.placeholder.com/50" alt="Album Cover">
-                                        </div>
-                                        <div class="col-7">
-                                            <div><strong>Baby Don't Go</strong></div>
-                                            <div>Dum Dum Girls</div>
-                                        </div>
-                                        <div class="col-2 play-count">
-                                            <div>5</div>
+                                    <div v-for="item in recentlyPlay.slice(0, 5)" :key="item.id">
+                                        <div class="row mt-2">
+<!--                                            <div class="col-1 d-flex justify-content-center align-items-center">1</div>-->
+                                            <div class="col-3">
+                                                <img v-if="item.track.album.images" :src="item.track.album.images[0].url" class="img-fluid">
+                                            </div>
+                                            <div class="col-9 d-flex flex-column align-items-center justify-content-center">
+                                                <div><strong>{{item.track.name}}</strong></div>
+                                                <div v-for="artist in item.track.artists" :key="artist.id">
+                                                    <span>{{ artist.name }} </span>
+                                                </div>
+                                            </div>
+<!--                                            <div class="col-3 play-count">-->
+<!--                                                <div>{{item.played_at}}</div>-->
+<!--                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -88,65 +66,41 @@
 
                         <div class="col-12 col-md-12 col-lg-6 col-xl-4">
                             <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5>Most Listened Song</h5>
-                                <a href="#" class="text-white">All</a>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5>Top Tracks</h5>
+                                    <a href="#" class="text-muted">All</a>
+                                </div>
+                                <div v-for="(track, index) in topTracks.slice(0, 5)" :key="track.id">
+                                    <div class="row mt-2">
+                                        <div class="col-2 d-flex justify-content-center align-items-center p-0">Top {{ index+1 }}</div>
+                                        <div class="col-3">
+                                            <img v-if="track.album.images" :src="track.album.images[0].url" class="img-fluid">
+                                        </div>
+                                        <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+                                            <div><strong>{{track.name}}</strong></div>
+                                            <div v-for="artist in track.artists" :key="artist.id">
+                                                <span>{{ artist.name }} </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="text-center">
-                                        <img src="https://via.placeholder.com/100" alt="Failed to load image">
-                                        <div><strong>Redemption</strong></div>
-                                        <div>Write This Down</div>
-                                        <div class="rank">Top 1</div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="text-center">
-                                        <img src="https://via.placeholder.com/100" alt="Failed to load image">
-                                        <div><strong>Redemption</strong></div>
-                                        <div>Write This Down</div>
-                                        <div class="rank">Top 2</div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="text-center">
-                                        <img src="https://via.placeholder.com/100" alt="Failed to load image">
-                                        <div><strong>Baby Don't Go</strong></div>
-                                        <div>Dum Dum Girls</div>
-                                        <div class="rank">Top 3</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         </div>
 
                         <div class="col-12 col-md-12 col-lg-6 col-xl-4">
                             <div class="most-artist card rounded-5 p-3 my-2 h-100 shadow">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5>Most Listened Song</h5>
+                                <h5>Top Artists</h5>
                                 <a href="#" class="text-white">All</a>
                             </div>
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-4" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
                                     <div class="text-center">
-                                        <img src="https://via.placeholder.com/100" class="rounded-circle">
-                                        <div><strong>Redemption</strong></div>
-                                        <div class="rank">Top 1</div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="text-center">
-                                        <img src="https://via.placeholder.com/100" class="rounded-circle">
-                                        <div><strong>Redemption</strong></div>
-                                        <div class="rank">Top 2</div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="text-center">
-                                        <img src="https://via.placeholder.com/100" class="rounded-circle">
-                                        <div><strong>Baby Don't Go</strong></div>
-                                        <div class="rank">Top 3</div>
+                                        <img v-if="artist.images" :src="artist.images[0].url" class="img-fluid rounded-circle">
+                                        <div><strong>{{artist.name}}</strong></div>
+                                        <div class="rank">Top {{ index + 1 }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -188,19 +142,27 @@
 <script>
 import { getUser } from '@/api/users';
 import API_URL from "@/utils/connection";
-// import {spotifyLogin} from "@/api/spotify"; // 假设getUser函数在这个路径
+import {getRecentlyPlayed, getTopTracks, getTopArtists} from "@/api/spotify";
 
 export default {
     components: {},
     data() {
         return {
             user: null,
+            recentlyPlay: [],
+            topTracks: [],
+            topArtists: [],
             isSpotifyConnected: false
         };
     },
     created() {
         this.fetchUser();
         this.checkForSpotifyAccessToken();
+        if (this.isSpotifyConnected){
+            this.fetchRecentlyPlay()
+            this.fetchTopTracks()
+            this.fetchTopArtists()
+        }
     },
     methods: {
         async fetchUser() {
@@ -209,6 +171,30 @@ export default {
                 this.user = response.data.data;
             } catch (error) {
                 console.error('Failed to fetch user:', error);
+            }
+        },
+        async fetchRecentlyPlay() {
+            try {
+                const response = await getRecentlyPlayed();
+                this.recentlyPlay = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+        async fetchTopTracks() {
+            try {
+                const response = await getTopTracks();
+                this.topTracks = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+        async fetchTopArtists() {
+            try {
+                const response = await getTopArtists();
+                this.topArtists = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
             }
         },
         getAvatarUrl(avatarPath) {

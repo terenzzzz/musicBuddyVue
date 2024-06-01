@@ -1,10 +1,22 @@
 // 导入 axios配置
-import request from "@/utils/request"
+import requestSpotify from "@/utils/requestSpotify"
 
-// 查询ip
-export const spotifyLogin = params => request({
-    url: `/app/spotifyLogin`,
+export const getRecentlyPlayed = params => requestSpotify({
+    url: `/api/getRecentlyPlayed`,
     method: 'get',
     params
-})
+});
+
+export const getTopTracks = params => requestSpotify({
+    url: `/api/getTopTracks`,
+    method: 'get',
+    params
+});
+
+export const getTopArtists = params => requestSpotify({
+    url: `/api/getTopArtists`,
+    method: 'get',
+    params
+});
+
 
