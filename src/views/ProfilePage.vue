@@ -11,8 +11,8 @@
                 </div>
 
                 <div class="page-container mx-auto my-3">
-                    <div class="row d-flex justify-content-center mt-5 mb-2">
-                        <div class="col-3 d-flex flex-column justify-content-center text-center">
+                    <div class="row d-flex justify-content-center my-5">
+                        <div class="col-3 col-md-2 col-xl-1 d-flex flex-column justify-content-center text-center">
                             <img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid">
                             <strong>{{ user.name }}</strong>
                         </div>
@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import { getUser } from '@/api/users';
+import {getUser, updateSpotifyRefreshToken} from '@/api/users';
 import API_URL from "@/utils/connection";
 import {getRecentlyPlayed, getTopTracks, getTopArtists, refreshToken} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
@@ -146,7 +146,7 @@ export default {
     },
     created() {
         this.fetchUser();
-        this.checkForSpotifyAccessToken();
+        this.checkForSpotifyRefreshToken();
         this.fetchSpotifyData();
     },
     methods: {
@@ -217,14 +217,14 @@ export default {
             const storedRefreshToken = localStorage.getItem('spotify_refresh_token');
             try {
                 const response = await refreshToken({refresh_token: storedRefreshToken});
+                console.log(response)
                 localStorage.setItem('spotify_access_token', response.data.access_token);
-                localStorage.setItem('spotify_refresh_token', response.data.refresh_token);
                 localStorage.setItem('token_generate_time', Date.now());
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-        checkForSpotifyAccessToken() {
+        checkForSpotifyRefreshToken() {
             const hash = window.location.hash.substring(1); // 去掉开头的 #
             const queryStartIndex = hash.indexOf('?');
             const queryString = queryStartIndex !== -1 ? hash.substring(queryStartIndex + 1) : '';
@@ -232,10 +232,13 @@ export default {
             const accessToken = urlParams.get('access_token');
             const refreshToken = urlParams.get('refresh_token');
 
-            if (accessToken) {
+            if (refreshToken) {
                 localStorage.setItem('spotify_access_token', accessToken);
                 localStorage.setItem('spotify_refresh_token', refreshToken);
                 localStorage.setItem('token_generate_time', Date.now());
+
+                updateSpotifyRefreshToken(refreshToken)
+
                 this.isSpotifyConnected = true;
                 this.$router.replace({ path: '/profile' });
             }else {
@@ -245,7 +248,6 @@ export default {
                 }
             }
         }
-
     },
 }
 </script>

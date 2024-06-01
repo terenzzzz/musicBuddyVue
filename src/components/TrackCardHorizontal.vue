@@ -29,10 +29,10 @@ export default {
             type: String,
             required: true
         },
-        artists: [{
-            type: Object,
-            required: true
-        }]
+        artists: {
+            type: Array,
+            required: true,
+        }
     },
     methods: {
     }

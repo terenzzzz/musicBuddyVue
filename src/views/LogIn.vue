@@ -64,6 +64,7 @@
 
 <script>
 import { login } from '@/api/users';
+import {refreshToken} from "@/api/spotify";
 export default {
     components: {},
     data() {
@@ -79,6 +80,15 @@ export default {
 
                 if (response.data.status === 200) {
                     localStorage.setItem('access_token', response.data.token);
+                    localStorage.setItem('spotify_refresh_token', response.data.spotify_refresh_token);
+                    try {
+                        const response = await refreshToken({refresh_token: response.data.spotify_refresh_token});
+                        localStorage.setItem('spotify_access_token', response.data.access_token);
+                        // localStorage.setItem('spotify_refresh_token', response.data.refresh_token);
+                        localStorage.setItem('token_generate_time', Date.now());
+                    } catch (error) {
+                        console.error('Failed to fetch recently played tracks:', error);
+                    }
                     this.$router.push('/dashboard'); // Redirect to dashboard or another page
                 } else {
                     alert('Login failed: ' + response.data.message);
