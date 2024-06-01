@@ -25,4 +25,12 @@ export const getTopArtists = params => requestSpotify({
     params
 });
 
+export const search = (keyword, type) => {
+    return requestSpotify({
+        url: `/api/search`,
+        method: 'get',
+        params: { q: keyword, type: type }
+    });
+};
+
 

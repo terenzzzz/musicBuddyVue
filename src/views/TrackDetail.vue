@@ -1,6 +1,8 @@
 <template>
     <div class="TrackDetailmy-5 container-fluid" >
         <div v-if="track">
+            <div class="page-container mx-auto"><SpotifyFrame :uri="spotifyUrl"></SpotifyFrame></div>
+
 <!--        Track Basic Info-->
             <div class="card track-detail-container shadow page-container mx-auto rounded-bottom-0 p-2" :style="containerStyle">
                 <div class="row" >
@@ -117,9 +119,11 @@ import { millisecondsToMMss } from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
+import SpotifyFrame from "@/components/SpotifyFrame.vue";
+import {search} from "@/api/spotify";
 
 export default {
-    components: {ArtistCard, TrackCard},
+    components: {SpotifyFrame, ArtistCard, TrackCard},
     data() {
         return {
             trackId: this.$route.params.id,
@@ -127,6 +131,7 @@ export default {
             formattedLyrics: [],
             recommendedTracks:[],
             recommendedArtists:[],
+            spotifyUrl: ""
         };
     },
     watch: {
@@ -137,17 +142,33 @@ export default {
     },
     methods: {
         millisecondsToMMss,
+        async searchSpotify(keyword, type) {
+            try {
+                const response = await search(keyword, type);
+                if (response.status === 200) {
+                    this.spotifyUrl = response.data.uri;
+                    console.log(this.spotifyUrl)
+                } else {
+                    console.error('Error search Spotify else:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error search Spotify:', err.message);
+            }
+        },
         async fetchTrackById() {
             try {
                 const response = await getTrackById({ track: this.trackId });
                 if (response.data.status === 200) {
                     this.track = response.data.data;
                     this.formattedLyrics = this.formatLyrics(response.data.data.lyric)
+                    let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
+                    await this.searchSpotify(keyword, "track")
+
                 } else {
-                    console.error('Error fetching tracks:', response.data.message);
+                    console.error('Error fetching Track By Id:', response.data.message);
                 }
             } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+                console.error('Error fetching Track By Id:', err.message);
             }
         },
         formatLyrics(lyrics) {
@@ -167,10 +188,10 @@ export default {
                 if (response.data.status === 200) {
                     this.recommendedArtists = response.data.data;
                 } else {
-                    console.error('Error fetching tracks:', response.data.message);
+                    console.error('Error fetching Recommended Artists:', response.data.message);
                 }
             } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+                console.error('Error fetching Recommended Artists:', err.message);
             }
         },
         async fetchRecommendedTracks() {
@@ -179,10 +200,10 @@ export default {
                 if (response.data.status === 200) {
                     this.recommendedTracks = response.data.data;
                 } else {
-                    console.error('Error fetching tracks:', response.data.message);
+                    console.error('Error fetching Recommended Tracks:', response.data.message);
                 }
             } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+                console.error('Error fetching Recommended Tracks:', err.message);
             }
         }
     },

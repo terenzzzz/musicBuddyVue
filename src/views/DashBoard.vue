@@ -1,6 +1,5 @@
 <template>
   <div class="page-container mx-auto my-3">
-      <SpotifyFrame></SpotifyFrame>
     <div class="title mt-5 d-flex justify-content-center">
       <h3 class="px-5 my-3 border-bottom-red">Recently Play</h3>
     </div>
@@ -42,7 +41,6 @@
 
 <script>
 import TrackCard from '@/components/TrackCard.vue';
-import SpotifyFrame from '@/components/SpotifyFrame.vue';
 import {getRandomTrack} from "@/api/tracks";
 import {getRecommArtist} from "@/api/artists";
 import ArtistCard from "@/components/ArtistCard.vue";
@@ -51,7 +49,6 @@ export default {
     components: {
         ArtistCard,
         TrackCard,
-        SpotifyFrame
     },
     data() {
         return {
