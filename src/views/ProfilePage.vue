@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="row g-3 my-2">
-                        <div class="col-12 col-md-12 col-lg-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4">
                             <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
                                 <div>
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -44,27 +44,15 @@
                                         <a href="#" >All</a>
                                     </div>
                                     <div v-for="item in recentlyPlay.slice(0, 5)" :key="item.id">
-                                        <div class="row mt-2">
-<!--                                            <div class="col-1 d-flex justify-content-center align-items-center">1</div>-->
-                                            <div class="col-3">
-                                                <img v-if="item.track.album.images" :src="item.track.album.images[0].url" class="img-fluid">
-                                            </div>
-                                            <div class="col-9 d-flex flex-column align-items-center justify-content-center">
-                                                <div><strong>{{item.track.name}}</strong></div>
-                                                <div v-for="artist in item.track.artists" :key="artist.id">
-                                                    <span>{{ artist.name }} </span>
-                                                </div>
-                                            </div>
-<!--                                            <div class="col-3 play-count">-->
-<!--                                                <div>{{item.played_at}}</div>-->
-<!--                                            </div>-->
-                                        </div>
+                                        <TrackCardHorizontal :trackId="item.track.id" :track-name="item.track.name"
+                                                             :track-image="item.track.album.images[0]?.url" :artists="item.track.artists">
+                                        </TrackCardHorizontal>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-12 col-lg-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4">
                             <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5>Top Tracks</h5>
@@ -142,10 +130,11 @@
 <script>
 import { getUser } from '@/api/users';
 import API_URL from "@/utils/connection";
-import {getRecentlyPlayed, getTopTracks, getTopArtists} from "@/api/spotify";
+import {getRecentlyPlayed, getTopTracks, getTopArtists, refreshToken} from "@/api/spotify";
+import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 
 export default {
-    components: {},
+    components: {TrackCardHorizontal},
     data() {
         return {
             user: null,
@@ -158,11 +147,7 @@ export default {
     created() {
         this.fetchUser();
         this.checkForSpotifyAccessToken();
-        if (this.isSpotifyConnected){
-            this.fetchRecentlyPlay()
-            this.fetchTopTracks()
-            this.fetchTopArtists()
-        }
+        this.fetchSpotifyData();
     },
     methods: {
         async fetchUser() {
@@ -171,6 +156,25 @@ export default {
                 this.user = response.data.data;
             } catch (error) {
                 console.error('Failed to fetch user:', error);
+            }
+        },
+        async fetchSpotifyData() {
+            const tokenGenerateTime = localStorage.getItem('token_generate_time');
+            const currentTime = Date.now();
+            const tokenAge = currentTime - tokenGenerateTime;
+
+            const tokenValidityDuration = 55 * 60 * 1000; // 55 minutes in milliseconds
+
+            if (tokenAge > tokenValidityDuration) {
+                // Token has expired, refresh it
+                await this.refreshToken();
+            }
+
+            // Check if Spotify is connected and token is valid
+            if (this.isSpotifyConnected && localStorage.getItem('spotify_access_token')) {
+                await this.fetchRecentlyPlay();
+                await this.fetchTopTracks();
+                await this.fetchTopArtists();
             }
         },
         async fetchRecentlyPlay() {
@@ -209,6 +213,17 @@ export default {
                 window.location.href = 'http://localhost:6906/api/spotifyLogin';
             }
         },
+        async refreshToken() {
+            const storedRefreshToken = localStorage.getItem('spotify_refresh_token');
+            try {
+                const response = await refreshToken({refresh_token: storedRefreshToken});
+                localStorage.setItem('spotify_access_token', response.data.access_token);
+                localStorage.setItem('spotify_refresh_token', response.data.refresh_token);
+                localStorage.setItem('token_generate_time', Date.now());
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
         checkForSpotifyAccessToken() {
             const hash = window.location.hash.substring(1); // 去掉开头的 #
             const queryStartIndex = hash.indexOf('?');
@@ -218,9 +233,9 @@ export default {
             const refreshToken = urlParams.get('refresh_token');
 
             if (accessToken) {
-                console.log(accessToken);
                 localStorage.setItem('spotify_access_token', accessToken);
                 localStorage.setItem('spotify_refresh_token', refreshToken);
+                localStorage.setItem('token_generate_time', Date.now());
                 this.isSpotifyConnected = true;
                 this.$router.replace({ path: '/profile' });
             }else {
