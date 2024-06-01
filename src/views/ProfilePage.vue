@@ -4,8 +4,9 @@
             <div v-if="user" class="my-3">
                 <div class="row d-flex justify-content-end">
                     <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-end">
-                        <a href="/linkToSpotify" class="mb-2  btn btn-success btn text-white"><i
-                            class="fa-brands fa-spotify"></i> Connect to Spotify</a>
+                        <button :class="['mb-2', 'btn', isSpotifyConnected ? 'btn-success text-white' : 'btn-outline-secondary']" @click="loginWithSpotify">
+                            <i class="fa-brands fa-spotify"></i> {{ isSpotifyConnected ? 'Connected to Spotify' : 'Connect to Spotify' }}
+                        </button>
                     </div>
                 </div>
 
@@ -186,17 +187,20 @@
 
 <script>
 import { getUser } from '@/api/users';
-import API_URL from "@/utils/connection"; // 假设getUser函数在这个路径
+import API_URL from "@/utils/connection";
+// import {spotifyLogin} from "@/api/spotify"; // 假设getUser函数在这个路径
 
 export default {
     components: {},
     data() {
         return {
-            user: null
+            user: null,
+            isSpotifyConnected: false
         };
     },
     created() {
         this.fetchUser();
+        this.checkForSpotifyAccessToken();
     },
     methods: {
         async fetchUser() {
@@ -210,7 +214,37 @@ export default {
         getAvatarUrl(avatarPath) {
             const baseUrl = API_URL;
             return avatarPath ? baseUrl + avatarPath : 'https://api.example.com/images/default-avatar.png';
+        },
+        loginWithSpotify() {
+            const storedAccessToken = localStorage.getItem('spotify_access_token');
+            if (storedAccessToken) {
+                alert("Already Connected to Spotify")
+            }else{
+                window.location.href = 'http://localhost:6906/api/spotifyLogin';
+            }
+        },
+        checkForSpotifyAccessToken() {
+            const hash = window.location.hash.substring(1); // 去掉开头的 #
+            const queryStartIndex = hash.indexOf('?');
+            const queryString = queryStartIndex !== -1 ? hash.substring(queryStartIndex + 1) : '';
+            const urlParams = new URLSearchParams(queryString);
+            const accessToken = urlParams.get('access_token');
+            const refreshToken = urlParams.get('refresh_token');
+
+            if (accessToken) {
+                console.log(accessToken);
+                localStorage.setItem('spotify_access_token', accessToken);
+                localStorage.setItem('spotify_refresh_token', refreshToken);
+                this.isSpotifyConnected = true;
+                this.$router.replace({ path: '/profile' });
+            }else {
+                const storedAccessToken = localStorage.getItem('spotify_access_token');
+                if (storedAccessToken) {
+                    this.isSpotifyConnected = true;
+                }
+            }
         }
+
     },
 }
 </script>
