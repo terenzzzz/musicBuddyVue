@@ -56,7 +56,7 @@
                         <img :src="track.artist.avatar" class="img-fluid rounded-circle">
                     </div>
                     <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
-                        <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row justify-content-between mb-2">
                             <strong class="fs-2">{{ track.artist.name }}</strong>
                             <div class="d-flex text-center">
                                 <div class="d-flex flex-column mx-2">

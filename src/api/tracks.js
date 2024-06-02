@@ -14,3 +14,9 @@ export const getTrackById = params => request({
     params
 })
 
+export const getTracksByArtist = artist => request({
+    url: `/app/getTracksByArtist`,
+    method: 'get',
+    params: {artist: artist}
+})
+

@@ -8,3 +8,15 @@ export const getRecommArtist = params => request({
     params
 })
 
+export const getArtist = artist => request({
+    url: `/app/getArtist`,
+    method: 'get',
+    params: {id: artist}
+})
+
+export const getSimilarArtists = artist => request({
+    url: `/app/getSimilarArtists`,
+    method: 'get',
+    params: {id: artist}
+})
+

@@ -35,7 +35,6 @@
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>
-
   </div>
 </template>
 

@@ -12,6 +12,7 @@ import SearchPage from "@/views/SearchPage.vue";
 import TagsPage from "@/views/TagsPage.vue";
 import TrackDetail from "@/views/TrackDetail.vue";
 import axios from "axios";
+import ArtistDetail from "@/views/ArtistDetail.vue";
 
 // 规则数组
 const routes = [
@@ -46,6 +47,10 @@ const routes = [
     {
         path: '/track/:id',
         component: TrackDetail
+    },
+    {
+        path: '/artist/:id',
+        component: ArtistDetail
     },
 ]
 
