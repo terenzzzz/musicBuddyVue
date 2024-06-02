@@ -2,7 +2,7 @@
     <div class="ArtistDetail my-5 container-fluid" >
         <div v-if="artist" class="page-container mx-auto ">
 
-            <div class="card shadow my-5 p-2" >
+            <div class="card shadow mt-5 p-2 rounded-bottom-0" >
                 <div class="row">
                     <div class="col-6 col-md-3 col-xl-2 m-auto ">
                         <img :src="artist.avatar" class="img-fluid rounded-circle">
@@ -19,6 +19,10 @@
                                     <strong>Hotness</strong>
                                     {{ (artist.hotness * 100).toFixed(2) }}%
                                 </div>
+                                <div class="d-flex flex-column mx-2">
+                                    <strong>Published</strong>
+                                    {{ artist.published }}
+                                </div>
                             </div>
 
                         </div>
@@ -30,13 +34,25 @@
                     </div>
                 </div>
             </div>
-            <!--Recommandation-->
-            <h3>Similar Artists</h3>
-            <div class="horizontal-scroll">
-                <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
-                    <ArtistCard :artist="artist"></ArtistCard>
+            <div class="card shadow rounded-top-0 p-2" >
+                <div class="row py-3">
+                    <div class="col-12" v-if="artist.summary">
+                        <strong>Introducation: </strong>
+                        {{ artist.summary }}
+                    </div>
                 </div>
             </div>
+
+            <!--Recommandation-->
+            <div class="mt-5">
+                <h3>Similar Artists</h3>
+                <div class="horizontal-scroll">
+                    <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
+                        <ArtistCard :artist="artist"></ArtistCard>
+                    </div>
+                </div>
+            </div>
+
             <!--Tracks-->
             <div class="mt-5">
                 <h3>Top Tracks</h3>
@@ -66,6 +82,14 @@ export default {
             tracks: [],
             similarArtist: [],
         };
+    },
+    watch: {
+        '$route'(to) {
+            this.artistId = to.params.id;
+            this.fetchArtistById();
+            this.fetchSimilarArtists();
+            this.fetchTracksByArtist();
+        }
     },
     methods: {
         millisecondsToMMss,

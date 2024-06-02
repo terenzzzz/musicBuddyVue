@@ -4,7 +4,7 @@
       <h3 class="px-5 my-3 border-bottom-red">Recently Play</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
+          <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>
@@ -13,7 +13,7 @@
       <h3 class="px-5 my-3 border-bottom-red">Listen 「Lock Me Up」 also listening</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="track in alsoListen" :key="track.id">
+          <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="track in alsoListen" :key="track.id">
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>
@@ -22,7 +22,7 @@
       <h3 class="px-5 my-3 border-bottom-red">Artist May Liked</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
+          <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
               <ArtistCard :artist="artist"></ArtistCard>
           </div>
       </div>
@@ -31,7 +31,7 @@
       <h3 class="px-5 my-3 border-bottom-red">Everyone's Listening</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
+          <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>

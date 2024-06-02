@@ -21,51 +21,67 @@
     <div class="row bg-light pb-3 d-flex justify-content-center">
         <div class="col-md-12">
           <!-- Carousel Section -->
-          <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
-          <p class="text-center mb-2">Take a look at some of the Tracks on our platform.</p>
-          <div class="horizontal-scroll">
-            <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="track in tracks" :key="track.id">
-                <TrackCard :track="track"></TrackCard>
+            <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
+            <p class="text-center mb-2">Take a look at some of the Tracks on our platform.</p>
+            <div class="horizontal-scroll">
+                <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="track in tracks" :key="track.id">
+                    <TrackCard :track="track"></TrackCard>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-
-
-    <!-- Features Section -->
-    <div class="container-fluid feature mt-3 landing-page px-5 pb-5" id="features">
-
-      <div class="row row-cols-1 row-cols-md-3 g-3 py-3">
-        <h2 class="fw-medium fs-1 pt-2 w-100">Why Use Our Website?</h2>
-        <div class="col py-1">
-          <div class="card rounded-4 h-100 shadow">
-            <div class="card-body">
-              <h2 class="card-title">Reliable Recommendation</h2>
-              <p class="card-text">Based on advanced algorithms and rich data, make sure you find the music you want every time you recommend it.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col py-1">
-          <div class="card rounded-4 h-100 shadow">
-            <div class="card-body">
-              <h2 class="card-title">Listen History Analysis</h2>
-              <p class="card-text">Statistics and analysis of users listening to give you a clearer understanding of your own music behavior.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col py-1">
-          <div class="card rounded-4 h-100 shadow">
-            <div class="card-body">
-              <h2 class="card-title">Easy and User Friendly</h2>
-              <p class="card-text">The design is simple and easy to operate, so that you can easily enjoy the wonderful experience of music.</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-  </div>
+      <div class="row mx-4 mt-5">
+          <h2 class="fw-medium fs-1 pt-2 w-100">Why Use Our Website?</h2>
+          <div class="col-12 col-md-6 col-xl-3">
+              <div class="mt-3">
+                  <div class="row">
+                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                      <div class="col-9 d-flex align-items-center justify-content-center">
+                          <h3 class="m-0">Reliable Recommendation</h3>
+                      </div>
+                  </div>
+                  <p class="mt-2">Based on advanced algorithms and rich data, make sure you find the music you want every time you recommend it.</p>
+              </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+              <div class="mt-3">
+                  <div class="row">
+                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                      <div class="col-9 d-flex align-items-center justify-content-center">
+                          <h3 class="m-0">Listen History Analysis</h3>
+                      </div>
+                  </div>
 
+                  <p class="mt-2">Statistics and analysis of users listening to give you a clearer understanding of your own music behavior</p>
+              </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+              <div class="mt-3">
+                  <div class="row">
+                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                      <div class="col-9 d-flex align-items-center justify-content-center">
+                          <h3 class="m-0">Large Library and Playback</h3>
+                      </div>
+                  </div>
+
+                  <p class="mt-2">Up to 50,000 songs from 2008 to 2010 and offers demo features</p>
+              </div>
+          </div>
+          <div class="col-12 col-md-6 col-xl-3">
+              <div class="mt-3">
+                  <div class="row">
+                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                      <div class="col-9 d-flex align-items-center justify-content-center">
+                          <h3 class="m-0">Easy and User Friendly</h3>
+                      </div>
+                  </div>
+
+                  <p class="mt-2">The design is simple and easy to operate, so that you can easily enjoy the wonderful experience of music.</p>
+              </div>
+          </div>
+      </div>
+  </div>
 </template>
 
 <script>
