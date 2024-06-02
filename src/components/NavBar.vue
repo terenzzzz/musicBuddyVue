@@ -1,8 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-lg nav-bg shadow sticky-top bg-white">
         <div class="container-fluid px-5">
-            <router-link class="navbar-brand fs-3 fw-bold primary text-decoration-none" to="/">
-                MusicBuddy
+            <router-link class="navbar-brand fs-3 fw-bold primary text-decoration-none d-flex align-items-center" to="/">
+                <img src="@/assets/images/musicBuddyVueLogo.png" style="width: 60px">
+                <span class="d-none d-sm-inline">MusicBuddy</span>
             </router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
