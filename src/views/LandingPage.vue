@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid p-0">
+  <div class="container-fluid p-0 my-0">
 
     <div class="posters-background">
       <div class="col-lg-6 content-wrapper">

@@ -1,10 +1,7 @@
 <template>
     <router-link :to="`/track/${trackId}`" :class="isBorder? 'card':''">
         <div class="row">
-            <div class="col-1 d-flex flex-column align-items-center justify-content-center" v-if="index">
-                <p>{{index}}</p>
-            </div>
-            <div class="col-3 col-sm-2">
+            <div class="col-4 col-sm-3 mb-2">
                 <img :src="trackImage" class="img-fluid">
             </div>
             <div class="col-8 d-flex flex-column align-items-center justify-content-center">
@@ -20,10 +17,6 @@
 <script>
 export default {
     props: {
-        index: {
-            type: Number,
-            required: false
-        },
         trackId: {
             type: String,
             required: true

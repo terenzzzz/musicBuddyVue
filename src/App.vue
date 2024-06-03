@@ -2,15 +2,15 @@
     <div id="app" >
         <NavBar></NavBar>
 
-        <router-view class="my-5"></router-view>
+        <router-view></router-view>
 
-<!--        <BottomFooter></BottomFooter>-->
+        <BottomFooter></BottomFooter>
     </div>
 </template>
 
 <script>
 
-// import BottomFooter from "@/components/BottomFooter.vue";
+import BottomFooter from "@/components/BottomFooter.vue";
 import NavBar from "@/components/NavBar.vue";
 
 
@@ -18,7 +18,7 @@ export default {
   name: 'App',
   components: {
     NavBar,
-    // BottomFooter,
+    BottomFooter,
   },
   mounted() {
     // require('particles.js')
@@ -36,6 +36,7 @@ export default {
   box-sizing: border-box;
   width: 100%;
   margin: 0;
+    background-color: #f1f4f9;
 }
 
 #app a{

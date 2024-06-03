@@ -1,5 +1,5 @@
 <template>
-    <div class="TrackDetailmy-5 container-fluid" >
+    <div class="TrackDetailmy-5 container-fluid mt-5" >
         <div v-if="track">
             <div class="page-container mx-auto"><SpotifyFrame :uri="spotifyUrl"></SpotifyFrame></div>
 
@@ -144,6 +144,7 @@ export default {
         millisecondsToMMss,
         async searchSpotify(keyword, type) {
             try {
+                console.log(`Searching spotify with keyword <${keyword}> with type <${type}>`)
                 const response = await search(keyword, type);
                 if (response.status === 200) {
                     this.spotifyUrl = response.data.uri;

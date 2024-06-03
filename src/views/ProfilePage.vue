@@ -18,6 +18,12 @@
                         </div>
                     </div>
 
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8 d-flex justify-content-center">
+                            <HeatMap></HeatMap>
+                        </div>
+                    </div>
+
                     <div class="card shadow rounded-5">
                         <div class="row text-center my-3">
                             <div class="col-4 d-flex flex-column">
@@ -132,9 +138,10 @@ import {getUser, updateSpotifyRefreshToken} from '@/api/users';
 import API_URL from "@/utils/connection";
 import {getRecentlyPlayed, getTopTracks, getTopArtists, refreshToken} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
+import HeatMap from "@/components/HeatMap.vue";
 
 export default {
-    components: {TrackCardHorizontal},
+    components: {HeatMap, TrackCardHorizontal},
     data() {
         return {
             user: null,
