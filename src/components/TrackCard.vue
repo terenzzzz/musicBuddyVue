@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="`/track/${track._id}`" >
+    <router-link :to="`/track/${track._id}`" style="background-color: #f1f4f9;">
         <div class="card rounded-4 h-100 shadow-sm">
           <div class="position-relative">
             <img :src="track.cover" class="img-fluid d-block mx-auto rounded-4" >
