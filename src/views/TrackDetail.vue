@@ -83,7 +83,7 @@
             <div class="row row-gap-3 page-container mx-auto" >
                 <div class="col-12 card shadow p-2 my-4" >
                     <h3 class="text-center">Lyric</h3>
-                    <div v-if="formattedLyrics.length === 0" >
+                    <div v-if="formattedLyrics.length>0" >
                         <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
                             <p>{{ line }}</p>
                         </div>
@@ -162,6 +162,7 @@ export default {
                 if (response.data.status === 200) {
                     this.track = response.data.data;
                     this.formattedLyrics = this.formatLyrics(response.data.data.lyric)
+                    console.log(this.formattedLyrics)
                     let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
                     await this.searchSpotify(keyword, "track")
 
@@ -173,15 +174,16 @@ export default {
             }
         },
         formatLyrics(lyrics) {
-            return lyrics.split('\n').map(line => {
-                const match = line.match(/\[([0-9:.]+)\](.*)/);
-                if (match) {
-                    // const time = match[1];
-                    const text = match[2];
-                    return `${text}`;
-                }
-                return line;
-            });
+            return lyrics.split('\n')
+                .map(line => {
+                    const match = line.match(/\[([0-9:.]+)\](.*)/);
+                    if (match) {
+                        const text = match[2].replace(/[^a-zA-Z\s]/g, '').trim(); // Remove non-English characters and trim
+                        return text;
+                    }
+                    return line.replace(/[^a-zA-Z\s]/g, '').trim(); // Remove non-English characters and trim
+                })
+                .filter(line => line !== ''); // Filter out possible empty lines
         },
         async fetchRecommendedArtists() {
             try {
