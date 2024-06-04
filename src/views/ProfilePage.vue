@@ -136,7 +136,7 @@
 <script>
 import {getUser, updateSpotifyRefreshToken} from '@/api/users';
 import API_URL from "@/utils/connection";
-import {getRecentlyPlayed, getTopTracks, getTopArtists, refreshToken} from "@/api/spotify";
+import {getRecentlyPlayed, getTopTracks, getTopArtists} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 import HeatMap from "@/components/HeatMap.vue";
 
@@ -166,17 +166,6 @@ export default {
             }
         },
         async fetchSpotifyData() {
-            const tokenGenerateTime = localStorage.getItem('token_generate_time');
-            const currentTime = Date.now();
-            const tokenAge = currentTime - tokenGenerateTime;
-
-            const tokenValidityDuration = 55 * 60 * 1000; // 55 minutes in milliseconds
-
-            if (tokenAge > tokenValidityDuration) {
-                // Token has expired, refresh it
-                await this.refreshToken();
-            }
-
             // Check if Spotify is connected and token is valid
             if (this.isSpotifyConnected && localStorage.getItem('spotify_access_token')) {
                 await this.fetchRecentlyPlay();
@@ -220,17 +209,7 @@ export default {
                 window.location.href = 'http://localhost:6906/api/spotifyLogin';
             }
         },
-        async refreshToken() {
-            const storedRefreshToken = localStorage.getItem('spotify_refresh_token');
-            try {
-                const response = await refreshToken({refresh_token: storedRefreshToken});
-                console.log(response)
-                localStorage.setItem('spotify_access_token', response.data.access_token);
-                localStorage.setItem('token_generate_time', Date.now());
-            } catch (error) {
-                console.error('Failed to fetch recently played tracks:', error);
-            }
-        },
+
         checkForSpotifyRefreshToken() {
             const hash = window.location.hash.substring(1); // 去掉开头的 #
             const queryStartIndex = hash.indexOf('?');

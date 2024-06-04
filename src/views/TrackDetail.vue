@@ -148,7 +148,6 @@ export default {
                 const response = await search(keyword, type);
                 if (response.status === 200) {
                     this.spotifyUrl = response.data.uri;
-                    console.log(this.spotifyUrl)
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
@@ -162,7 +161,6 @@ export default {
                 if (response.data.status === 200) {
                     this.track = response.data.data;
                     this.formattedLyrics = this.formatLyrics(response.data.data.lyric)
-                    console.log(this.formattedLyrics)
                     let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
                     await this.searchSpotify(keyword, "track")
 
