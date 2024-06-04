@@ -2,19 +2,58 @@
     <div class="Search">
 
         <div class="container-fluid">
-            <div class="row d-flex justify-content-center my-5">
-                <div class="col-6 d-flex">
+            <div class="row d-flex justify-content-center mt-5">
+                <div class="col-12 col-md-6 d-flex">
                     <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
                            placeholder="Search Tracks..." v-model="keyword">
                     <button class="btn btn-primary rounded-start-0" @click="fetchSearchResult">Search</button>
                 </div>
+            </div>
+            <div class="btn-group col-8 col-md-4 d-flex my-4 mx-auto"
+                 role="group"
+                 aria-label="Basic checkbox toggle button group"
+                 :class="{ 'no-selection': !hasSelection }">
+                <input type="checkbox" class="btn-check" id="tracks" value="tracks" v-model="selectedTypes">
+                <label class="btn btn-outline-primary" for="tracks">Tracks</label>
 
+                <input type="checkbox" class="btn-check" id="artists" value="artists" v-model="selectedTypes">
+                <label class="btn btn-outline-primary" for="artists">Artists</label>
+
+                <input type="checkbox" class="btn-check" id="lyrics" value="lyrics" v-model="selectedTypes">
+                <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
             </div>
 
-            <div class="row">
-                <div class="col-6 col-md-3 col-xl-2" v-for="track in result" :key="track.id">
-                    <TrackCard :track="track"></TrackCard>
+
+
+
+            <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('tracks')">
+                <div class="row" >
+                    <h3>Tracks Result</h3>
+                    <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
+                        <TrackCard :track="track"></TrackCard>
+                    </div>
                 </div>
+                <p v-if="trackResult.length <= 0" class="text-center">No Result For the Search</p>
+            </div>
+
+            <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('artists')">
+                <div class="row " >
+                    <h3>Artists Result</h3>
+                    <div class="col-6 col-md-3 col-xl-2" v-for="artist in artistResult" :key="artist.id">
+                        <ArtistCard :artist="artist"></ArtistCard>
+                    </div>
+                    <p v-if="artistResult.length<=0" class="text-center">No Result For the Search</p>
+                </div>
+            </div>
+
+            <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('lyrics')">
+                <div class="row" >
+                    <h3>Lyric Result</h3>
+                    <div class="col-6 col-md-3 col-xl-2" v-for="track in lyricsResult" :key="track.id">
+                        <TrackCard :track="track"></TrackCard>
+                    </div>
+                </div>
+            <p v-if="lyricsResult.length<=0" class="text-center">No Result For the Search</p>
             </div>
         </div>
 
@@ -26,21 +65,37 @@
 import {getRandomTrack} from "@/api/tracks";
 import TrackCard from "@/components/TrackCard.vue";
 import {search} from "@/api/search";
+import ArtistCard from "@/components/ArtistCard.vue";
 
 export default {
-    components: {TrackCard},
+    components: {ArtistCard, TrackCard},
     data() {
         return {
             keyword: "",
-            result: [],
+            selectedTypes: ['tracks'],
+            hasSelection: true,
+            trackResult: [],
+            artistResult: [],
+            lyricsResult: [],
         };
+    },
+    computed: {
+        atLeastOneSelected() {
+            return this.selectedTypes.length > 0;
+        },
+    },
+    watch: {
+        selectedTypes(newVal) {
+            this.hasSelection = newVal.length > 0;
+            this.fetchSearchResult()
+        }
     },
     methods: {
         async fetchRandomTracks() {
             try {
                 const response = await getRandomTrack();
                 if (response.data.status === 200) {
-                    this.result = response.data.data;
+                    this.trackResult = response.data.data;
                 } else {
                     console.error('Error fetching tracks:', response.data.message);
                 }
@@ -49,11 +104,17 @@ export default {
             }
         },
         async fetchSearchResult() {
+            if (!this.atLeastOneSelected) {
+                // 没有任何选项被选中，不发送请求
+                return alert("Please At Least Select One Type");
+            }
             try {
-                const response = await search({keyword:this.keyword});
+                const response = await search(this.keyword, this.selectedTypes)
                 if (response.data.status === 200) {
-                    this.result = response.data.data;
-                    console.log('Updated result:', this.result);
+                    this.trackResult = response.data.data.tracks;
+                    this.artistResult = response.data.data.artists;
+                    this.lyricsResult = response.data.data.lyrics;
+                    console.log('Search result:', response.data.data);
                 } else {
                     console.error('Error fetching tracks:', response.data.message);
                 }

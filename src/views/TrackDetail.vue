@@ -1,5 +1,5 @@
 <template>
-    <div class="TrackDetailmy-5 container-fluid mt-5" >
+    <div class="TrackDetail my-5 container-fluid mt-5" >
         <div v-if="track">
             <div class="page-container mx-auto"><SpotifyFrame :uri="spotifyUrl"></SpotifyFrame></div>
 
@@ -7,7 +7,7 @@
             <div class="card track-detail-container shadow page-container mx-auto rounded-bottom-0 p-2" :style="containerStyle">
                 <div class="row" >
                     <div class="col-6 col-md-3 col-xl-2 m-auto">
-                        <img :src="track.cover" class="img-fluid">
+                        <img :src="this.track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid">
                     </div>
                     <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
                         <div>
