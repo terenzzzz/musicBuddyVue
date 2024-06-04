@@ -5,7 +5,7 @@
             <div class="row d-flex justify-content-center mt-5">
                 <div class="col-12 col-md-6 d-flex">
                     <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
-                           placeholder="Search Tracks..." v-model="keyword">
+                           placeholder="Search Tracks, Artists, Lyrics..." v-model="keyword">
                     <button class="btn btn-primary rounded-start-0" @click="fetchSearchResult">Search</button>
                 </div>
             </div>
