@@ -199,7 +199,7 @@ export default {
                 console.log(`Searching spotify with keyword <${keyword}> with type <${type}>`)
                 const response = await search(keyword, type);
                 if (response.status === 200) {
-                    this.spotifyUrl = response.data.uri;
+                    this.spotifyUri = response.data.uri;
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
