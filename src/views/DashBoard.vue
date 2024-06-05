@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container mx-auto my-3">
+  <div class="w-75 mx-auto my-3">
     <div class="title mt-5 d-flex justify-content-center">
       <h3 class="px-5 my-3 border-bottom-red">Recently Play</h3>
     </div>

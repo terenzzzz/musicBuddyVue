@@ -1,6 +1,6 @@
 <template>
     <div class="profile">
-        <div class="container-fluid">
+        <div class="w-75 mx-auto">
             <div v-if="user" class="my-3">
                 <div class="row d-flex justify-content-end">
                     <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-end">
@@ -41,6 +41,7 @@
                         </div>
                     </div>
 
+<!--                    Recently Played-->
                     <div class="row g-3 my-2">
                         <div class="col-12 col-sm-6 col-xl-4">
                             <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
@@ -58,6 +59,7 @@
                             </div>
                         </div>
 
+<!--                        Top Tracks-->
                         <div class="col-12 col-sm-6 col-xl-4">
                             <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -65,24 +67,27 @@
                                     <a href="#" class="text-muted">All</a>
                                 </div>
                                 <div v-for="(track, index) in topTracks.slice(0, 5)" :key="track.id">
-                                    <div class="row mt-2">
-                                        <div class="col-2 d-flex justify-content-center align-items-center p-0">Top {{ index+1 }}</div>
-                                        <div class="col-3">
-                                            <img v-if="track.album.images" :src="track.album.images[0].url" class="img-fluid">
-                                        </div>
-                                        <div class="col-6 d-flex flex-column align-items-center justify-content-center">
-                                            <div><strong>{{track.name}}</strong></div>
-                                            <div v-for="artist in track.artists" :key="artist.id">
-                                                <span>{{ artist.name }} </span>
+                                    <router-link :to="`/track/${track.id}`" :class="isBorder? 'card':''">
+                                        <div class="row mt-2">
+                                            <div class="col-2 d-flex justify-content-center align-items-center p-0">Top {{ index+1 }}</div>
+                                            <div class="col-3">
+                                                <img v-if="track.album.images" :src="track.album.images[0].url" class="img-fluid">
                                             </div>
-                                        </div>
+                                            <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+                                                <div><strong>{{track.name}}</strong></div>
+                                                <div v-for="artist in track.artists" :key="artist.id">
+                                                    <span>{{ artist.name }} </span>
+                                                </div>
+                                            </div>
 
-                                    </div>
+                                        </div>
+                                    </router-link>
                                 </div>
 
                             </div>
                         </div>
 
+<!--                        Top Artists-->
                         <div class="col-12 col-md-12 col-lg-6 col-xl-4">
                             <div class="most-artist card rounded-5 p-3 my-2 h-100 shadow">
                             <div class="d-flex justify-content-between align-items-center mb-3">

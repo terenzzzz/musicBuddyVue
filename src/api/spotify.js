@@ -33,4 +33,12 @@ export const search = (keyword, type) => {
     });
 };
 
+export const getSpotifyTrackById = (id) => {
+    return requestSpotify({
+        url: `/api/getSpotifyTrackById`,
+        method: 'get',
+        params: { id }
+    });
+};
+
 

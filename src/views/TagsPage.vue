@@ -1,6 +1,6 @@
 <template>
     <div class="Tags">
-        <div class="row page-container mx-auto">
+        <div class="row w-75 mx-auto">
             <div class="col-4 col-md-3 col-xl-2 p-2" v-for="tag in tags" :key="tag.id">
                 <div class="d-flex align-items-center justify-content-center bg-secondary text-white aspect-ratio-box">
                     <p class="m-0">{{ tag.name }}</p>

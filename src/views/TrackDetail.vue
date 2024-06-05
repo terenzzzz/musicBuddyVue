@@ -1,10 +1,13 @@
 <template>
-    <div class="TrackDetail my-5 container-fluid mt-5" >
-        <div v-if="track">
-            <div class="page-container mx-auto"><SpotifyFrame :uri="spotifyUrl"></SpotifyFrame></div>
+    <div class="TrackDetail" >
+        <div class="alert text-center alert-secondary" role="alert">
+            {{ isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify' }}
+        </div>
+        <div v-if="track" class="mt-5 w-75 mx-auto">
+            <div><SpotifyFrame :uri="spotifyUri"></SpotifyFrame></div>
 
 <!--        Track Basic Info-->
-            <div class="card track-detail-container shadow page-container mx-auto rounded-bottom-0 p-2" :style="containerStyle">
+            <div class="card track-detail-container shadow rounded-bottom-0 p-3 p-md-5" :style="containerStyle">
                 <div class="row" >
                     <div class="col-6 col-md-3 col-xl-2 m-auto">
                         <img :src="this.track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid">
@@ -14,23 +17,22 @@
                             <strong class="fs-2 text-white">{{ track.name }}</strong>
                             <p class="fs-5 text-white">{{ track.artist.name }}</p>
                         </div>
-                        <div class="row d-flex flex-row">
-                            <div class="col-auto" v-for="tag in track.tags" :key="tag.id">
+                        <div class="row d-flex flex-row" v-if="track.tags">
+                            <div class="col-auto" v-for="tag in track.tags" :key="tag.id" >
                                 <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-sm-6">
-                                <button class="btn btn-dark my-2">
-                                    <i class="fa-solid fa-circle-play mx-2"></i>Play Track
+                                <button class="btn btn-dark my-2" @click="openWindow(spotifyTrackUrl)">
+                                    <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <div class="card shadow page-container mx-auto rounded-top-0" >
+            <div class="card shadow rounded-top-0" >
                 <div class="row text-center py-3">
                     <div class="col-4 d-flex flex-column" v-if="track.album">
                         <strong>Album</strong>
@@ -50,29 +52,39 @@
             </div>
 
 <!--            Artist Card-->
-            <div class="card shadow my-5 page-container mx-auto p-2" >
+            <div class="card shadow my-5 p-3 p-md-5" >
                 <div class="row">
                     <div class="col-6 col-md-3 col-xl-2 m-auto">
-                        <img :src="track.artist.avatar" class="img-fluid rounded-circle">
+                        <div class="rounded-circle overflow-hidden img-container">
+                            <img :src="track.artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
+                                 class="img-fluid" style="object-fit: cover;">
+                        </div>
                     </div>
                     <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
                         <div class="d-flex flex-row justify-content-between mb-2">
                             <strong class="fs-2">{{ track.artist.name }}</strong>
-                            <div class="d-flex text-center">
-                                <div class="d-flex flex-column mx-2">
+                            <div class="d-flex text-center" >
+                                <div class="d-flex flex-column mx-2" v-if="track.artist.familiarity">
                                     <strong>Familiarity</strong>
                                     {{ (track.artist.familiarity * 100).toFixed(2) }}%
                                 </div>
-                                <div class="d-flex flex-column mx-2">
+                                <div class="d-flex flex-column mx-2" v-if="track.artist.hotness">
                                     <strong>Hotness</strong>
                                     {{ (track.artist.hotness * 100).toFixed(2) }}%
                                 </div>
                             </div>
 
                         </div>
-                        <div class="row d-flex flex-row">
-                            <div class="col-auto" v-for="tag in track.tags" :key="tag.id">
+                        <div class="row d-flex flex-row" v-if="track.artist.tags">
+                            <div class="col-auto"  v-for="tag in track.artist.tags" :key="tag.id">
                                 <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <button class="btn btn-dark my-2" @click="openWindow(spotifyArtistUrl)">
+                                    <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -80,8 +92,8 @@
             </div>
 
 <!--    Lyric-->
-            <div class="row row-gap-3 page-container mx-auto" >
-                <div class="col-12 card shadow p-2 my-4" >
+            <div class="row row-gap-3 " >
+                <div class="col-12 card shadow p-2 my-2" >
                     <h3 class="text-center">Lyric</h3>
                     <div v-if="formattedLyrics.length>0" >
                         <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
@@ -93,22 +105,24 @@
             </div>
 
     <!--Recommandation-->
-            <div class="row container-fluid my-2" >
-                <h3>Recommended Tracks for「{{track.name}}」</h3>
-                <div class="horizontal-scroll">
-                    <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
+            <div>
+                <div class="row my-3">
+                    <h3>Recommended Tracks for「{{track.name}}」</h3>
+                    <div class="horizontal-scroll">
+                        <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
+                            <TrackCard :track="track"></TrackCard>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
+                    <div class="horizontal-scroll">
+                        <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
+                            <ArtistCard :artist="artist"></ArtistCard>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row container-fluid  my-2" >
-            <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
-            <div class="horizontal-scroll">
-                <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
-                    <ArtistCard :artist="artist"></ArtistCard>
-                </div>
-            </div>
-        </div>
         </div>
     </div>
 </template>
@@ -120,7 +134,8 @@ import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
-import {search} from "@/api/spotify";
+import {getSpotifyTrackById, search} from "@/api/spotify";
+import isValidMongoId from "@/utils/isValidMongoId";
 
 export default {
     components: {SpotifyFrame, ArtistCard, TrackCard},
@@ -131,17 +146,54 @@ export default {
             formattedLyrics: [],
             recommendedTracks:[],
             recommendedArtists:[],
-            spotifyUrl: ""
+            spotifyUri: "",
+            spotifyTrackUrl: "",
+            spotifyArtistUrl: "",
         };
+    },
+    created() {
+        if (isValidMongoId(this.trackId)){
+            this.fetchTrackById();
+        }else{
+            this.fetchSpotifyMetadata();
+        }
+
+        this.fetchRecommendedArtists();
+        this.fetchRecommendedTracks()
     },
     watch: {
         '$route'(to) {
             this.trackId = to.params.id;
-            this.fetchTrackById();
+            if (isValidMongoId(this.trackId)){
+                this.fetchTrackById();
+            }else{
+                this.fetchSpotifyMetadata();
+            }
         }
     },
     methods: {
+        openWindow: function(url) {
+            window.open(url, '_blank');
+        },
+        isValidMongoId,
         millisecondsToMMss,
+        async fetchSpotifyMetadata() {
+            try {
+                const response = await getSpotifyTrackById(this.trackId);
+                if (response.status === 200) {
+                    this.track = response.data;
+                    this.spotifyUri = response.data.uri;
+                    this.formattedLyrics = this.formatLyrics(response.data.lyric)
+                    this.spotifyTrackUrl = response.data.external_urls
+                    this.spotifyArtistUrl = response.data.artist.external_urls
+                } else {
+                    console.error('Error search Spotify else:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error search Spotify:', err.message);
+            }
+        },
+
         async searchSpotify(keyword, type) {
             try {
                 console.log(`Searching spotify with keyword <${keyword}> with type <${type}>`)
@@ -208,11 +260,6 @@ export default {
             }
         }
     },
-    created() {
-        this.fetchTrackById();
-        this.fetchRecommendedArtists();
-        this.fetchRecommendedTracks()
-    },
     computed: {
         containerStyle() {
             if (!this.track) return {};
@@ -227,7 +274,19 @@ export default {
 </script>
 
 <style>
+.img-container {
+    position: relative;
+    padding-bottom: 100%; /* 创建一个正方形容器 */
+}
 
+.img-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .track-info {
     max-width: 50%; /* 可根据需要调整 */
 }

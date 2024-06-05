@@ -18,7 +18,7 @@
     </div>
 
 
-    <div class="row bg-light pb-3 d-flex justify-content-center">
+    <div class="row bg-light pb-3 d-flex justify-content-center px-5">
         <div class="col-md-12">
           <!-- Carousel Section -->
             <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-      <div class="row mx-4 mt-5">
+      <div class="row mx-4 mt-5 px-5">
           <h2 class="fw-medium fs-1 pt-2 w-100">Why Use Our Website?</h2>
           <div class="col-12 col-md-6 col-xl-3">
               <div class="mt-3">
