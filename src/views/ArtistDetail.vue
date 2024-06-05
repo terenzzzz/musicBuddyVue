@@ -2,7 +2,7 @@
     <div class="ArtistDetail my-5 container-fluid" >
         <div v-if="artist" class="page-container mx-auto ">
 
-            <div class="card shadow mt-5 p-2 rounded-bottom-0" >
+            <div class="card shadow mt-5 p-2 rounded-bottom-0 p-4" >
                 <div class="row">
                     <div class="col-6 col-md-3 col-xl-2 m-auto ">
                         <img :src="artist.avatar" class="img-fluid rounded-circle">
@@ -47,7 +47,7 @@
             <div class="mt-5">
                 <h3>Similar Artists</h3>
                 <div class="horizontal-scroll">
-                    <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
+                    <div class="col-3 col-md-2  mx-2" v-for="artist in similarArtist" :key="artist.id">
                         <ArtistCard :artist="artist"></ArtistCard>
                     </div>
                 </div>

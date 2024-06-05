@@ -109,7 +109,7 @@
                 <div class="row my-3">
                     <h3>Recommended Tracks for「{{track.name}}」</h3>
                     <div class="horizontal-scroll">
-                        <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
+                        <div class="col-3 col-md-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
                             <TrackCard :track="track"></TrackCard>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                 <div class="row my-3">
                     <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
                     <div class="horizontal-scroll">
-                        <div class="col-4 col-md-3 col-xl-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
+                        <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
                             <ArtistCard :artist="artist"></ArtistCard>
                         </div>
                     </div>

@@ -24,7 +24,7 @@
             <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
             <p class="text-center mb-2">Take a look at some of the Tracks on our platform.</p>
             <div class="horizontal-scroll">
-                <div class="col-6 col-md-3 col-xl-2 mx-2" v-for="track in tracks" :key="track.id">
+                <div class="col-3 col-md-2 mx-2" v-for="track in tracks" :key="track.id">
                     <TrackCard :track="track"></TrackCard>
                 </div>
             </div>
