@@ -29,15 +29,11 @@
             <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('tracks')">
                 <div class="row" >
                     <h3>Tracks Result</h3>
-                    <div class="alert text-center alert-secondary" role="alert">
-                        The Result Below is Provided by MusicBuddy
-                    </div>
+                    <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                     <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
-                    <div class="alert text-center alert-secondary mt-2" role="alert">
-                        The Result Below is Provided by Spotify
-                    </div>
+                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
                     <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
@@ -75,9 +71,10 @@ import {getRandomTrack} from "@/api/tracks";
 import TrackCard from "@/components/TrackCard.vue";
 import {search} from "@/api/search";
 import ArtistCard from "@/components/ArtistCard.vue";
+import AlertComponents from "@/components/AlertComponents.vue";
 
 export default {
-    components: {ArtistCard, TrackCard},
+    components: {AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
             keyword: "",

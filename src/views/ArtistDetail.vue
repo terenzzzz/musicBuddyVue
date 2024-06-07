@@ -1,8 +1,6 @@
 <template>
     <div class="ArtistDetail" >
-        <div class="alert text-center alert-secondary" role="alert">
-            {{ isValidMongoId(this.artistId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify' }}
-        </div>
+        <AlertComponents :title="isValidMongoId(this.artistId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
         <div v-if="artist" class="page-container mx-auto my-5">
 
             <div class="card shadow mt-5 p-2 rounded-bottom-0 p-4" >
@@ -50,9 +48,7 @@
             <div class="mt-5">
                 <h3>Similar Artists</h3>
                 <div v-if="similarArtist.length > 0">
-                    <div class="alert text-center alert-secondary" role="alert">
-                        The Result Below is Provided by MusicBuddy
-                    </div>
+                    <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                     <div class="horizontal-scroll">
                         <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
                             <ArtistCard :artist="artist"></ArtistCard>
@@ -60,9 +56,7 @@
                     </div>
                 </div>
                 <div v-if="spotifySimilarArtist.length > 0">
-                    <div class="alert text-center alert-secondary" role="alert">
-                        The Result Below is Provided by Spotify
-                    </div>
+                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
                     <div class="horizontal-scroll">
                         <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
                             <ArtistCard :artist="artist"></ArtistCard>
@@ -77,9 +71,7 @@
                 <h3>Top Tracks</h3>
                 <div v-if="tracks.length > 0">
                     <div class="row">
-                        <div class="alert text-center alert-secondary" role="alert">
-                            The Result Below is Provided by MusicBuddy
-                        </div>
+                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                         <div class="col-3 col-md-2" v-for="track in tracks" :key="track.id">
                             <TrackCard :track="track"></TrackCard>
                         </div>
@@ -98,9 +90,10 @@ import {getArtist, getSimilarArtists} from "@/api/artists";
 import {getTracksByArtist} from "@/api/tracks";
 import {getArtistRelatedArtists, getSpotifyArtistById} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
+import AlertComponents from "@/components/AlertComponents.vue";
 
 export default {
-    components: {ArtistCard, TrackCard},
+    components: {AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
             artistId: this.$route.params.id,

@@ -1,8 +1,6 @@
 <template>
     <div class="TrackDetail" >
-        <div class="alert text-center alert-secondary" role="alert">
-            {{ isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify' }}
-        </div>
+        <AlertComponents :title="isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
         <div v-if="track" class="mt-5 w-75 mx-auto">
             <div><SpotifyFrame :uri="spotifyUri"></SpotifyFrame></div>
 
@@ -108,17 +106,40 @@
             <div >
                 <div class="row my-3">
                     <h3>Recommended Tracks for「{{track.name}}」</h3>
-                    <div class="horizontal-scroll">
-                        <div class="col-3 col-md-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
-                            <TrackCard :track="track"></TrackCard>
+                    <div v-if="recommendedTracks.length > 0">
+                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                        <div class="horizontal-scroll">
+                            <div class="col-3 col-md-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
+                                <TrackCard :track="track"></TrackCard>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="spotifyRecommendedTracks.length > 0">
+                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                        <div class="horizontal-scroll">
+                            <div class="col-3 col-md-2 mx-2" v-for="track in spotifyRecommendedTracks" :key="track.id">
+                                <TrackCard :track="track"></TrackCard>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="row my-3">
                     <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
-                    <div class="horizontal-scroll">
-                        <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
-                            <ArtistCard :artist="artist"></ArtistCard>
+                    <div v-if="recommendedArtists.length > 0">
+                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                        <div class="horizontal-scroll">
+                            <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
+                                <ArtistCard :artist="artist"></ArtistCard>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="spotifySimilarArtist.length > 0">
+                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                        <div class="horizontal-scroll">
+                            <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
+                                <ArtistCard :artist="artist"></ArtistCard>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,16 +157,19 @@ import ArtistCard from "@/components/ArtistCard.vue";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {getSpotifyTrackById, search} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
+import AlertComponents from "@/components/AlertComponents.vue";
 
 export default {
-    components: {SpotifyFrame, ArtistCard, TrackCard},
+    components: {AlertComponents, SpotifyFrame, ArtistCard, TrackCard},
     data() {
         return {
             trackId: this.$route.params.id,
             track: null,
             formattedLyrics: [],
             recommendedTracks:[],
+            spotifyRecommendedTracks:[],
             recommendedArtists:[],
+            spotifySimilarArtist:[],
             spotifyUri: "",
             spotifyTrackUrl: "",
             spotifyArtistUrl: "",
