@@ -105,7 +105,7 @@
             </div>
 
     <!--Recommandation-->
-            <div>
+            <div >
                 <div class="row my-3">
                     <h3>Recommended Tracks for「{{track.name}}」</h3>
                     <div class="horizontal-scroll">

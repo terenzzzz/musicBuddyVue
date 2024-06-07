@@ -41,4 +41,20 @@ export const getSpotifyTrackById = (id) => {
     });
 };
 
+export const getSpotifyArtistById = (id) => {
+    return requestSpotify({
+        url: `/api/getSpotifyArtistById`,
+        method: 'get',
+        params: { id }
+    });
+};
+
+export const getArtistRelatedArtists = (id) => {
+    return requestSpotify({
+        url: `/api/getArtistRelatedArtists`,
+        method: 'get',
+        params: { id }
+    });
+};
+
 

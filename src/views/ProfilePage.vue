@@ -67,7 +67,7 @@
                                     <a href="#" class="text-muted">All</a>
                                 </div>
                                 <div v-for="(track, index) in topTracks.slice(0, 5)" :key="track.id">
-                                    <router-link :to="`/track/${track.id}`" :class="isBorder? 'card':''">
+                                    <router-link :to="`/track/${track.id}`" >
                                         <div class="row mt-2">
                                             <div class="col-2 d-flex justify-content-center align-items-center p-0">Top {{ index+1 }}</div>
                                             <div class="col-3">
@@ -96,11 +96,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-4" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
-                                    <div class="text-center">
-                                        <img v-if="artist.images" :src="artist.images[0].url" class="img-fluid rounded-circle">
-                                        <div><strong>{{artist.name}}</strong></div>
-                                        <div class="rank">Top {{ index + 1 }}</div>
-                                    </div>
+                                    <router-link :to="`/artist/${artist.id}`" >
+                                        <div class="text-center">
+                                            <img v-if="artist.images" :src="artist.images[0].url" class="img-fluid rounded-circle">
+                                            <div><strong>{{artist.name}}</strong></div>
+                                            <div class="rank">Top {{ index + 1 }}</div>
+                                        </div>
+                                    </router-link>
                                 </div>
                             </div>
                         </div>

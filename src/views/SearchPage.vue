@@ -29,6 +29,15 @@
             <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('tracks')">
                 <div class="row" >
                     <h3>Tracks Result</h3>
+                    <div class="alert text-center alert-secondary" role="alert">
+                        The Result Below is Provided by MusicBuddy
+                    </div>
+                    <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
+                        <TrackCard :track="track"></TrackCard>
+                    </div>
+                    <div class="alert text-center alert-secondary mt-2" role="alert">
+                        The Result Below is Provided by Spotify
+                    </div>
                     <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
@@ -75,7 +84,9 @@ export default {
             selectedTypes: ['tracks'],
             hasSelection: true,
             trackResult: [],
+            spotifyTrackResult: [],
             artistResult: [],
+            spotifyArtistResult: [],
             lyricsResult: [],
         };
     },
