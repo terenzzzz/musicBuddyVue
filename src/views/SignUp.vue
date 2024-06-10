@@ -89,7 +89,7 @@
                                         </button>
 
                                         <div class="text-center align-content-center fw-bolder mt-3">
-                                            <p>Already have an account? <a href="/login" class="hover-link text-decoration-none">Login</a></p>
+                                            <p>Already have an account? <router-link to="/login">Log In</router-link></p>
                                         </div>
                                     </div>
                                 </form>
