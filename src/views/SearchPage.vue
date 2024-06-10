@@ -29,23 +29,38 @@
             <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('tracks')">
                 <div class="row" >
                     <h3>Tracks Result</h3>
-                    <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                    <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
+                    <div v-if="trackResult.length > 0" class="row">
+                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                        <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
+                            <TrackCard :track="track"></TrackCard>
+                        </div>
                     </div>
-                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                    <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
+
+                    <div v-if="spotifyTrackResult.length > 0" class="row">
+                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                        <div class="col-6 col-md-3 col-xl-2" v-for="track in spotifyTrackResult" :key="track.id">
+                            <TrackCard :track="track"></TrackCard>
+                        </div>
                     </div>
+
                 </div>
                 <p v-if="trackResult.length <= 0" class="text-center">No Result For the Search</p>
             </div>
 
             <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('artists')">
-                <div class="row " >
+                <div class="row" >
                     <h3>Artists Result</h3>
-                    <div class="col-6 col-md-3 col-xl-2" v-for="artist in artistResult" :key="artist.id">
-                        <ArtistCard :artist="artist"></ArtistCard>
+                    <div v-if="artistResult.length > 0" class="row">
+                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                        <div class="col-6 col-md-3 col-xl-2" v-for="artist in artistResult" :key="artist.id">
+                            <ArtistCard :artist="artist"></ArtistCard>
+                        </div>
+                    </div>
+                    <div v-if="spotifyArtistResult.length > 0" class="row">
+                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                        <div class="col-6 col-md-3 col-xl-2" v-for="artist in spotifyArtistResult" :key="artist.id">
+                            <ArtistCard :artist="artist"></ArtistCard>
+                        </div>
                     </div>
                     <p v-if="artistResult.length<=0" class="text-center">No Result For the Search</p>
                 </div>

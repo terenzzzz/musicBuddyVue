@@ -49,7 +49,7 @@
                   <div class="row">
                       <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
                       <div class="col-9 d-flex align-items-center justify-content-center">
-                          <h3 class="m-0">Listen History Analysis</h3>
+                          <h3 class="m-0">Analysis Report</h3>
                       </div>
                   </div>
 
