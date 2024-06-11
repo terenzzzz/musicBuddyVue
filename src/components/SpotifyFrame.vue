@@ -24,16 +24,28 @@ export default {
         }
     },
     mounted() {
-        window.onSpotifyIframeApiReady = (IFrameAPI) => {
-            this.IFrameAPI = IFrameAPI;
-            this.createController();
-        };
+        this.initializeSpotifyAPI();
     },
     methods: {
+        initializeSpotifyAPI() {
+            if (window.onSpotifyIframeApiReady) {
+                // Spotify API might already be ready
+                window.onSpotifyIframeApiReady = (IFrameAPI) => {
+                    this.IFrameAPI = IFrameAPI;
+                    this.createController();
+                };
+            } else {
+                // Wait for the Spotify API to load
+                window.onSpotifyIframeApiReady = (IFrameAPI) => {
+                    this.IFrameAPI = IFrameAPI;
+                    this.createController();
+                };
+            }
+        },
         createController() {
             this.$nextTick(() => {
                 const element = document.getElementById('embed-iframe');
-                if (!element) return;
+                if (!element || !this.IFrameAPI) return;
 
                 const options = {
                     width: '100%',

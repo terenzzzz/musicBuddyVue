@@ -1,9 +1,8 @@
 <template>
     <div class="TrackDetail" >
         <AlertComponents :title="isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
-        <div v-if="track" class="mt-5 w-75 mx-auto">
-            <div><SpotifyFrame :uri="spotifyUri"></SpotifyFrame></div>
-
+        <div class="mt-5 w-75 mx-auto"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
+        <div v-if="track" class="w-75 mx-auto">
 <!--        Track Basic Info-->
             <div class="card track-detail-container shadow rounded-bottom-0 p-3 p-md-5" :style="containerStyle">
                 <div class="row" >
@@ -155,7 +154,7 @@ import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
-import {getSpotifyTrackById, search} from "@/api/spotify";
+import {getSpotifyTrackById, searchSpotify} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 
@@ -220,7 +219,7 @@ export default {
 
         async searchSpotify(keyword, type) {
             try {
-                const response = await search(keyword, type);
+                const response = await searchSpotify(keyword, type);
                 if (response.status === 200) {
                     this.spotifyUri = response.data.uri;
                     this.spotifyTrackUrl = response.data.external_urls.spotify
