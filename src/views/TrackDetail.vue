@@ -220,10 +220,11 @@ export default {
 
         async searchSpotify(keyword, type) {
             try {
-                console.log(`Searching spotify with keyword <${keyword}> with type <${type}>`)
                 const response = await search(keyword, type);
                 if (response.status === 200) {
                     this.spotifyUri = response.data.uri;
+                    this.spotifyTrackUrl = response.data.external_urls.spotify
+                    this.spotifyArtistUrl = response.data.artist[0].external_urls.spotify
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }

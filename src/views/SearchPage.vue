@@ -128,7 +128,6 @@ export default {
         },
         async fetchSearchResult() {
             if (!this.atLeastOneSelected) {
-                // 没有任何选项被选中，不发送请求
                 return alert("Please At Least Select One Type");
             }
             try {
@@ -137,7 +136,6 @@ export default {
                     this.trackResult = response.data.data.tracks;
                     this.artistResult = response.data.data.artists;
                     this.lyricsResult = response.data.data.lyrics;
-                    console.log('Search result:', response.data.data);
                 } else {
                     console.error('Error fetching tracks:', response.data.message);
                 }
