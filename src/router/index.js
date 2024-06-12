@@ -57,8 +57,6 @@ const routes = [
         path: '/playlist/:type',
         name: 'Playlist',
         component: PlayList,
-
-
     },
 ]
 

@@ -13,6 +13,12 @@ export const getRecentlyPlayed = params => requestSpotify({
     params
 });
 
+export const getSavedTracks = params => requestSpotify({
+    url: `/api/getSavedTracks`,
+    method: 'get',
+    params
+});
+
 export const getTopTracks = params => requestSpotify({
     url: `/api/getTopTracks`,
     method: 'get',

@@ -248,6 +248,7 @@ export default {
             }
         },
         formatLyrics(lyrics) {
+            lyrics = lyrics.lyric? lyrics.lyric : lyrics
             return lyrics.split('\n')
                 .map(line => {
                     const match = line.match(/\[([0-9:.]+)\](.*)/);

@@ -61,6 +61,23 @@
                     </div>
                 </div>
             </div>
+<!--            Saved Tracks-->
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>Saved Tracks</h5>
+                            <router-link :to="{ name: 'Playlist',
+                            params: { type:playlistTypes.playlistTypeToString(playlistTypes.SAVED_TRACKS) } }">
+                                All
+                            </router-link>
+                        </div>
+                        <div v-for="track in savedTracks.slice(0, 5)" :key="track.id">
+                            <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!--                        Top Tracks-->
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
@@ -130,7 +147,7 @@
 <script>
 import {getUser, updateSpotifyRefreshToken} from '@/api/users';
 import API_URL from "@/utils/connection";
-import {getRecentlyPlayed, getTopTracks, getTopArtists} from "@/api/spotify";
+import {getRecentlyPlayed, getTopTracks, getTopArtists, getSavedTracks} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 // import HeatMap from "@/components/HeatMap.vue";
 import playlistTypes from "@/enum/playlistTypes";
@@ -147,6 +164,7 @@ export default {
             user: null,
             recentlyPlay: [],
             topTracks: [],
+            savedTracks: [],
             topArtists: [],
             isSpotifyConnected: false
         };
@@ -169,6 +187,7 @@ export default {
             // Check if Spotify is connected and token is valid
             if (this.isSpotifyConnected && localStorage.getItem('spotify_access_token')) {
                 await this.fetchRecentlyPlay();
+                await this.fetchSavedTracks();
                 await this.fetchTopTracks();
                 await this.fetchTopArtists();
             }
@@ -177,6 +196,14 @@ export default {
             try {
                 const response = await getRecentlyPlayed();
                 this.recentlyPlay = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+        async fetchSavedTracks() {
+            try {
+                const response = await getSavedTracks();
+                this.savedTracks = response.data;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

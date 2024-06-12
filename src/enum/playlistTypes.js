@@ -1,9 +1,11 @@
 const RECENTLY_PLAYED = "Recently Played";
+const SAVED_TRACKS = "Saved Tracks";
 const TOP_TRACKS = "Top Tracks";
 const TOP_ARTISTS = "Top Artists";
 
 const playlistTypes = (RECENTLY_PLAYED) => ({
     RECENTLY_PLAYED,
+    SAVED_TRACKS,
     TOP_TRACKS,
     TOP_ARTISTS,
 
@@ -11,6 +13,8 @@ const playlistTypes = (RECENTLY_PLAYED) => ({
         switch (dataType) {
             case RECENTLY_PLAYED:
                 return "recentlyPlayed";
+            case SAVED_TRACKS:
+                return "savedTracks";
             case TOP_TRACKS:
                 return "topTracks";
             case TOP_ARTISTS:
@@ -26,6 +30,7 @@ const playlistTypes = (RECENTLY_PLAYED) => ({
             return acc;
         }, {
             [this.playlistTypeToString(RECENTLY_PLAYED)]: RECENTLY_PLAYED,
+            [this.playlistTypeToString(SAVED_TRACKS)]: SAVED_TRACKS,
             [this.playlistTypeToString(TOP_TRACKS)]: TOP_TRACKS,
             [this.playlistTypeToString(TOP_ARTISTS)]: TOP_ARTISTS,
         });

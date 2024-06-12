@@ -35,7 +35,7 @@
 <script>
 
 
-import {getRecentlyPlayed, getTopArtists, getTopTracks} from "@/api/spotify";
+import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/api/spotify";
 
 import TrackCard from "@/components/TrackCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
@@ -60,6 +60,8 @@ export default {
             switch (this.title) {
                 case playlistTypes.RECENTLY_PLAYED: await this.fetchRecentlyPlay()
                     break
+                case playlistTypes.SAVED_TRACKS: await this.fetchSavedTracks()
+                    break
                 case playlistTypes.TOP_TRACKS: await this.fetchTopTracks()
                     break
                 case playlistTypes.TOP_ARTISTS: await this.fetchTopArtists()
@@ -69,6 +71,15 @@ export default {
                     console.error('Unknown PlayList Type')
             }
 
+        },
+
+        async fetchSavedTracks() {
+            try {
+                const response = await getSavedTracks();
+                this.tracks = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
         },
 
         async fetchRecentlyPlay() {
