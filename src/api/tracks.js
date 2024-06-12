@@ -26,4 +26,10 @@ export const getTracksByTag = tag => request({
     params: {tag: tag}
 })
 
+export const getTracksByTags = tags => request({
+    url: `/app/getTracksByTags`,
+    method: 'get',
+    params: {tags: tags}
+})
+
 

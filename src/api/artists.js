@@ -20,3 +20,9 @@ export const getSimilarArtists = artist => request({
     params: {id: artist}
 })
 
+export const getArtistsByTags = tags => request({
+    url: `/app/getArtistsByTags`,
+    method: 'get',
+    params: {tags: tags}
+})
+

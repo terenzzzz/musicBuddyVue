@@ -14,4 +14,10 @@ export const getTagById = tag => request({
     params:{tag:tag}
 })
 
+export const searchTags = keyword => request({
+    url: `/app/searchTags`,
+    method: 'get',
+    params:{keyword:keyword}
+})
+
 
