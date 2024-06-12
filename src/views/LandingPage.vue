@@ -114,7 +114,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .posters-background {
   position: relative;
   width: 100%;

@@ -13,6 +13,7 @@ import TagsPage from "@/views/TagsPage.vue";
 import TrackDetail from "@/views/TrackDetail.vue";
 import axios from "axios";
 import ArtistDetail from "@/views/ArtistDetail.vue";
+import PlayList from "@/views/PlayList.vue";
 
 // 规则数组
 const routes = [
@@ -51,6 +52,13 @@ const routes = [
     {
         path: '/artist/:id',
         component: ArtistDetail
+    },
+    {
+        path: '/playlist/:type',
+        name: 'Playlist',
+        component: PlayList,
+
+
     },
 ]
 
