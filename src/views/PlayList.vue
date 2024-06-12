@@ -5,6 +5,10 @@
                 <div class="my-auto text-center">
                     <h2 class="fw-bold display-5">{{ title }}</h2>
                 </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#receiptModel" >Generate Receipt</button>
+                </div>
             </div>
         </div>
 
@@ -28,8 +32,15 @@
             </div>
         </div>
 
+<!--        ReceiptModel-->
+        <div class="modal fade" id="receiptModel" tabindex="-1" aria-labelledby="receiptModel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <ReceiptPaper :tracks="tracks"></ReceiptPaper>
+                </div>
+            </div>
+        </div>
     </div>
-
 </template>
 
 <script>
@@ -43,15 +54,17 @@ import playlistTypes from "@/enum/playlistTypes";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getTracksByTag} from "@/api/tracks";
 import {getTagById} from "@/api/tags";
+import ReceiptPaper from "@/components/ReceiptPaper.vue";
 
 export default {
-    components: {ArtistCard, AlertComponents, TrackCard},
+    components: {ReceiptPaper, ArtistCard, AlertComponents, TrackCard},
 
     data() {
         return {
             title:  playlistTypes.stringToPlaylistType(this.$route.params.type),
             tracks: [],
-            artists:[]
+            artists:[],
+            showModal: false
         };
     },
     created() {

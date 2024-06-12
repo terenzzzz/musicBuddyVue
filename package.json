@@ -14,6 +14,7 @@
     "bootstrap-icons": "^1.11.3",
     "cal-heatmap": "^4.2.4",
     "core-js": "^3.8.3",
+    "html2canvas": "^1.4.1",
     "jquery": "^3.7.0",
     "particles.js": "^2.0.0",
     "request": "^2.88.2",

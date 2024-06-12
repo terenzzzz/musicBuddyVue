@@ -17,3 +17,17 @@ export function millisecondsToMMss(milliseconds) {
     // Return formatted string
     return `${minutes}:${formattedSeconds}`;
 }
+
+// 输出: "Wednesday, May 1, 2024"
+export function getCurrentFormattedDate() {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const currentDate = new Date();
+    const dayOfWeek = daysOfWeek[currentDate.getDay()];
+    const month = months[currentDate.getMonth()];
+    const date = currentDate.getDate();
+    const year = currentDate.getFullYear();
+
+    return `${dayOfWeek}, ${month} ${date}, ${year}`;
+}

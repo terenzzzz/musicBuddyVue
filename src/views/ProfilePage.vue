@@ -97,7 +97,7 @@
             </div>
 
             <!--                        Top Artists-->
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="most-artist card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Top Artists</h5>
