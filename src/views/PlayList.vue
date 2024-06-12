@@ -26,7 +26,7 @@
 <script>
 
 
-import {getRecentlyPlayed} from "@/api/spotify";
+import {getRecentlyPlayed, getTopArtists, getTopTracks} from "@/api/spotify";
 
 import TrackCard from "@/components/TrackCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
@@ -44,13 +44,42 @@ export default {
     created() {
         console.log(this.$route.params.type)
         console.log(playlistTypes.stringToPlaylistType("recentlyPlayed"));
-        this.fetchRecentlyPlay()
+        this.fetchTracks()
     },
     methods:{
+        async fetchTracks(){
+            switch (this.title) {
+                case playlistTypes.RECENTLY_PLAYED: await this.fetchRecentlyPlay()
+                    break
+                case playlistTypes.TOP_TRACKS: await this.fetchTopTracks()
+                    break
+                default:
+                    // 处理未知情况
+                    console.error('Unknown PlayList Type')
+            }
+
+        },
+
         async fetchRecentlyPlay() {
             try {
                 const response = await getRecentlyPlayed();
                 this.tracks = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+        async fetchTopTracks() {
+            try {
+                const response = await getTopTracks();
+                this.tracks = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+        async fetchTopArtists() {
+            try {
+                const response = await getTopArtists();
+                this.topArtists = response.data;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

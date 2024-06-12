@@ -68,7 +68,10 @@
                 <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Top Tracks</h5>
-                        <a href="#" class="text-muted">All</a>
+                        <router-link :to="{ name: 'Playlist',
+                            params: { type:playlistTypes.playlistTypeToString(playlistTypes.TOP_TRACKS) } }">
+                            All
+                        </router-link>
                     </div>
                     <div v-for="(track, index) in topTracks.slice(0, 5)" :key="track.id">
                         <router-link :to="`/track/${track.id}`" >
