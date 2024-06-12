@@ -1,9 +1,11 @@
 const RECENTLY_PLAYED = "Recently Played";
 const TOP_TRACKS = "Top Tracks";
+const TOP_ARTISTS = "Top Artists";
 
 const playlistTypes = (RECENTLY_PLAYED) => ({
     RECENTLY_PLAYED,
     TOP_TRACKS,
+    TOP_ARTISTS,
 
     playlistTypeToString: function (dataType) {
         switch (dataType) {
@@ -11,6 +13,8 @@ const playlistTypes = (RECENTLY_PLAYED) => ({
                 return "recentlyPlayed";
             case TOP_TRACKS:
                 return "topTracks";
+            case TOP_ARTISTS:
+                return "topArtists";
             default:
                 return "Unknown";
         }
@@ -22,7 +26,8 @@ const playlistTypes = (RECENTLY_PLAYED) => ({
             return acc;
         }, {
             [this.playlistTypeToString(RECENTLY_PLAYED)]: RECENTLY_PLAYED,
-            [this.playlistTypeToString(TOP_TRACKS)]: TOP_TRACKS
+            [this.playlistTypeToString(TOP_TRACKS)]: TOP_TRACKS,
+            [this.playlistTypeToString(TOP_ARTISTS)]: TOP_ARTISTS,
         });
 
         return reverseMap[str] || "Unknown";

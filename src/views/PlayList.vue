@@ -11,9 +11,18 @@
         <div class="mt-5 px-5">
             <div v-if="tracks.length > 0">
                 <div class="row">
-                    <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
                     <div class="col-3 col-md-2" v-for="track in tracks" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="artists.length > 0">
+                <div class="row">
+                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                    <div class="col-3 col-md-2 " v-for="artist in artists" :key="artist.id">
+                        <ArtistCard :artist="artist"></ArtistCard>
                     </div>
                 </div>
             </div>
@@ -31,19 +40,19 @@ import {getRecentlyPlayed, getTopArtists, getTopTracks} from "@/api/spotify";
 import TrackCard from "@/components/TrackCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
 import playlistTypes from "@/enum/playlistTypes";
+import ArtistCard from "@/components/ArtistCard.vue";
 
 export default {
-    components: {AlertComponents, TrackCard},
+    components: {ArtistCard, AlertComponents, TrackCard},
 
     data() {
         return {
             title: playlistTypes.stringToPlaylistType(this.$route.params.type),
-            tracks: []
+            tracks: [],
+            artists:[]
         };
     },
     created() {
-        console.log(this.$route.params.type)
-        console.log(playlistTypes.stringToPlaylistType("recentlyPlayed"));
         this.fetchTracks()
     },
     methods:{
@@ -52,6 +61,8 @@ export default {
                 case playlistTypes.RECENTLY_PLAYED: await this.fetchRecentlyPlay()
                     break
                 case playlistTypes.TOP_TRACKS: await this.fetchTopTracks()
+                    break
+                case playlistTypes.TOP_ARTISTS: await this.fetchTopArtists()
                     break
                 default:
                     // 处理未知情况
@@ -79,7 +90,7 @@ export default {
         async fetchTopArtists() {
             try {
                 const response = await getTopArtists();
-                this.topArtists = response.data;
+                this.artists = response.data;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

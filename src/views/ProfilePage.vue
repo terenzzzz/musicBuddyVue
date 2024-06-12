@@ -1,8 +1,7 @@
 <template>
     <div class="profile">
-        <div class="w-75 mx-auto">
             <div v-if="user" class="my-3">
-                <div class="row d-flex justify-content-end">
+                <div class="row d-flex justify-content-end container-fluid">
                     <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-end">
                         <button :class="['mb-2', 'btn', isSpotifyConnected ? 'btn-success text-white' : 'btn-outline-secondary']" @click="loginWithSpotify">
                             <i class="fa-brands fa-spotify"></i> {{ isSpotifyConnected ? 'Connected to Spotify' : 'Connect to Spotify' }}
@@ -10,7 +9,8 @@
                     </div>
                 </div>
 
-                <div class="mx-auto my-3">
+
+                <div class="w-75 mx-auto my-3">
                     <div class="row d-flex justify-content-center my-5">
                         <div class="col-3 col-md-2 col-xl-1 d-flex flex-column justify-content-center text-center">
                             <img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid">
@@ -40,13 +40,12 @@
                             </div>
                         </div>
                     </div>
-            </div>
         </div>
     </div>
 
         <!--                    Recently Played-->
         <div class="row g-3 my-2 px-5">
-            <div class="col-12 col-sm-6 col-xl-4">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -64,7 +63,7 @@
             </div>
 
             <!--                        Top Tracks-->
-            <div class="col-12 col-sm-6 col-xl-4">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Top Tracks</h5>
@@ -73,39 +72,28 @@
                             All
                         </router-link>
                     </div>
-                    <div v-for="(track, index) in topTracks.slice(0, 5)" :key="track.id">
-                        <router-link :to="`/track/${track.id}`" >
-                            <div class="row mt-2">
-                                <div class="col-2 d-flex justify-content-center align-items-center p-0">Top {{ index+1 }}</div>
-                                <div class="col-3">
-                                    <img v-if="track.album.images" :src="track.album.images[0].url" class="img-fluid">
-                                </div>
-                                <div class="col-6 d-flex flex-column align-items-center justify-content-center">
-                                    <div><strong>{{track.name}}</strong></div>
-                                    <div v-for="artist in track.artists" :key="artist.id">
-                                        <span>{{ artist.name }} </span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </router-link>
+                    <div v-for="track in topTracks.slice(0, 5)" :key="track.id">
+                        <TrackCardHorizontal :track="track"></TrackCardHorizontal>
                     </div>
 
                 </div>
             </div>
 
             <!--                        Top Artists-->
-            <div class="col-12 col-md-12 col-lg-6 col-xl-4">
+            <div class="col-12 col-lg-4">
                 <div class="most-artist card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Top Artists</h5>
-                        <a href="#" class="text-white">All</a>
+                        <router-link :to="{ name: 'Playlist',
+                            params: { type:playlistTypes.playlistTypeToString(playlistTypes.TOP_ARTISTS) } }">
+                            All
+                        </router-link>
                     </div>
                     <div class="row">
-                        <div class="col-4" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
-                            <router-link :to="`/artist/${artist.id}`" >
+                        <div class="col-4 my-2" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
+                            <router-link :to="`/artist/${artist._id}`" >
                                 <div class="text-center">
-                                    <img v-if="artist.images" :src="artist.images[0].url" class="img-fluid rounded-circle">
+                                    <img v-if="artist.avatar" :src="artist.avatar" class="img-fluid rounded-circle">
                                     <div><strong>{{artist.name}}</strong></div>
                                     <div class="rank">Top {{ index + 1 }}</div>
                                 </div>
