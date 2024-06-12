@@ -1,7 +1,7 @@
 <template>
     <div class="Search">
 
-        <div class="w-75 mx-auto ">
+        <div class="container-fluid ">
             <div class="row d-flex justify-content-center mt-5">
                 <div class="col-12 col-md-6 d-flex">
                     <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"

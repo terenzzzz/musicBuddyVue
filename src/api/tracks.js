@@ -20,3 +20,10 @@ export const getTracksByArtist = artist => request({
     params: {artist: artist}
 })
 
+export const getTracksByTag = tag => request({
+    url: `/app/getTracksByTag`,
+    method: 'get',
+    params: {tag: tag}
+})
+
+

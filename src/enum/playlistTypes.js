@@ -35,7 +35,7 @@ const playlistTypes = (RECENTLY_PLAYED) => ({
             [this.playlistTypeToString(TOP_ARTISTS)]: TOP_ARTISTS,
         });
 
-        return reverseMap[str] || "Unknown";
+        return reverseMap[str] || str;
     },
 });
 

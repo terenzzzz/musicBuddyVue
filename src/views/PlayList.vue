@@ -41,13 +41,15 @@ import TrackCard from "@/components/TrackCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
 import playlistTypes from "@/enum/playlistTypes";
 import ArtistCard from "@/components/ArtistCard.vue";
+import {getTracksByTag} from "@/api/tracks";
+import {getTagById} from "@/api/tags";
 
 export default {
     components: {ArtistCard, AlertComponents, TrackCard},
 
     data() {
         return {
-            title: playlistTypes.stringToPlaylistType(this.$route.params.type),
+            title:  playlistTypes.stringToPlaylistType(this.$route.params.type),
             tracks: [],
             artists:[]
         };
@@ -67,11 +69,30 @@ export default {
                 case playlistTypes.TOP_ARTISTS: await this.fetchTopArtists()
                     break
                 default:
-                    // 处理未知情况
-                    console.error('Unknown PlayList Type')
+                    await this.fetchTracksByTag(this.title)
+                    await this.fetchTagById(this.title)
             }
 
         },
+
+        async fetchTracksByTag(tag) {
+            try {
+                const response = await getTracksByTag(tag);
+                this.tracks = response.data.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+
+        async fetchTagById(tag) {
+            try {
+                const response = await getTagById(tag);
+                this.title = response.data.data.name.toUpperCase();
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+
 
         async fetchSavedTracks() {
             try {

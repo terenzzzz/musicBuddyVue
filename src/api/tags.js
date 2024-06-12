@@ -8,3 +8,10 @@ export const getAllTags = params => request({
     params
 })
 
+export const getTagById = tag => request({
+    url: `/app/getTagById`,
+    method: 'get',
+    params:{tag:tag}
+})
+
+
