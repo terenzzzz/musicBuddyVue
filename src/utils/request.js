@@ -1,6 +1,6 @@
 // 网络请求封装
 import axios from 'axios'
-import API_URL from "@/utils/connection";
+import {API_URL} from "@/utils/connection";
 
 // 创建一个axios实例
 const request = axios.create({

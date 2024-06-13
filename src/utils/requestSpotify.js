@@ -1,5 +1,5 @@
 import axios from 'axios'
-import API_URL from "@/utils/connection";
+import {API_URL} from "@/utils/connection";
 import { refreshToken } from "@/api/spotify";
 
 // 创建一个axios实例

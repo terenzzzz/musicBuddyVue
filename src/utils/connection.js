@@ -1,4 +1,3 @@
 
-const API_URL = 'http://localhost:6906'
-
-export default API_URL;
+export const API_URL = 'https://terenzzzz.cn:6907'
+export const SPOTIFY_AUTH_URL = `${API_URL}/api/spotifyLogin`

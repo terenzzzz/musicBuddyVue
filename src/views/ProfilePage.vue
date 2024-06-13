@@ -146,8 +146,8 @@
 
 <script>
 import {getUser, updateSpotifyRefreshToken} from '@/api/users';
-import API_URL from "@/utils/connection";
-import {getRecentlyPlayed, getTopTracks, getTopArtists, getSavedTracks} from "@/api/spotify";
+import {API_URL, SPOTIFY_AUTH_URL} from "@/utils/connection";
+import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 // import HeatMap from "@/components/HeatMap.vue";
 import playlistTypes from "@/enum/playlistTypes";
@@ -225,15 +225,14 @@ export default {
             }
         },
         getAvatarUrl(avatarPath) {
-            const baseUrl = API_URL;
-            return avatarPath ? baseUrl + avatarPath : 'https://api.example.com/images/default-avatar.png';
+            return avatarPath ? API_URL + '/' + avatarPath : 'https://api.example.com/images/default-avatar.png';
         },
         loginWithSpotify() {
             const storedAccessToken = localStorage.getItem('spotify_access_token');
             if (storedAccessToken) {
                 alert("Already Connected to Spotify")
             }else{
-                window.location.href = 'http://localhost:6906/api/spotifyLogin';
+                window.location.href = `${SPOTIFY_AUTH_URL}`;
             }
         },
 
