@@ -1,8 +1,8 @@
 <template>
     <div class="Tags">
         <div class="row">
-            <div class="col-md-3 col-lg-2 bg-secondary m-0 py-2 py-md-0 px-3 h-md-100 vh-md-100" >
-                <nav id="sidebarMenu" class="d-none d-md-block sidebar text-light text-center text-md-start">
+            <div class="col-12 col-md-3 col-lg-2 bg-secondary" >
+                <nav id="sidebarMenu" class="sidebar text-light text-center text-md-start">
                     <div class="pt-3 position-sticky">
                         <input type="search" class="form-control form-control-sm ds-input mb-2" id="search-input"
                                placeholder="Search Tags" v-model="keyword">
@@ -10,8 +10,8 @@
                             <button class="btn btn-sm btn-success w-50" @click="fetchTagsByKeyword">Search</button>
                         <hr>
 
-                        <ul class="nav flex-column">
-                            <li v-for="tag in tags" :key="tag.id" class="text-center"
+                        <ul class="nav flex-row flex-md-column">
+                            <li v-for="tag in tags" :key="tag.id" class="text-center mx-2"
                                 :class="selectedTags.includes(tag) ? 'bg-white text-secondary' : ''"
                                 @click="clickTag(tag)">{{ tag.name }}</li>
                         </ul>
@@ -20,7 +20,7 @@
                 </nav>
             </div>
 
-            <div class="col-md-9 col-lg-10 px-md-4 py-3 " >
+            <div class="col-12 col-md-9 col-lg-10 px-md-4 p-3 " >
                 <div class="d-flex flex-column">
                     <strong>Selected Tags:</strong>
                     <div class="d-flex flex-wrap">
@@ -32,7 +32,7 @@
                 <div v-if="tracks.length > 0" class="row mt-3">
                     <h3>Tracks Result</h3>
                     <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                    <div class="col-6 col-md-3 col-xl-2" v-for="track in tracks" :key="track.id">
+                    <div class="col-3 col-md-3 col-xl-2" v-for="track in tracks" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
                 </div>
@@ -42,10 +42,12 @@
                 <div v-if="artists.length > 0" class="row mt-3">
                     <h3>Artists Result</h3>
                     <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                    <div class="col-6 col-md-3 col-xl-2" v-for="artist in artists" :key="artist.id">
+                    <div class="col-3 col-md-3 col-xl-2" v-for="artist in artists" :key="artist.id">
                         <ArtistCard :artist="artist"></ArtistCard>
                     </div>
                 </div>
+
+                <EmptyPlaceholder v-if="tracks.length <= 0 && artists.length <= 0"></EmptyPlaceholder>
             </div>
         </div>
     </div>
@@ -57,10 +59,11 @@ import AlertComponents from "@/components/AlertComponents.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getTracksByTags} from "@/api/tracks";
 import {getArtistsByTags} from "@/api/artists";
+import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 
 
 export default {
-    components: {ArtistCard, AlertComponents, TrackCard},
+    components: {EmptyPlaceholder, ArtistCard, AlertComponents, TrackCard},
     data() {
         return {
             tags: [],
