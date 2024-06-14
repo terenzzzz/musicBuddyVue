@@ -7,7 +7,7 @@
                 </div>
                 <div class="text-center">
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#receiptModel" >Generate Receipt</button>
+                            data-bs-target="#receiptModel" v-if="showReceiptButton">Generate Receipt</button>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="modal fade" id="receiptModel" tabindex="-1" aria-labelledby="receiptModel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <ReceiptPaper :tracks="tracks"></ReceiptPaper>
+                    <ReceiptPaper :tracks="tracks" :title="title"></ReceiptPaper>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@ export default {
             title:  playlistTypes.stringToPlaylistType(this.$route.params.type),
             tracks: [],
             artists:[],
-            showModal: false
+            showReceiptButton: false
         };
     },
     created() {
@@ -74,10 +74,13 @@ export default {
         async fetchTracks(){
             switch (this.title) {
                 case playlistTypes.RECENTLY_PLAYED: await this.fetchRecentlyPlay()
+                    this.showReceiptButton = true
                     break
                 case playlistTypes.SAVED_TRACKS: await this.fetchSavedTracks()
+                    this.showReceiptButton = true
                     break
                 case playlistTypes.TOP_TRACKS: await this.fetchTopTracks()
+                    this.showReceiptButton = true
                     break
                 case playlistTypes.TOP_ARTISTS: await this.fetchTopArtists()
                     break

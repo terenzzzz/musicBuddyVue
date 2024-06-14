@@ -81,6 +81,7 @@ export default {
                 if (response.data.status === 200) {
                     localStorage.setItem('access_token', response.data.token);
                     localStorage.setItem('spotify_refresh_token', response.data.spotify_refresh_token);
+                    localStorage.setItem('name', response.data.name);
                     if (response.data.spotify_refresh_token){
                         try {
                             const refreshResponse = await refreshToken({refresh_token: response.data.spotify_refresh_token});

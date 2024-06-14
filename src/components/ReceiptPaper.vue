@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="text-center">RECEIPT</h3>
-                <p class="text-center">LAST MONTH</p>
+                <p class="text-center">{{ title }}</p>
             </div>
         </div>
         <div class="row ">
             <div class="col-md-12 ">
-                <p class="text-start">ORDER #0001 FOR TERENZ</p>
+                <p class="text-start">ORDER #0001 </p>
                 <p class="text-start">{{ getCurrentFormattedDate() }}</p>
             </div>
         </div>
@@ -33,8 +33,8 @@
         <hr>
         <div class="row">
             <div class="col-12">
-                <p>ITEM COUNT: 123213</p>
-                <p>TOTAL: 18</p>
+                <p>TIME COUNT: {{millisecondsToHHmmss(tracks.reduce((total, track) => total + track.duration, 0))}}</p>
+                <p>ITEM COUNT: {{ tracks.length }}</p>
             </div>
         </div>
         <hr>
@@ -42,8 +42,8 @@
         <div class="row">
             <div class="col-md-12">
                 <p>CARD #: **** **** **** 2024</p>
-                <p>AUTH CODE: 123421</p>
-                <p>CARDHOLDER: TERENZ</p>
+                <p>AUTH CODE: {{ user._id }}</p>
+                <p>CARDHOLDER: {{ user.name }}</p>
             </div>
         </div>
         <div class="row mt-5">
@@ -57,25 +57,35 @@
 </template>
 
 <script>
-import {getCurrentFormattedDate,millisecondsToMMss} from "@/utils/timeConverter";
+import {getCurrentFormattedDate, millisecondsToHHmmss, millisecondsToMMss} from "@/utils/timeConverter";
 import html2canvas from "html2canvas";
+import {getUser} from "@/api/users";
 
 export default {
     props:{
-      tracks:{
+        tracks:{
           type: Array,
           required: true
-      }
+        },
+        title:{
+            type: String,
+            required: true
+        },
     },
     components: {},
     data() {
         return {
-
+            user: null
         };
     },
+
+    created() {
+        this.fetchUser()
+    },
     methods: {
-        getCurrentFormattedDate,
         millisecondsToMMss,
+        getCurrentFormattedDate,
+        millisecondsToHHmmss,
         async downloadReceipt() {
             const element = document.getElementById('receipt');
             const canvas = await html2canvas(element);
@@ -84,7 +94,16 @@ export default {
             link.href = imgData;
             link.download = "receipt.png";
             link.click();
-        }
+        },
+
+        async fetchUser() {
+            try {
+                const response = await getUser(); // 传递适当的参数
+                this.user = response.data.data;
+            } catch (error) {
+                console.error('Failed to fetch user:', error);
+            }
+        },
     }
 }
 </script>
