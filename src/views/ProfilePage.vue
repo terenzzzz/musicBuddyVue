@@ -12,8 +12,8 @@
 
                 <div class="w-75 mx-auto my-3">
                     <div class="row d-flex justify-content-center my-5">
-                        <div class="col-3 col-md-2 col-xl-1 d-flex flex-column justify-content-center text-center">
-                            <img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid">
+                        <div class="col-4 col-md-3 col-xl-2 d-flex flex-column justify-content-center text-center">
+                            <div class="ratio ratio-1x1"><img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid object-fit-cover" ></div>
                             <strong>{{ user.name }}</strong>
                         </div>
                     </div>
@@ -263,3 +263,7 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+
+</style>
