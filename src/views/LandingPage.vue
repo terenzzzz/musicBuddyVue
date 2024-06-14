@@ -18,7 +18,7 @@
     </div>
 
 
-    <div class="row bg-light pb-3 d-flex justify-content-center px-5">
+    <div class="row bg-light pb-3 d-flex justify-content-center px-1 px-sm-3 px-md-5">
         <div class="col-md-12">
           <!-- Carousel Section -->
             <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
@@ -34,23 +34,19 @@
       <div class="row mx-4 mt-5 px-5">
           <h2 class="fw-medium fs-1 pt-2 w-100">Why Use Our Website?</h2>
           <div class="col-12 col-md-6 col-xl-3">
-              <div class="mt-3">
-                  <div class="row">
-                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
-                      <div class="col-9 d-flex align-items-center justify-content-center">
-                          <h3 class="m-0">Reliable Recommendation</h3>
-                      </div>
+              <div class="mt-3 row">
+                  <div class="col-3 mx-auto"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                  <div class="col-12 d-flex align-items-center justify-content-center">
+                      <h3 class="m-0">Reliable Recommendation</h3>
                   </div>
                   <p class="mt-2">Based on advanced algorithms and rich data, make sure you find the music you want every time you recommend it.</p>
               </div>
           </div>
           <div class="col-12 col-md-6 col-xl-3">
-              <div class="mt-3">
-                  <div class="row">
-                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
-                      <div class="col-9 d-flex align-items-center justify-content-center">
-                          <h3 class="m-0">Analysis Report</h3>
-                      </div>
+              <div class="mt-3 row">
+                  <div class="col-3 mx-auto"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                  <div class="col-12 d-flex align-items-center justify-content-center">
+                      <h3 class="m-0">Analysis Report</h3>
                   </div>
 
                   <p class="mt-2">Statistics and analysis of users listening to give you a clearer understanding of your own music behavior</p>
@@ -58,9 +54,9 @@
           </div>
           <div class="col-12 col-md-6 col-xl-3">
               <div class="mt-3">
-                  <div class="row">
-                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
-                      <div class="col-9 d-flex align-items-center justify-content-center">
+                  <div class="mt-3 row">
+                      <div class="col-3 mx-auto"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                      <div class="col-12 d-flex align-items-center justify-content-center">
                           <h3 class="m-0">Large Library and Playback</h3>
                       </div>
                   </div>
@@ -69,12 +65,10 @@
               </div>
           </div>
           <div class="col-12 col-md-6 col-xl-3">
-              <div class="mt-3">
-                  <div class="row">
-                      <div class="col-3 col-sm-2 col-lg-3"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
-                      <div class="col-9 d-flex align-items-center justify-content-center">
-                          <h3 class="m-0">Easy and User Friendly</h3>
-                      </div>
+              <div class="mt-3 row">
+                  <div class="col-3 mx-auto"><img src="../assets/images/musicBuddyVueLogo.png" class="img-fluid" ></div>
+                  <div class="col-12 d-flex align-items-center justify-content-center">
+                      <h3 class="m-0">Easy and User Friendly</h3>
                   </div>
 
                   <p class="mt-2">The design is simple and easy to operate, so that you can easily enjoy the wonderful experience of music.</p>

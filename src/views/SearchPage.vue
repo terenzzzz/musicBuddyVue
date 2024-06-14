@@ -1,7 +1,7 @@
 <template>
     <div class="Search">
 
-        <div class="container-fluid ">
+        <div class="px-1 px-sm-3 px-md-5">
             <div class="row d-flex justify-content-center mt-5">
                 <div class="col-12 col-md-6 d-flex">
                     <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
@@ -26,7 +26,7 @@
 
 
 
-            <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('tracks')">
+            <div class="p-3 my-3" v-if="selectedTypes.includes('tracks')">
                 <div class="row" >
                     <h3>Tracks Result</h3>
                     <div v-if="trackResult.length > 0" class="row">
@@ -47,7 +47,7 @@
                 <p v-if="trackResult.length <= 0" class="text-center">No Result For the Search</p>
             </div>
 
-            <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('artists')">
+            <div class="p-3 my-3" v-if="selectedTypes.includes('artists')">
                 <div class="row" >
                     <h3>Artists Result</h3>
                     <div v-if="artistResult.length > 0" class="row">
@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="card rounded-4 p-3 my-3" v-if="selectedTypes.includes('lyrics')">
+            <div class="p-3 my-3" v-if="selectedTypes.includes('lyrics')">
                 <div class="row" >
                     <h3>Lyric Result</h3>
                     <div class="col-6 col-md-3 col-xl-2" v-for="track in lyricsResult" :key="track.id">

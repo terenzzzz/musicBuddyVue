@@ -1,37 +1,37 @@
 <template>
-  <div class="w-75 mx-auto my-3">
+  <div class="px-1 px-sm-3 px-md-5 my-3">
     <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="px-5 my-3 border-bottom-red">Recently Play</h3>
+      <h3 class="my-3 border-bottom-red">Recently Play</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-3 col-md-2  mx-2" v-for="track in recentlyPlay" :key="track.id">
+          <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in recentlyPlay" :key="track.id">
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>
 
     <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="px-5 my-3 border-bottom-red">Listen 「Lock Me Up」 also listening</h3>
+      <h3 class="my-3 border-bottom-red">Listen 「Lock Me Up」 also listening</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-3 col-md-2  mx-2" v-for="track in alsoListen" :key="track.id">
+          <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in alsoListen" :key="track.id">
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>
 
     <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="px-5 my-3 border-bottom-red">Artist May Liked</h3>
+      <h3 class="my-3 border-bottom-red">Artist May Liked</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-3 col-md-2  mx-2" v-for="artist in artistMayLike" :key="artist.id">
+          <div class="col-3 col-md-2 col-xxl-1  mx-2" v-for="artist in artistMayLike" :key="artist.id">
               <ArtistCard :artist="artist"></ArtistCard>
           </div>
       </div>
 
     <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="px-5 my-3 border-bottom-red">Everyone's Listening</h3>
+      <h3 class="my-3 border-bottom-red">Everyone's Listening</h3>
     </div>
       <div class="horizontal-scroll">
-          <div class="col-3 col-md-2  mx-2" v-for="track in EveryoneListening" :key="track.id">
+          <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in EveryoneListening" :key="track.id">
               <TrackCard :track="track"></TrackCard>
           </div>
       </div>
