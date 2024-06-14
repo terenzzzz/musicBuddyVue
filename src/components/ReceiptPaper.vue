@@ -1,6 +1,8 @@
 <template>
-    <div class="p-5">
-        <div class="d-flex justify-content-end"><button class="btn btn-sm btn-secondary" @click="downloadReceipt"><i class="fa-solid fa-download"></i></button></div>
+    <div class="p-5 pt-0">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-secondary" @click="downloadReceipt"><i class="fa-solid fa-download"></i></button>
+        </div>
         <div id="receipt" class="container card  border-0">
         <div class="row">
             <div class="col-md-12">
@@ -16,18 +18,18 @@
         </div>
         <hr>
         <div class="row">
-            <div class="col-md-2">QTY</div>
-            <div class="col-md-8">ITEM</div>
-            <div class="col-md-2">AMT</div>
+            <div class="col-3 col-md-2">QTY</div>
+            <div class="col-6 col-md-8">ITEM</div>
+            <div class="col-3 col-md-2">AMT</div>
         </div>
         <hr>
 
         <div class="row my-2" v-for="(item, index) in tracks" :key="index">
-            <div class="col-md-2">{{ index + 1 }}</div>
-            <div class="col-md-8">
+            <div class="col-2 col-md-2">{{ index + 1 }}</div>
+            <div class="col-7 col-md8">
                 {{ item.name }} - {{ item.artist.name }}
             </div>
-            <div class="col-md-2">{{ millisecondsToMMss(item.duration) }}</div>
+            <div class="col-3 col-md-2">{{ millisecondsToMMss(item.duration) }}</div>
         </div>
 
         <hr>

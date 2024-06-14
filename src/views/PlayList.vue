@@ -16,7 +16,7 @@
             <div v-if="tracks.length > 0">
                 <div class="row">
                     <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                    <div class="col-3 col-md-2" v-for="track in tracks" :key="track.id">
+                    <div class="col-4 col-md-2" v-for="track in tracks" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
             <div v-if="artists.length > 0">
                 <div class="row">
                     <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                    <div class="col-3 col-md-2 " v-for="artist in artists" :key="artist.id">
+                    <div class="col-4 col-md-2 " v-for="artist in artists" :key="artist.id">
                         <ArtistCard :artist="artist"></ArtistCard>
                     </div>
                 </div>
@@ -36,6 +36,7 @@
         <div class="modal fade" id="receiptModel" tabindex="-1" aria-labelledby="receiptModel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <i class="fa-solid fa-x p-4" data-bs-dismiss="modal" aria-label="Close"></i>
                     <ReceiptPaper :tracks="tracks" :title="title"></ReceiptPaper>
                 </div>
             </div>
