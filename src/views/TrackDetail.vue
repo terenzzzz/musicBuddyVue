@@ -1,8 +1,8 @@
 <template>
     <div class="TrackDetail" >
         <AlertComponents :title="isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
-        <div class="mt-5 w-75 mx-auto"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
-        <div v-if="track" class="w-75 mx-auto">
+        <div class="mt-5 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
+        <div v-if="track" class="px-1 px-md-3 px-lg-5">
 <!--        Track Basic Info-->
             <div class="card track-detail-container shadow rounded-bottom-0 p-3 p-md-5" :style="containerStyle">
                 <div class="row" >
@@ -16,7 +16,7 @@
                         </div>
                         <div class="row d-flex flex-row" v-if="track.tags">
                             <div class="col-auto" v-for="tag in track.tags" :key="tag.id" >
-                                <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                                <TagButton :tag="tag.tag"></TagButton>
                             </div>
                         </div>
                         <div class="row">
@@ -74,7 +74,7 @@
                         </div>
                         <div class="row d-flex flex-row" v-if="track.artist.tags">
                             <div class="col-auto"  v-for="tag in track.artist.tags" :key="tag.id">
-                                <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                                <TagButton :tag="tag.tag"></TagButton>
                             </div>
                         </div>
                         <div class="row">
@@ -157,9 +157,10 @@ import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {getSpotifyTrackById, searchSpotify} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
+import TagButton from "@/components/TagButton.vue";
 
 export default {
-    components: {AlertComponents, SpotifyFrame, ArtistCard, TrackCard},
+    components: {TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard},
     data() {
         return {
             trackId: this.$route.params.id,
