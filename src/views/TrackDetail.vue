@@ -154,7 +154,7 @@ import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
-import {getSpotifyTrackById, searchSpotify} from "@/api/spotify";
+import {getSpotifyTrackById, searchSpotifyTracks} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 import TagButton from "@/components/TagButton.vue";
@@ -220,10 +220,10 @@ export default {
 
         async searchSpotify(keyword, type) {
             try {
-                const response = await searchSpotify(keyword, type);
+                const response = await searchSpotifyTracks(keyword, type);
                 if (response.status === 200) {
-                    this.spotifyUri = response.data.uri;
-                    this.spotifyTrackUrl = response.data.external_urls.spotify
+                    this.spotifyUri = response.data[0].uri;
+                    this.spotifyTrackUrl = response.data[0].external_urls.spotify
                     this.spotifyArtistUrl = response.data.artist[0].external_urls.spotify
                 } else {
                     console.error('Error search Spotify else:', response.data.message);

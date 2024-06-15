@@ -31,11 +31,19 @@ export const getTopArtists = params => requestSpotify({
     params
 });
 
-export const searchSpotify = (keyword, type) => {
+export const searchSpotifyTracks = (keyword) => {
     return requestSpotify({
-        url: `/api/search`,
+        url: `/api/searchTracks`,
         method: 'get',
-        params: { q: keyword, type: type } //type: track/artist
+        params: { q: keyword} //type: track/artist
+    });
+};
+
+export const searchSpotifyArtists = (keyword) => {
+    return requestSpotify({
+        url: `/api/searchArtists`,
+        method: 'get',
+        params: { q: keyword} //type: track/artist
     });
 };
 

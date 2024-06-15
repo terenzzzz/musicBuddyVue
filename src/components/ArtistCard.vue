@@ -2,7 +2,10 @@
     <router-link :to="`/artist/${artist._id}`">
         <div class="card rounded-4 border-0" style="background-color: #f1f4f9;">
             <div class="position-relative">
-                <img :src="artist.avatar || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid d-block mx-auto rounded-circle">
+                <div class="ratio ratio-1x1">
+                    <img :src="artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
+                         class="img-fluid d-block mx-auto rounded-4 object-fit-cover">
+                </div>
                 <h5 class="card-title text-center text-truncate">{{ artist.name }}</h5>
             </div>
         </div>

@@ -87,6 +87,7 @@ import TrackCard from "@/components/TrackCard.vue";
 import {search} from "@/api/search";
 import ArtistCard from "@/components/ArtistCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
+import {searchSpotifyArtists, searchSpotifyTracks} from "@/api/spotify";
 
 export default {
     components: {AlertComponents, ArtistCard, TrackCard},
@@ -111,6 +112,7 @@ export default {
         selectedTypes(newVal) {
             this.hasSelection = newVal.length > 0;
             this.fetchSearchResult()
+            this.fetchSpotifyResult()
         }
     },
     methods: {
@@ -136,8 +138,31 @@ export default {
                     this.trackResult = response.data.data.tracks;
                     this.artistResult = response.data.data.artists;
                     this.lyricsResult = response.data.data.lyrics;
+                    await this.fetchSpotifyResult()
                 } else {
                     console.error('Error fetching tracks:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching tracks:', err.message);
+            }
+        },
+        async fetchSpotifyResult() {
+            try {
+                if (this.selectedTypes.includes('tracks')){
+                    const response = await searchSpotifyTracks(this.keyword)
+                    if (response.status === 200) {
+                        this.spotifyTrackResult = response.data
+                    } else {
+                        console.error('Error search Spotify else:', response.data.message);
+                    }
+                }
+                if (this.selectedTypes.includes('artists')){
+                    const response = await searchSpotifyArtists(this.keyword)
+                    if (response.status === 200) {
+                        this.spotifyArtistResult = response.data
+                    } else {
+                        console.error('Error search Spotify else:', response.data.message);
+                    }
                 }
             } catch (err) {
                 console.error('Error fetching tracks:', err.message);
