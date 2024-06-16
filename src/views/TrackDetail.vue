@@ -4,7 +4,10 @@
         <div class="mt-5 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
         <div v-if="track" class="px-1 px-md-3 px-lg-5">
 <!--        Track Basic Info-->
-            <div class="card track-detail-container shadow rounded-bottom-0 p-3 p-md-5" :style="containerStyle">
+            <div class="card track-detail-container shadow rounded-bottom-0 p-3" :style="containerStyle">
+                <div class="d-flex justify-content-end">
+                    <RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK"></RateBtn>
+                </div>
                 <div class="row" >
                     <div class="col-6 col-md-3 col-xl-2 m-auto">
                         <img :src="this.track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid">
@@ -49,8 +52,11 @@
             </div>
 
 <!--            Artist Card-->
-            <div class="card shadow my-5 p-3 p-md-5" >
+            <div class="card shadow my-5 p-3" >
                 <div class="row">
+                    <div class="d-flex justify-content-end">
+                        <RateBtn :rating="artistRating" :on-rate="updateRate" :item-type="itemTypes.ARTIST"></RateBtn>
+                    </div>
                     <div class="col-6 col-md-3 col-xl-2 m-auto">
                         <div class="rounded-circle overflow-hidden img-container">
                             <img :src="track.artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
@@ -158,9 +164,11 @@ import {getSpotifyTrackById, searchSpotifyTracks} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 import TagButton from "@/components/TagButton.vue";
+import RateBtn from "@/components/RateBtn.vue";
+import {addRating, getRating, itemTypes} from "@/api/ratings";
 
 export default {
-    components: {TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard},
+    components: {TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
     data() {
         return {
             trackId: this.$route.params.id,
@@ -173,17 +181,21 @@ export default {
             spotifyUri: "",
             spotifyTrackUrl: "",
             spotifyArtistUrl: "",
+
+            trackRating: 0,
+            artistRating: 0,
         };
     },
-    created() {
-        if (isValidMongoId(this.trackId)){
-            this.fetchTrackById();
-        }else{
-            this.fetchSpotifyMetadata();
+    async created() {
+        if (isValidMongoId(this.trackId)) {
+            await this.fetchTrackById();
+            await this.fetchRating()
+        } else {
+            await this.fetchSpotifyMetadata();
         }
 
-        this.fetchRecommendedArtists();
-        this.fetchRecommendedTracks()
+        await this.fetchRecommendedArtists();
+        await this.fetchRecommendedTracks()
     },
     watch: {
         '$route'(to) {
@@ -196,6 +208,51 @@ export default {
         }
     },
     methods: {
+        async updateRate(itemType,rating) {
+            let response = null
+
+            switch (itemType) {
+                case itemTypes.TRACK:
+                    response = await addRating(this.trackId, itemType, rating)
+                    if (response.status === 200) {
+                        this.trackRating = response.data.rate
+                    } else {
+                        alert("Rate Track Failed")
+                    }
+                    break
+                case itemTypes.ARTIST:
+                    response = await addRating(this.track.artist._id, itemType, rating)
+                    if (response.status === 200) {
+                        this.artistRating = response.data.rate
+                    } else {
+                        alert("Rate Artist Failed")
+                    }
+                    break
+                default:
+                    alert("Rate Failed Default")
+                    break
+            }
+        },
+        async fetchRating() {
+            try {
+                const [trackResponse, artistResponse] = await Promise.all([
+                    getRating(this.trackId, itemTypes.TRACK),
+                    getRating(this.track.artist._id, itemTypes.ARTIST)
+                ]);
+
+                if (trackResponse.status === 200 && trackResponse.data?.data) {
+                    this.trackRating = trackResponse.data.data.rate ?? 0;
+                }
+
+                if (artistResponse.status === 200 && artistResponse.data?.data) {
+                    this.artistRating = artistResponse.data.data.rate ?? 0;
+                }
+            } catch (err) {
+                console.error('Error fetching ratings:', err.message);
+            }
+        },
+
+
         openWindow: function(url) {
             window.open(url, '_blank');
         },
@@ -211,10 +268,10 @@ export default {
                     this.spotifyTrackUrl = response.data.external_urls
                     this.spotifyArtistUrl = response.data.artist.external_urls
                 } else {
-                    console.error('Error search Spotify else:', response.data.message);
+                    console.error('Error search Spotify Metadata else:', response.data.message);
                 }
             } catch (err) {
-                console.error('Error search Spotify:', err.message);
+                console.error('Error search Spotify Metadata:', err.message);
             }
         },
 
@@ -222,9 +279,10 @@ export default {
             try {
                 const response = await searchSpotifyTracks(keyword, type);
                 if (response.status === 200) {
-                    this.spotifyUri = response.data[0].uri;
-                    this.spotifyTrackUrl = response.data[0].external_urls.spotify
-                    this.spotifyArtistUrl = response.data.artist[0].external_urls.spotify
+                    let firstTrack = response.data[0]
+                    this.spotifyUri = firstTrack.uri;
+                    this.spotifyTrackUrl = firstTrack.external_urls
+                    this.spotifyArtistUrl = firstTrack.artist.external_urls.spotify
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
@@ -287,6 +345,9 @@ export default {
         }
     },
     computed: {
+        itemTypes() {
+            return itemTypes
+        },
         containerStyle() {
             if (!this.track) return {};
             return {
