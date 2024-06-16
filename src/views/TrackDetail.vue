@@ -5,7 +5,7 @@
         <div v-if="track" class="px-1 px-md-3 px-lg-5">
 <!--        Track Basic Info-->
             <div class="card track-detail-container shadow rounded-bottom-0 p-3" :style="containerStyle">
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end" v-if="isValidMongoId(this.trackId)">
                     <RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK"></RateBtn>
                 </div>
                 <div class="row" >
@@ -54,7 +54,7 @@
 <!--            Artist Card-->
             <div class="card shadow my-5 p-3" >
                 <div class="row">
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end" v-if="isValidMongoId(this.trackId)">
                         <RateBtn :rating="artistRating" :on-rate="updateRate" :item-type="itemTypes.ARTIST"></RateBtn>
                     </div>
                     <div class="col-6 col-md-3 col-xl-2 m-auto">
