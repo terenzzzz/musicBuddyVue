@@ -15,7 +15,7 @@
         <div class="mt-5 px-5">
             <div v-if="tracks.length > 0">
                 <div class="row">
-                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                    <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
                     <div class="col-4 col-md-2" v-for="track in tracks" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
@@ -24,7 +24,7 @@
 
             <div v-if="artists.length > 0">
                 <div class="row">
-                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                    <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
                     <div class="col-4 col-md-2 " v-for="artist in artists" :key="artist.id">
                         <ArtistCard :artist="artist"></ArtistCard>
                     </div>
@@ -33,7 +33,7 @@
         </div>
 
 <!--        ReceiptModel-->
-        <div class="modal fade" id="receiptModel" tabindex="-1" aria-labelledby="receiptModel" aria-hidden="true">
+        <div class="modal fade" id="receiptModel" tabindex="-1" aria-labelledby="receiptModel" aria-hidden="true"  v-if="showReceiptButton">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <i class="fa-solid fa-x p-4" data-bs-dismiss="modal" aria-label="Close"></i>
@@ -56,6 +56,7 @@ import ArtistCard from "@/components/ArtistCard.vue";
 import {getTracksByTag} from "@/api/tracks";
 import {getTagById} from "@/api/tags";
 import ReceiptPaper from "@/components/ReceiptPaper.vue";
+import {getRatings} from "@/api/ratings";
 
 export default {
     components: {ReceiptPaper, ArtistCard, AlertComponents, TrackCard},
@@ -65,7 +66,8 @@ export default {
             title:  playlistTypes.stringToPlaylistType(this.$route.params.type),
             tracks: [],
             artists:[],
-            showReceiptButton: false
+            showReceiptButton: false,
+            dataProvider:"MusicBuddy"
         };
     },
     created() {
@@ -76,20 +78,43 @@ export default {
             switch (this.title) {
                 case playlistTypes.RECENTLY_PLAYED: await this.fetchRecentlyPlay()
                     this.showReceiptButton = true
+                    this.dataProvider = "Spotify"
                     break
                 case playlistTypes.SAVED_TRACKS: await this.fetchSavedTracks()
                     this.showReceiptButton = true
+                    this.dataProvider = "Spotify"
                     break
                 case playlistTypes.TOP_TRACKS: await this.fetchTopTracks()
                     this.showReceiptButton = true
+                    this.dataProvider = "Spotify"
                     break
                 case playlistTypes.TOP_ARTISTS: await this.fetchTopArtists()
+                    this.dataProvider = "Spotify"
+                    break
+                case playlistTypes.RATED_TRACKS: await this.fetchRatings()
+                    break
+                case playlistTypes.RATED_ARTISTS: await this.fetchRatings()
                     break
                 default:
                     await this.fetchTracksByTag(this.title)
                     await this.fetchTagById(this.title)
             }
 
+        },
+
+        async fetchRatings() {
+            try {
+                const response = await getRatings();
+                let ratings = response.data.data
+                if (this.title === playlistTypes.RATED_TRACKS){
+                    this.tracks = ratings.ratedTracks.map(rating => rating.item);
+                }else if(this.title === playlistTypes.RATED_ARTISTS){
+                    this.artists = ratings.ratedArtists.map(rating => rating.item);
+                }
+
+            } catch (error) {
+                console.error('Failed to fetch user:', error);
+            }
         },
 
         async fetchTracksByTag(tag) {

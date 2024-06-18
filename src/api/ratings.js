@@ -35,3 +35,8 @@ export const getRating = (item, itemType) => request({
     params: {item, itemType}
 })
 
+export const getRatings = params => request({
+    url: `/app/getRatings`,
+    method: 'get',
+    params
+})

@@ -1,6 +1,6 @@
 <template>
     <router-link :to="`/artist/${artist._id}`">
-        <div class="card rounded-4 border-0" style="background-color: #f1f4f9;">
+        <div class="card rounded-4 border-0 bg-transparent" >
             <div class="position-relative">
                 <div class="ratio ratio-1x1">
                     <img :src="artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
