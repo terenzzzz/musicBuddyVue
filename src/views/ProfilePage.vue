@@ -49,8 +49,8 @@
                 <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5>Recently Played</h5>
-                            <router-link :to="{ name: 'Playlist',
+                            <h5 class="red-bottom">Recently Played</h5>
+                            <router-link v-if="recentlyPlay.length>0" :to="{ name: 'Playlist',
                             params: { type:playlistTypes.playlistTypeToString(playlistTypes.RECENTLY_PLAYED) } }">
                                 All
                             </router-link>
@@ -72,8 +72,8 @@
                 <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5>Saved Tracks</h5>
-                            <router-link :to="{ name: 'Playlist',
+                            <h5 class="red-bottom">Saved Tracks</h5>
+                            <router-link v-if="savedTracks.length>0" :to="{ name: 'Playlist',
                             params: { type:playlistTypes.playlistTypeToString(playlistTypes.SAVED_TRACKS) } }">
                                 All
                             </router-link>
@@ -94,8 +94,8 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5>Top Tracks</h5>
-                        <router-link :to="{ name: 'Playlist',
+                        <h5 class="red-bottom">Top Tracks</h5>
+                        <router-link v-if="topTracks.length>0" :to="{ name: 'Playlist',
                             params: { type:playlistTypes.playlistTypeToString(playlistTypes.TOP_TRACKS) } }">
                             All
                         </router-link>
@@ -116,8 +116,8 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="most-artist card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5>Top Artists</h5>
-                        <router-link :to="{ name: 'Playlist',
+                        <h5 class="red-bottom">Top Artists</h5>
+                        <router-link v-if="topArtists.length>0" :to="{ name: 'Playlist',
                             params: { type:playlistTypes.playlistTypeToString(playlistTypes.TOP_ARTISTS) } }">
                             All
                         </router-link>
@@ -146,7 +146,7 @@
             <div class="col-12 col-md-12 col-lg-6 col-xl-4">
                 <div class="top-tags col-12 card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5>Top Tags</h5>
+                        <h5 class="red-bottom">Top Tags</h5>
                         <a href="#" class="text-white">All</a>
                     </div>
                     <div class="mb-2 position-relative">

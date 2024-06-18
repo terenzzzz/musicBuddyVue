@@ -48,6 +48,10 @@ export default {
     margin: 0;
 }
 
+.red-bottom{
+    border-bottom: 3px solid #FF6666;
+}
+
 .page-container {
     width: 90%;
 }

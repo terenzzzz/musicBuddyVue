@@ -1,154 +1,159 @@
 <template>
     <div class="TrackDetail" >
         <AlertComponents :title="isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
-        <div class="mt-5 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
-        <div v-if="track" class="px-1 px-md-3 px-lg-5">
-<!--        Track Basic Info-->
-            <div class="card track-detail-container shadow rounded-bottom-0 p-3" :style="containerStyle">
-                <div class="d-flex justify-content-end" v-if="isValidMongoId(this.trackId)">
-                    <RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK"></RateBtn>
-                </div>
-                <div class="row" >
-                    <div class="col-6 col-md-3 col-xl-2 m-auto">
-                        <img :src="this.track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid">
-                    </div>
-                    <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
-                        <div>
-                            <strong class="fs-2 text-white">{{ track.name }}</strong>
-                            <p class="fs-5 text-white">{{ track.artist.name }}</p>
-                        </div>
-                        <div class="row d-flex flex-row" v-if="track.tags">
-                            <div class="col-auto" v-for="tag in track.tags" :key="tag.id" >
-                                <TagButton :tag="tag.tag"></TagButton>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <button class="btn btn-dark my-2" @click="openWindow(spotifyTrackUrl)">
-                                    <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card shadow rounded-top-0" >
-                <div class="row text-center py-3">
-                    <div class="col-4 d-flex flex-column" v-if="track.album">
-                        <strong>Album</strong>
-                        {{ track.album }}
-                    </div>
-
-                    <div class="col-4 d-flex flex-column" v-if="track.year">
-                        <strong>Year Publish</strong>
-                        {{ track.year }}
-                    </div>
-
-                    <div class="col-4 d-flex flex-column" v-if="track.duration">
-                        <strong>Duration</strong>
-                        {{ millisecondsToMMss(track.duration) }}
-                    </div>
-                </div>
-            </div>
-
-<!--            Artist Card-->
-            <div class="card shadow my-5 p-3" >
-                <div class="row">
+        <div v-if="track">
+            <div class="mt-5 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
+            <div class="px-1 px-md-3 px-lg-5">
+                <!--        Track Basic Info-->
+                <div class="card track-detail-container shadow rounded-bottom-0 p-3" :style="containerStyle">
                     <div class="d-flex justify-content-end" v-if="isValidMongoId(this.trackId)">
-                        <RateBtn :rating="artistRating" :on-rate="updateRate" :item-type="itemTypes.ARTIST"></RateBtn>
+                        <RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK"></RateBtn>
                     </div>
-                    <div class="col-6 col-md-3 col-xl-2 m-auto">
-                        <div class="rounded-circle overflow-hidden img-container">
-                            <img :src="track.artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
-                                 class="img-fluid" style="object-fit: cover;">
+                    <div class="row" >
+                        <div class="col-6 col-md-3 col-xl-2 m-auto">
+                            <img :src="this.track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid">
                         </div>
-                    </div>
-                    <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
-                        <div class="d-flex flex-row justify-content-between mb-2">
-                            <strong class="fs-2">{{ track.artist.name }}</strong>
-                            <div class="d-flex text-center" >
-                                <div class="d-flex flex-column mx-2" v-if="track.artist.familiarity">
-                                    <strong>Familiarity</strong>
-                                    {{ (track.artist.familiarity * 100).toFixed(2) }}%
-                                </div>
-                                <div class="d-flex flex-column mx-2" v-if="track.artist.hotness">
-                                    <strong>Hotness</strong>
-                                    {{ (track.artist.hotness * 100).toFixed(2) }}%
+                        <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
+                            <div>
+                                <strong class="fs-2 text-white">{{ track.name }}</strong>
+                                <p class="fs-5 text-white">{{ track.artist.name }}</p>
+                            </div>
+                            <div class="row d-flex flex-row" v-if="track.tags">
+                                <div class="col-auto" v-for="tag in track.tags" :key="tag.id" >
+                                    <TagButton :tag="tag.tag"></TagButton>
                                 </div>
                             </div>
-
-                        </div>
-                        <div class="row d-flex flex-row" v-if="track.artist.tags">
-                            <div class="col-auto"  v-for="tag in track.artist.tags" :key="tag.id">
-                                <TagButton :tag="tag.tag"></TagButton>
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <button class="btn btn-dark my-2" @click="openWindow(spotifyTrackUrl)">
+                                        <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <button class="btn btn-dark my-2" @click="openWindow(spotifyArtistUrl)">
-                                    <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
-                                </button>
+                    </div>
+                </div>
+                <div class="card shadow rounded-top-0" >
+                    <div class="row text-center py-3">
+                        <div class="col-4 d-flex flex-column" v-if="track.album">
+                            <strong>Album</strong>
+                            {{ track.album }}
+                        </div>
+
+                        <div class="col-4 d-flex flex-column" v-if="track.year">
+                            <strong>Year Publish</strong>
+                            {{ track.year }}
+                        </div>
+
+                        <div class="col-4 d-flex flex-column" v-if="track.duration">
+                            <strong>Duration</strong>
+                            {{ millisecondsToMMss(track.duration) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!--            Artist Card-->
+                <div class="card shadow my-5 p-3" >
+                    <div class="row">
+                        <div class="d-flex justify-content-end" v-if="isValidMongoId(this.trackId)">
+                            <RateBtn :rating="artistRating" :on-rate="updateRate" :item-type="itemTypes.ARTIST"></RateBtn>
+                        </div>
+                        <div class="col-6 col-md-3 col-xl-2 m-auto">
+                            <div class="rounded-circle overflow-hidden img-container">
+                                <img :src="track.artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
+                                     class="img-fluid" style="object-fit: cover;">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
+                            <div class="d-flex flex-row justify-content-between mb-2">
+                                <strong class="fs-2">{{ track.artist.name }}</strong>
+                                <div class="d-flex text-center" >
+                                    <div class="d-flex flex-column mx-2" v-if="track.artist.familiarity">
+                                        <strong>Familiarity</strong>
+                                        {{ (track.artist.familiarity * 100).toFixed(2) }}%
+                                    </div>
+                                    <div class="d-flex flex-column mx-2" v-if="track.artist.hotness">
+                                        <strong>Hotness</strong>
+                                        {{ (track.artist.hotness * 100).toFixed(2) }}%
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row d-flex flex-row" v-if="track.artist.tags">
+                                <div class="col-auto"  v-for="tag in track.artist.tags" :key="tag.id">
+                                    <TagButton :tag="tag.tag"></TagButton>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <button class="btn btn-dark my-2" @click="openWindow(spotifyArtistUrl)">
+                                        <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--    Lyric-->
+                <div class="row row-gap-3 " >
+                    <div class="col-12 card shadow p-2 my-2" >
+                        <h3 class="text-center">Lyric</h3>
+                        <div v-if="formattedLyrics.length>0" >
+                            <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
+                                <p>{{ line }}</p>
+                            </div>
+                        </div>
+                        <div v-else class="mx-auto">No lyric is privided for this track</div>
+                    </div>
+                </div>
+
+                <!--Recommandation-->
+                <div >
+                    <div class="row my-3">
+                        <h3>Recommended Tracks for「{{track.name}}」</h3>
+                        <div v-if="recommendedTracks.length > 0">
+                            <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                            <div class="horizontal-scroll">
+                                <div class="col-3 col-md-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
+                                    <TrackCard :track="track"></TrackCard>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="spotifyRecommendedTracks.length > 0">
+                            <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                            <div class="horizontal-scroll">
+                                <div class="col-3 col-md-2 mx-2" v-for="track in spotifyRecommendedTracks" :key="track.id">
+                                    <TrackCard :track="track"></TrackCard>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
+                        <div v-if="recommendedArtists.length > 0">
+                            <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                            <div class="horizontal-scroll">
+                                <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
+                                    <ArtistCard :artist="artist"></ArtistCard>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="spotifySimilarArtist.length > 0">
+                            <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                            <div class="horizontal-scroll">
+                                <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
+                                    <ArtistCard :artist="artist"></ArtistCard>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-<!--    Lyric-->
-            <div class="row row-gap-3 " >
-                <div class="col-12 card shadow p-2 my-2" >
-                    <h3 class="text-center">Lyric</h3>
-                    <div v-if="formattedLyrics.length>0" >
-                        <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
-                            <p>{{ line }}</p>
-                        </div>
-                    </div>
-                    <div v-else class="mx-auto">No lyric is privided for this track</div>
-                </div>
-            </div>
-
-    <!--Recommandation-->
-            <div >
-                <div class="row my-3">
-                    <h3>Recommended Tracks for「{{track.name}}」</h3>
-                    <div v-if="recommendedTracks.length > 0">
-                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                        <div class="horizontal-scroll">
-                            <div class="col-3 col-md-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
-                                <TrackCard :track="track"></TrackCard>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="spotifyRecommendedTracks.length > 0">
-                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                        <div class="horizontal-scroll">
-                            <div class="col-3 col-md-2 mx-2" v-for="track in spotifyRecommendedTracks" :key="track.id">
-                                <TrackCard :track="track"></TrackCard>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row my-3">
-                    <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
-                    <div v-if="recommendedArtists.length > 0">
-                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                        <div class="horizontal-scroll">
-                            <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
-                                <ArtistCard :artist="artist"></ArtistCard>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="spotifySimilarArtist.length > 0">
-                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                        <div class="horizontal-scroll">
-                            <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
-                                <ArtistCard :artist="artist"></ArtistCard>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
+        <div v-else>
+            <empty-placeholder></empty-placeholder>
         </div>
     </div>
 </template>
@@ -166,9 +171,10 @@ import AlertComponents from "@/components/AlertComponents.vue";
 import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
+import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 
 export default {
-    components: {TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
+    components: {EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
     data() {
         return {
             trackId: this.$route.params.id,

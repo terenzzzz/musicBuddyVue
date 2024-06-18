@@ -44,7 +44,9 @@
                     </div>
 
                 </div>
-                <p v-if="trackResult.length <= 0" class="text-center">No Result For the Search</p>
+                <div v-if="trackResult.length <= 0 && spotifyTrackResult.length <= 0" class="text-center">
+                    <EmptyPlaceholder></EmptyPlaceholder>
+                </div>
             </div>
 
             <div class="p-3 my-3" v-if="selectedTypes.includes('artists')">
@@ -88,9 +90,10 @@ import {search} from "@/api/search";
 import ArtistCard from "@/components/ArtistCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
 import {searchSpotifyArtists, searchSpotifyTracks} from "@/api/spotify";
+import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 
 export default {
-    components: {AlertComponents, ArtistCard, TrackCard},
+    components: {EmptyPlaceholder, AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
             keyword: "",

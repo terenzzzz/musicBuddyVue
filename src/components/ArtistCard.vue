@@ -4,7 +4,7 @@
             <div class="position-relative">
                 <div class="ratio ratio-1x1">
                     <img :src="artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
-                         class="img-fluid d-block mx-auto rounded-4 object-fit-cover">
+                         class="img-fluid d-block mx-auto rounded-circle object-fit-cover">
                 </div>
                 <h5 class="card-title text-center text-truncate">{{ artist.name }}</h5>
             </div>
