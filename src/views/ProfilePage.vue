@@ -55,9 +55,15 @@
                                 All
                             </router-link>
                         </div>
-                        <div v-for="track in recentlyPlay.slice(0, 5)" :key="track.id">
-                            <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                        <div v-if="recentlyPlay.length>0">
+                            <div v-for="track in recentlyPlay.slice(0, 5)" :key="track.id">
+                                <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                            </div>
                         </div>
+                        <div v-else>
+                            <EmptyPlaceholder></EmptyPlaceholder>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -72,8 +78,13 @@
                                 All
                             </router-link>
                         </div>
-                        <div v-for="track in savedTracks.slice(0, 5)" :key="track.id">
-                            <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                        <div v-if="savedTracks.length>0">
+                            <div v-for="track in savedTracks.slice(0, 5)" :key="track.id">
+                                <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <EmptyPlaceholder></EmptyPlaceholder>
                         </div>
                     </div>
                 </div>
@@ -89,8 +100,13 @@
                             All
                         </router-link>
                     </div>
-                    <div v-for="track in topTracks.slice(0, 5)" :key="track.id">
-                        <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                    <div v-if="topTracks.length>0">
+                        <div v-for="track in topTracks.slice(0, 5)" :key="track.id">
+                            <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <EmptyPlaceholder></EmptyPlaceholder>
                     </div>
 
                 </div>
@@ -106,17 +122,24 @@
                             All
                         </router-link>
                     </div>
-                    <div class="row">
-                        <div class="col-4 my-2" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
-                            <router-link :to="`/artist/${artist._id}`" >
-                                <div class="text-center">
-                                    <img v-if="artist.avatar" :src="artist.avatar" class="img-fluid rounded-circle">
-                                    <div><strong>{{artist.name}}</strong></div>
-                                    <div class="rank">Top {{ index + 1 }}</div>
-                                </div>
-                            </router-link>
+                    <div v-if="topArtists.length>0">
+                        <div class="row">
+                            <div class="col-4 my-2" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
+                                <router-link :to="`/artist/${artist._id}`" >
+                                    <div class="text-center">
+                                        <img v-if="artist.avatar" :src="artist.avatar" class="img-fluid rounded-circle">
+                                        <div><strong>{{artist.name}}</strong></div>
+                                        <div class="rank">Top {{ index + 1 }}</div>
+                                    </div>
+                                </router-link>
+                            </div>
                         </div>
                     </div>
+                    <div v-else>
+                        <EmptyPlaceholder></EmptyPlaceholder>
+                    </div>
+
+
                 </div>
             </div>
 
@@ -151,6 +174,7 @@ import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 // import HeatMap from "@/components/HeatMap.vue";
 import playlistTypes from "@/enum/playlistTypes";
+import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 
 export default {
     computed: {
@@ -158,7 +182,7 @@ export default {
             return playlistTypes
         }
     },
-    components: {TrackCardHorizontal},
+    components: {EmptyPlaceholder, TrackCardHorizontal},
     data() {
         return {
             user: null,

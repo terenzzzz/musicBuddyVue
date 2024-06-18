@@ -1,10 +1,10 @@
 <template>
-    <div class="emptyPlaceholder card">
+    <div class="emptyPlaceholder">
         <div class="row my-5">
-            <div class="col-6 col-lg-4  mx-auto d-flex justify-content-center">
-                <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid">
+            <div class="col-8 mx-auto d-flex justify-content-center">
+                <img src="@/assets/images/noContent.png" class="img-fluid">
             </div>
-            <h3 class="text-center">Something is Cooking ...</h3>
+            <h5 class="text-center">No Data Founded</h5>
         </div>
     </div>
 

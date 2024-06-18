@@ -1,10 +1,15 @@
 <template>
     <div class="RateBtn">
-        <i class="fa-star text-warning" :class="rating>0?'fa-solid':'fa-regular'" @click="handleClick(1)"></i>
-        <i class="fa-star text-warning" :class="rating>1?'fa-solid':'fa-regular'" @click="handleClick(2)"></i>
-        <i class="fa-star text-warning" :class="rating>2?'fa-solid':'fa-regular'" @click="handleClick(3)"></i>
-        <i class="fa-star text-warning" :class="rating>3?'fa-solid':'fa-regular'" @click="handleClick(4)"></i>
-        <i class="fa-star text-warning" :class="rating>4?'fa-solid':'fa-regular'" @click="handleClick(5)"></i>
+        <i v-for="star in 5" :key="star"
+           class="fa-star text-warning"
+           :class="[
+                (hoverRating > 0 ? hoverRating >= star : rating >= star) ? 'fa-solid' : 'fa-regular',
+                { 'hovered': hoverRating >= star }
+            ]"
+           @click="handleClick(star)"
+           @mouseenter="handleMouseEnter(star)"
+           @mouseleave="handleMouseLeave"
+        ></i>
     </div>
 </template>
 
@@ -26,12 +31,30 @@ export default {
         }
     },
     data() {
-        return {};
+        return {
+            hoverRating: 0
+        };
     },
     methods: {
         handleClick(rating) {
             this.onRate(this.itemType,rating);
+        },
+        handleMouseEnter(star) {
+            this.hoverRating = star;
+        },
+        handleMouseLeave() {
+            this.hoverRating = 0;
         }
     },
 }
 </script>
+
+<style scoped>
+.fa-star {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.hovered {
+    color: #ffc107 !important; /* 使用 !important 确保覆盖其他样式 */
+}
+</style>
