@@ -17,6 +17,7 @@
     "cal-heatmap": "^4.2.4",
     "compromise": "^14.13.0",
     "core-js": "^3.8.3",
+    "d3": "^7.9.0",
     "html2canvas": "^1.4.1",
     "jquery": "^3.7.0",
     "natural": "^7.0.6",

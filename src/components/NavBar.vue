@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-md nav-bg shadow sticky-top bg-white">
+    <nav class="navbar navbar-expand-md nav-bg shadow sticky-top bg-white p-0">
         <div class="container-fluid px-5">
             <router-link class="navbar-brand fs-3 fw-bold primary text-decoration-none d-flex align-items-center" to="/">
                 <img src="@/assets/images/musicBuddyVueLogo.png" style="width: 60px">
