@@ -97,11 +97,16 @@
 
                 <!--    Lyric-->
                 <div class="row row-gap-3 " >
-                    <div class="col-12 card shadow p-2 my-2" >
+                    <div class="col-12 card shadow p-5 my-2" >
                         <h3 class="text-center">Lyric</h3>
                         <div v-if="formattedLyrics.length>0" >
                             <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
                                 <p>{{ line }}</p>
+                            </div>
+                            <div>
+                                <strong>Keyword:</strong>
+
+
                             </div>
                         </div>
                         <div v-else class="mx-auto">No lyric is privided for this track</div>

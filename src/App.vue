@@ -2,7 +2,7 @@
     <div id="app" >
         <NavBar></NavBar>
 
-        <router-view></router-view>
+        <router-view style="min-height: 80vh;"></router-view>
 
         <BottomFooter></BottomFooter>
     </div>

@@ -1,9 +1,9 @@
 <template>
-    <div class="container h-100">
-        <div class="card shadow-lg mt-5">
+    <div class="container mt-5">
+        <div class="card shadow-lg">
             <div class="card-body p-0">
                 <div class="row justify-content-center m-0">
-                    <div class="col-md-6 d-none d-md-block">
+                    <div class="col-md-6 d-none d-md-block p-0">
                         <img src="../assets/images/posters.png" class="cover-image">
                     </div>
                     <div class="col-md-6 justify-content-center align-items-center h-100">
@@ -29,29 +29,29 @@
 
                                 <button class="btn btn-primary w-100 py-2" id="loginForm"> Sign in </button>
 
-                                <div class="text-center align-content-center fw-bolder mt-3 ">
-                                    <a href="/forgot-password" class="hover-link text-decoration-none">Forgot
-                                        password?</a>
+                                <div class="text-center align-content-center fw-bolder mt-5">
+                                    <a href="/forgot-password" class="hover-link text-decoration-none"><span class="red-bottom">Forgot
+                                        password?</span></a>
                                 </div>
 
                                 <div class="card-footer-login my-3">
-                                    <div class="text-center align-content-center fw-bolder mt-3 ">
+                                    <div class="text-center align-content-center fw-bolder mt-3">
                                         <p>Don't have an account?
-                                            <router-link to="/signup" class="nav-login mx-2">Register</router-link>
+                                            <router-link to="/signup" class="nav-login mx-2 red-bottom">Register</router-link>
                                         </p>
 
                                     </div>
 
-                                    <hr class="my-4">
+<!--                                    <hr class="my-4">-->
 
-                                    <div class="text-center align-content-center fw-bolder mt-3 ">
-                                        <p>Or sign in with</p>
-                                    </div>
+<!--                                    <div class="text-center align-content-center fw-bolder mt-3 ">-->
+<!--                                        <p>Or sign in with</p>-->
+<!--                                    </div>-->
 
-                                    <a href="/auth/spotify" class="mb-2  btn btn-success btn w-100"><i
-                                        class="fa-brands fa-spotify"></i> Spotify</a>
-                                    <a href="/auth/apple"  class="mt-2  btn btn-danger btn w-100"><i
-                                        class="fa-brands fa-apple"></i> Apple Music</a>
+<!--                                    <a href="/auth/spotify" class="mb-2  btn btn-success btn w-100"><i-->
+<!--                                        class="fa-brands fa-spotify"></i> Spotify</a>-->
+<!--                                    <a href="/auth/apple"  class="mt-2  btn btn-danger btn w-100"><i-->
+<!--                                        class="fa-brands fa-apple"></i> Apple Music</a>-->
                                 </div>
                             </form>
                         </main>

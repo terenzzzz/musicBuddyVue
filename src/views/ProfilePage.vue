@@ -26,24 +26,24 @@
 
                 <div class="card shadow rounded-5">
                     <div class="row text-center my-3">
-                        <div class="col-4 d-flex flex-column">
-                            <p><strong>309</strong></p>
-                            <p class="text-muted">Songs Listened</p>
+                        <div class="col d-flex flex-column">
+                            <p><strong>{{ratedTracks.length}}</strong></p>
+                            <p class="text-muted">Rated Song</p>
                         </div>
-                        <div class="col-4 d-flex flex-column">
-                            <p><strong>309</strong></p>
-                            <p class="text-muted">Songs Listened</p>
+                        <div class="col d-flex flex-column">
+                            <p><strong>{{ratedArtists.length}}</strong></p>
+                            <p class="text-muted">Rated Artisted</p>
                         </div>
-                        <div class="col-4 d-flex flex-column">
-                            <p><strong>309</strong></p>
-                            <p class="text-muted">Songs Listened</p>
+                        <div class="col d-flex flex-column" v-if="user&& user.tags.length > 0">
+                            <p><strong>「{{user.tags[0].tag.name}}」</strong></p>
+                            <p class="text-muted">Personality</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row px-3 px-md-5">
+        <div class="row px-3 px-md-5" v-if="ratedTracks.length>0">
             <div class="card p-3 rounded-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="red-bottom">Rated Track</h5>
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="row g-3 px-3 px-md-5 mt-1">
+        <div class="row g-3 px-3 px-md-5 mt-1" v-if="ratedTracks.length>0">
             <div class="card p-3 rounded-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="red-bottom">Rated Artist</h5>
@@ -184,17 +184,19 @@
                         <h5 class="red-bottom">Top Tags</h5>
                         <a href="#" class="text-white">All</a>
                     </div>
-                    <div class="mb-2 position-relative">
-                        <span class="tag-label">nagie</span>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div v-if="user && user.tags.length>0">
+                        <div class="mb-2 position-relative" v-for="tag in user.tags.slice(0, 6)" :key="tag.id">
+                            <span class="tag-label">{{ tag.tag.name }}</span>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="background-color: #FF6666"
+                                     :style="{ width: `${getProgressWidth(tag.count)}% ` }"
+                                     :aria-valuenow="getProgressWidth(tag.count)" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-2 position-relative">
-                        <span class="tag-label">rap-metal</span>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                    <div v-else>
+                        <EmptyPlaceholder></EmptyPlaceholder>
                     </div>
                 </div>
             </div>
@@ -218,6 +220,9 @@ export default {
     computed: {
         playlistTypes() {
             return playlistTypes
+        },
+        maxCount() {
+            return this.user.tags.reduce((total, tag) => total + tag.count, 0);
         }
     },
     components: {ArtistCard, TrackCard, EmptyPlaceholder, TrackCardHorizontal},
@@ -239,7 +244,11 @@ export default {
         this.checkForSpotifyRefreshToken();
         this.fetchSpotifyData();
     },
+
     methods: {
+        getProgressWidth(count) {
+            return (count / this.maxCount) * 100;
+        },
         async fetchUser() {
             try {
                 const response = await getUser(); // 传递适当的参数
