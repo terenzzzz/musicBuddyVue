@@ -135,7 +135,7 @@ export default {
                 word: this.model.words[i]
             }));
 
-            const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+            const margin = {top: 20, right: 20, bottom: 30, left: 40};
             const width = this.chartWidth - margin.left - margin.right;
             const height = this.chartHeight - margin.top - margin.bottom;
 
@@ -152,6 +152,13 @@ export default {
             chart.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
             chart.append("g").call(d3.axisLeft(y));
 
+            // Add zoom and pan functionality
+            const zoom = d3.zoom().on("zoom", (event) => {
+                chart.attr("transform", event.transform);
+            });
+            svg.call(zoom);
+
+            // Add dots
             chart
                 .selectAll(".dot")
                 .data(data)
@@ -161,8 +168,18 @@ export default {
                 .attr("cx", d => x(d.x))
                 .attr("cy", d => y(d.y))
                 .attr("r", 3)
-                .attr("fill", "blue");
+                .attr("fill", "red")
+                .on("mouseover", (event, d) => {
+                    tooltip.style("display", "block")
+                        .html(d.word)
+                        .style("left", `${event.pageX + 5}px`)
+                        .style("top", `${event.pageY - 28}px`);
+                })
+                .on("mouseout", () => {
+                    tooltip.style("display", "none");
+                });
 
+            // Add labels conditionally to reduce clutter
             chart
                 .selectAll(".label")
                 .data(data)
@@ -173,7 +190,24 @@ export default {
                 .attr("y", d => y(d.y))
                 .text(d => d.word)
                 .attr("font-size", "10px")
-                .attr("fill", "black");
+                .attr("fill", "black")
+                .attr("opacity", (d, i) => i % 100 === 0 ? 1 : 0); // Show fewer labels to reduce clutter
+
+            // Add tooltips
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("position", "absolute")
+                .style("text-align", "center")
+                .style("width", "60px")
+                .style("height", "28px")
+                .style("padding", "2px")
+                .style("font", "12px sans-serif")
+                .style("background", "lightsteelblue")
+                .style("border", "0px")
+                .style("border-radius", "8px")
+                .style("pointer-events", "none")
+                .style("display", "none");
         }
     },
     created() {

@@ -136,7 +136,7 @@
                     </div>
 
                     <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.artist.name}}」</h3>
+                        <h3>Recommended Artists for「{{track.artist.name}}」</h3>
                         <div v-if="recommendedArtists.length > 0">
                             <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                             <div class="horizontal-scroll">
