@@ -103,11 +103,13 @@
                             <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
                                 <p>{{ line }}</p>
                             </div>
-                            <div>
+                            <div class="row d-flex flex-row" v-if="track.tags">
                                 <strong>Keyword:</strong>
-
-
+                                <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
+                                    <button class="rounded-3 btn btn-secondary my-1">{{ word }}</button>
+                                </div>
                             </div>
+
                         </div>
                         <div v-else class="mx-auto">No lyric is privided for this track</div>
                     </div>
@@ -164,7 +166,7 @@
 </template>
 
 <script>
-import {getRandomTrack, getTrackById} from "@/api/tracks";
+import {getLyricTopWords, getRandomTrack, getTrackById} from "@/api/tracks";
 import { millisecondsToMMss } from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
@@ -192,6 +194,7 @@ export default {
             spotifyUri: "",
             spotifyTrackUrl: "",
             spotifyArtistUrl: "",
+            lyricTopWords: [],
 
             trackRating: 0,
             artistRating: 0,
@@ -301,6 +304,18 @@ export default {
                 console.error('Error search Spotify:', err.message);
             }
         },
+        async fetchLyricTopWords() {
+            try {
+                const response = await getLyricTopWords(this.trackId);
+                if (response.data.status === 200) {
+                    this.lyricTopWords = response.data.data.topwords;
+                } else {
+                    console.error('Error fetching lyricTopWords By Id:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching lyricTopWords By Id:', err.message);
+            }
+        },
         async fetchTrackById() {
             try {
                 const response = await getTrackById({ track: this.trackId });
@@ -309,6 +324,7 @@ export default {
                     this.formattedLyrics = this.formatLyrics(response.data.data.lyric)
                     let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
                     await this.searchSpotify(keyword, "track")
+                    await this.fetchLyricTopWords(this.trackId)
 
                 } else {
                     console.error('Error fetching Track By Id:', response.data.message);
@@ -371,7 +387,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.highlight {
+    color: red; /* 或者你想要的任何其他颜色 */
+    font-weight: bold; /* 可选：加粗字体 */
+}
+
 .img-container {
     position: relative;
     padding-bottom: 100%; /* 创建一个正方形容器 */
