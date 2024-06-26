@@ -127,6 +127,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
                         <div v-if="spotifyRecommendedTracks.length > 0">
                             <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
                             <div class="horizontal-scroll">
@@ -135,6 +136,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="row my-3">
@@ -166,7 +168,7 @@
 </template>
 
 <script>
-import {getLyricTopWords, getRandomTrack, getTrackById} from "@/api/tracks";
+import {getLyricTopWords, getTfidfSimilarities, getTrackById} from "@/api/tracks";
 import { millisecondsToMMss } from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
@@ -216,9 +218,12 @@ export default {
             this.trackId = to.params.id;
             if (isValidMongoId(this.trackId)){
                 this.fetchTrackById();
+                this.fetchRating()
             }else{
                 this.fetchSpotifyMetadata();
             }
+            this.fetchRecommendedArtists();
+            this.fetchRecommendedTracks()
         }
     },
     methods: {
@@ -265,8 +270,6 @@ export default {
                 console.error('Error fetching ratings:', err.message);
             }
         },
-
-
         openWindow: function(url) {
             window.open(url, '_blank');
         },
@@ -288,7 +291,6 @@ export default {
                 console.error('Error search Spotify Metadata:', err.message);
             }
         },
-
         async searchSpotify(keyword, type) {
             try {
                 const response = await searchSpotifyTracks(keyword, type);
@@ -360,9 +362,9 @@ export default {
         },
         async fetchRecommendedTracks() {
             try {
-                const response = await getRandomTrack();
+                const response = await getTfidfSimilarities(this.trackId);
                 if (response.data.status === 200) {
-                    this.recommendedTracks = response.data.data;
+                    this.recommendedTracks = response.data.data.topsimilar;
                 } else {
                     console.error('Error fetching Recommended Tracks:', response.data.message);
                 }

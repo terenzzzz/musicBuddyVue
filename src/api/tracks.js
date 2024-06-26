@@ -1,6 +1,13 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
+export const getTfidfSimilarities = (track) => request({
+    url: `/app/getTfidfSimilarities`,
+    method: 'get',
+    params: {track: track}
+})
+
+
 export const getLyricTopWords = (track) => request({
     url: `/app/getLyricTopWords`,
     method: 'get',
