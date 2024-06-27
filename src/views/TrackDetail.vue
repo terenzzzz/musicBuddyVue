@@ -168,7 +168,7 @@
 </template>
 
 <script>
-import {getLyricTopWords, getTfidfSimilarities, getTrackById} from "@/api/tracks";
+import {getLyricTopWords, getTrackById, getWeightedSimilarities} from "@/api/tracks";
 import { millisecondsToMMss } from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
@@ -362,9 +362,9 @@ export default {
         },
         async fetchRecommendedTracks() {
             try {
-                const response = await getTfidfSimilarities(this.trackId);
+                const response = await getWeightedSimilarities(this.trackId);
                 if (response.data.status === 200) {
-                    this.recommendedTracks = response.data.data.topsimilar;
+                    this.recommendedTracks = response.data.data;
                 } else {
                     console.error('Error fetching Recommended Tracks:', response.data.message);
                 }
