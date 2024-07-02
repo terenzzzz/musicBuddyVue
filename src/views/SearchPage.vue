@@ -23,10 +23,7 @@
                 <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
             </div>
 
-
-
-
-            <div class="p-3 my-3" v-if="selectedTypes.includes('tracks')">
+            <div class="p-3 my-2" v-if="selectedTypes.includes('tracks')">
                 <div class="row" >
                     <h3>Tracks Result</h3>
                     <div v-if="trackResult.length > 0" class="row">

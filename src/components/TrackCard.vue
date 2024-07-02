@@ -1,11 +1,20 @@
 <template>
     <router-link :to="`/track/${track._id}`">
         <div class="my-1">
-            <div class="card rounded-4 h-100 shadow-sm">
+            <div class="card rounded-4 h-100 shadow-sm overflow-hidden">
                 <div class="position-relative">
                     <div class="ratio ratio-1x1">
                         <img :src="track.cover || 'https://placehold.co/600x600?text=No+Cover'"
                              class="img-fluid d-block mx-auto rounded-4 object-fit-cover">
+
+                    </div>
+
+                    <!-- 左上角的logo -->
+                    <div class="position-absolute top-0 start-0 bg-body bg-opacity-50 text-white p-1 rounded-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <img v-if="providedByMusicBuddy" src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid" style="width: 30px; height: 30px;">
+                        <div v-else class="d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            <i class="fa-brands fa-spotify"></i>
+                        </div>
                     </div>
 
                     <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-2 rounded-bottom-4">
@@ -19,6 +28,8 @@
 </template>
 
 <script>
+import isValidMongoId from "@/utils/isValidMongoId";
+
 export default {
     props: {
       track: {
@@ -26,8 +37,12 @@ export default {
         required: true
       }
     },
+    data() {
+        return {
+            providedByMusicBuddy: !!isValidMongoId(this.track._id),
+        }
+    },
     methods: {
     },
-
 };
 </script>
