@@ -1,9 +1,9 @@
 <template>
     <div class="Tags">
         <div class="row">
-            <div class="col-12 col-md-3 col-lg-2 bg-secondary" >
-                <nav id="sidebarMenu" class="sidebar text-light text-center text-md-start">
-                    <div class="pt-3 position-sticky">
+            <div class="col-12 col-md-3 col-lg-2 bg-dark p-2 ps-3" >
+                <nav class="text-light text-center text-md-start">
+                    <div class="position-sticky">
                         <input type="search" class="form-control form-control-sm ds-input mb-2" id="search-input"
                                placeholder="Search Tags" v-model="keyword">
                             <button class="btn btn-sm btn-danger w-50" @click="clearSelected">Clear</button>
@@ -31,7 +31,6 @@
 
                 <div v-if="tracks.length > 0" class="row mt-3">
                     <h3>Tracks Result</h3>
-                    <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                     <div class="col-3 col-md-3 col-xl-2" v-for="track in tracks" :key="track.id">
                         <TrackCard :track="track"></TrackCard>
                     </div>
@@ -147,16 +146,3 @@ export default {
     }
 }
 </script>
-<style>
-.aspect-ratio-box {
-    aspect-ratio: 1 / 1; /* 设置宽高比为1:1 */
-}
-</style>
-
-
-<!--<router-link :to="{ name: 'Playlist',-->
-<!--                            params: { type:tag._id } }">-->
-<!--<div class="d-flex align-items-center justify-content-center bg-secondary text-white aspect-ratio-box">-->
-<!--    <p class="m-0">{{ tag.name }}</p>-->
-<!--</div>-->
-<!--</router-link>-->
