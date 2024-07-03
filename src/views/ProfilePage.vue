@@ -53,7 +53,7 @@
                     </router-link>
                 </div>
                 <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in ratedTracks" :key="track.id">
+                    <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in ratedTracks.reverse()" :key="track.id">
                         <TrackCard :track="track.item"></TrackCard>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                     </router-link>
                 </div>
                 <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 mx-2" v-for="artist in ratedArtists" :key="artist.id">
+                    <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="artist in ratedArtists" :key="artist.id">
                         <ArtistCard :artist="artist.item"></ArtistCard>
                     </div>
                 </div>
@@ -162,8 +162,8 @@
                             <div class="col-4 my-2" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
                                 <router-link :to="`/artist/${artist._id}`" >
                                     <div class="text-center">
-                                        <img v-if="artist.avatar" :src="artist.avatar" class="img-fluid rounded-circle">
-                                        <div><strong>{{artist.name}}</strong></div>
+                                        <img v-if="artist.avatar" :src="artist.avatar" class="img-fluid rounded-circle object-fit-cover" style="aspect-ratio: 1">
+                                        <div class="text-truncate w-100 text-center fw-bold">{{artist.name}}</div>
                                         <div class="rank">Top {{ index + 1 }}</div>
                                     </div>
                                 </router-link>
@@ -178,8 +178,8 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-12 col-lg-6 col-xl-4">
-                <div class="top-tags col-12 card rounded-5 p-3 my-2 h-100 shadow">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="red-bottom">Top Tags</h5>
                         <a href="#" class="text-white">All</a>
@@ -240,7 +240,7 @@ export default {
     },
     created() {
         this.fetchUser();
-        this.fetchRatings();
+        this.fetchRatings()
         this.checkForSpotifyRefreshToken();
         this.fetchSpotifyData();
     },
@@ -320,7 +320,6 @@ export default {
                 window.location.href = `${SPOTIFY_AUTH_URL}`;
             }
         },
-
         checkForSpotifyRefreshToken() {
             const hash = window.location.hash.substring(1); // 去掉开头的 #
             const queryStartIndex = hash.indexOf('?');
@@ -349,6 +348,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

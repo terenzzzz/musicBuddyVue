@@ -336,17 +336,26 @@ export default {
             }
         },
         formatLyrics(lyrics) {
-            lyrics = lyrics.lyric? lyrics.lyric : lyrics
+            // 如果传入的 lyrics 对象有 lyric 属性，使用该属性，否则使用传入的 lyrics
+            lyrics = lyrics.lyric ? lyrics.lyric : lyrics;
+
+            // 将歌词按换行符分割成数组，然后对每一行进行处理
             return lyrics.split('\n')
-                .map(line => {
-                    const match = line.match(/\[([0-9:.]+)\](.*)/);
-                    if (match) {
-                        const text = match[2].replace(/[^a-zA-Z\s]/g, '').trim(); // Remove non-English characters and trim
-                        return text;
-                    }
-                    return line.replace(/[^a-zA-Z\s]/g, '').trim(); // Remove non-English characters and trim
-                })
-                .filter(line => line !== ''); // Filter out possible empty lines
+                // .map(line => {
+                //     // 使用正则表达式匹配时间戳格式 [mm:ss.xx] 或 [hh:mm:ss.xx]
+                //     const match = line.match(/\[([0-9:.]+)\](.*)/);
+                //
+                //     // 如果匹配成功
+                //     if (match) {
+                //         // 获取时间戳后的歌词文本，并移除所有非英文字母字符和空白字符，再修剪两端的空白
+                //         // const text = match[2].replace(/[^a-zA-Z\s]/g, '').trim();
+                //         const text = match[2];
+                //         return text;
+                //     }
+                //     // 如果没有时间戳，移除所有非英文字母字符和空白字符，再修剪两端的空白
+                //     return line.replace(/[^a-zA-Z\s]/g, '').trim();
+                // })
+                // .filter(line => line !== ''); // 过滤掉可能的空行
         },
         async fetchRecommendedArtists() {
             try {
