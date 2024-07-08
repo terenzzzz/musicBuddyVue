@@ -1,11 +1,7 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
-export const getWeightedSimilarities = (track) => request({
-    url: `/app/getWeightedSimilarities`,
-    method: 'get',
-    params: {track: track}
-})
+
 
 
 export const getLyricTopWords = (track) => request({

@@ -106,7 +106,7 @@
                             <div class="row d-flex flex-row" v-if="track.tags">
                                 <strong>Keyword:</strong>
                                 <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
-                                    <button class="rounded-3 btn btn-secondary my-1">{{ word }}</button>
+                                    <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
                                 </div>
                             </div>
 
@@ -117,27 +117,44 @@
 
                 <!--Recommandation-->
                 <div >
+<!--                    <div class="row my-3">-->
+<!--                        <h3>Recommended Tracks for「{{track.name}}」From Third Party</h3>-->
+<!--                        <div v-if="spotifyRecommendedTracks.length > 0">-->
+<!--                            <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>-->
+<!--                            <div class="horizontal-scroll">-->
+<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in spotifyRecommendedTracks" :key="track.id">-->
+<!--                                    <TrackCard :track="track"></TrackCard>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
+<!--                    </div>-->
+
                     <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」</h3>
-                        <div v-if="recommendedTracks.length > 0">
-                            <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric Key words</h3>
+                        <div v-if="tfidfRecommended.length > 0">
                             <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="track in recommendedTracks" :key="track.id">
+                                <div class="col-3 col-md-2 mx-2" v-for="track in tfidfRecommended" :key="track.id">
                                     <TrackCard :track="track"></TrackCard>
                                 </div>
                             </div>
                         </div>
                         <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
-                        <div v-if="spotifyRecommendedTracks.length > 0">
-                            <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                    </div>
+
+                    <div class="row my-3">
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric Content</h3>
+                        <div v-if="w2vRecommended.length > 0">
                             <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="track in spotifyRecommendedTracks" :key="track.id">
+                                <div class="col-3 col-md-2 mx-2" v-for="track in w2vRecommended" :key="track.id">
                                     <TrackCard :track="track"></TrackCard>
                                 </div>
                             </div>
                         </div>
-
+                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
                     </div>
+
+
 
                     <div class="row my-3">
                         <h3>Recommended Artists for「{{track.artist.name}}」</h3>
@@ -168,7 +185,7 @@
 </template>
 
 <script>
-import {getLyricTopWords, getTrackById, getWeightedSimilarities} from "@/api/tracks";
+import {getLyricTopWords, getTrackById} from "@/api/tracks";
 import { millisecondsToMMss } from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
@@ -181,6 +198,7 @@ import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
+import {getTfidfSimilarity, getW2VSimilarity} from "@/api/recommend";
 
 export default {
     components: {EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
@@ -189,7 +207,8 @@ export default {
             trackId: this.$route.params.id,
             track: null,
             formattedLyrics: [],
-            recommendedTracks:[],
+            tfidfRecommended:[],
+            w2vRecommended:[],
             spotifyRecommendedTracks:[],
             recommendedArtists:[],
             spotifySimilarArtist:[],
@@ -202,7 +221,7 @@ export default {
             artistRating: 0,
         };
     },
-    async created() {
+    async mounted() {
         if (isValidMongoId(this.trackId)) {
             await this.fetchTrackById();
             await this.fetchRating()
@@ -214,16 +233,16 @@ export default {
         await this.fetchRecommendedTracks()
     },
     watch: {
-        '$route'(to) {
+        async '$route'(to) {
             this.trackId = to.params.id;
-            if (isValidMongoId(this.trackId)){
-                this.fetchTrackById();
-                this.fetchRating()
-            }else{
-                this.fetchSpotifyMetadata();
+            if (isValidMongoId(this.trackId)) {
+                await this.fetchTrackById();
+                await this.fetchRating()
+            } else {
+                await this.fetchSpotifyMetadata();
             }
-            this.fetchRecommendedArtists();
-            this.fetchRecommendedTracks()
+            await this.fetchRecommendedArtists();
+            await this.fetchRecommendedTracks()
         }
     },
     methods: {
@@ -276,6 +295,7 @@ export default {
         isValidMongoId,
         millisecondsToMMss,
         async fetchSpotifyMetadata() {
+            console.log("fetchSpotifyMetadata")
             try {
                 const response = await getSpotifyTrackById(this.trackId);
                 if (response.status === 200) {
@@ -292,6 +312,7 @@ export default {
             }
         },
         async searchSpotify(keyword, type) {
+            console.log("searchSpotify")
             try {
                 const response = await searchSpotifyTracks(keyword, type);
                 if (response.status === 200) {
@@ -307,6 +328,7 @@ export default {
             }
         },
         async fetchLyricTopWords() {
+            console.log("fetchLyricTopWords")
             try {
                 const response = await getLyricTopWords(this.trackId);
                 if (response.data.status === 200) {
@@ -319,6 +341,7 @@ export default {
             }
         },
         async fetchTrackById() {
+            console.log("fetchTrackById")
             try {
                 const response = await getTrackById({ track: this.trackId });
                 if (response.data.status === 200) {
@@ -358,6 +381,7 @@ export default {
                 // .filter(line => line !== ''); // 过滤掉可能的空行
         },
         async fetchRecommendedArtists() {
+
             try {
                 const response = await getRecommArtist();
                 if (response.data.status === 200) {
@@ -371,11 +395,24 @@ export default {
         },
         async fetchRecommendedTracks() {
             try {
-                const response = await getWeightedSimilarities(this.trackId);
-                if (response.data.status === 200) {
-                    this.recommendedTracks = response.data.data;
+                // 并发请求
+                const [tfidfResponse, w2vResponse] = await Promise.all([
+                    getTfidfSimilarity(this.trackId),
+                    getW2VSimilarity(this.trackId)
+                ]);
+
+                // 处理 tfidfResponse
+                if (tfidfResponse.data.status === 200) {
+                    this.tfidfRecommended = tfidfResponse.data.data.reverse();
                 } else {
-                    console.error('Error fetching Recommended Tracks:', response.data.message);
+                    console.error('Error fetching TFIDF Recommended Tracks:', tfidfResponse.data.message);
+                }
+
+                // 处理 w2vResponse
+                if (w2vResponse.data.status === 200) {
+                    this.w2vRecommended = w2vResponse.data.data.reverse();
+                } else {
+                    console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
                 }
             } catch (err) {
                 console.error('Error fetching Recommended Tracks:', err.message);
