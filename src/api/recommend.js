@@ -14,6 +14,13 @@ export const getW2VSimilarity = (track) => request({
     params: {track: track}
 })
 
+export const getLdaSimilarity = (track) => request({
+    url: `api/getLdaSimilarity`,
+    method: 'get',
+    params: {track: track}
+})
+
+
 
 export const get2dModel = params => request({
     url: `/api/get2dModel`,

@@ -53,7 +53,7 @@
                     </router-link>
                 </div>
                 <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in ratedTracks.reverse()" :key="track.id">
+                    <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in ratedTracks" :key="track.id">
                         <TrackCard :track="track.item"></TrackCard>
                     </div>
                 </div>
@@ -261,8 +261,8 @@ export default {
         async fetchRatings() {
             try {
                 const response = await getRatings(); // 传递适当的参数
-                this.ratedTracks = response.data.data.ratedTracks;
-                this.ratedArtists = response.data.data.ratedArtists;
+                this.ratedTracks = response.data.data.ratedTracks.reverse();
+                this.ratedArtists = response.data.data.ratedArtists.reverse();
             } catch (error) {
                 console.error('Failed to fetch user:', error);
             }

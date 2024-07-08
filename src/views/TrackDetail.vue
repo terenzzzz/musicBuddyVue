@@ -154,6 +154,18 @@
                         <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
                     </div>
 
+                    <div class="row my-3">
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric Content</h3>
+                        <div v-if="ldaRecommended.length > 0">
+                            <div class="horizontal-scroll">
+                                <div class="col-3 col-md-2 mx-2" v-for="track in ldaRecommended" :key="track.id">
+                                    <TrackCard :track="track"></TrackCard>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
+                    </div>
+
 
 
                     <div class="row my-3">
@@ -198,7 +210,7 @@ import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
-import {getTfidfSimilarity, getW2VSimilarity} from "@/api/recommend";
+import {getLdaSimilarity, getTfidfSimilarity, getW2VSimilarity} from "@/api/recommend";
 
 export default {
     components: {EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
@@ -209,6 +221,7 @@ export default {
             formattedLyrics: [],
             tfidfRecommended:[],
             w2vRecommended:[],
+            ldaRecommended:[],
             spotifyRecommendedTracks:[],
             recommendedArtists:[],
             spotifySimilarArtist:[],
@@ -248,7 +261,6 @@ export default {
     methods: {
         async updateRate(itemType,rating) {
             let response = null
-
             switch (itemType) {
                 case itemTypes.TRACK:
                     response = await addRating(this.trackId, itemType, rating)
@@ -289,13 +301,7 @@ export default {
                 console.error('Error fetching ratings:', err.message);
             }
         },
-        openWindow: function(url) {
-            window.open(url, '_blank');
-        },
-        isValidMongoId,
-        millisecondsToMMss,
         async fetchSpotifyMetadata() {
-            console.log("fetchSpotifyMetadata")
             try {
                 const response = await getSpotifyTrackById(this.trackId);
                 if (response.status === 200) {
@@ -312,7 +318,6 @@ export default {
             }
         },
         async searchSpotify(keyword, type) {
-            console.log("searchSpotify")
             try {
                 const response = await searchSpotifyTracks(keyword, type);
                 if (response.status === 200) {
@@ -328,7 +333,6 @@ export default {
             }
         },
         async fetchLyricTopWords() {
-            console.log("fetchLyricTopWords")
             try {
                 const response = await getLyricTopWords(this.trackId);
                 if (response.data.status === 200) {
@@ -341,7 +345,6 @@ export default {
             }
         },
         async fetchTrackById() {
-            console.log("fetchTrackById")
             try {
                 const response = await getTrackById({ track: this.trackId });
                 if (response.data.status === 200) {
@@ -358,30 +361,7 @@ export default {
                 console.error('Error fetching Track By Id:', err.message);
             }
         },
-        formatLyrics(lyrics) {
-            // 如果传入的 lyrics 对象有 lyric 属性，使用该属性，否则使用传入的 lyrics
-            lyrics = lyrics.lyric ? lyrics.lyric : lyrics;
-
-            // 将歌词按换行符分割成数组，然后对每一行进行处理
-            return lyrics.split('\n')
-                // .map(line => {
-                //     // 使用正则表达式匹配时间戳格式 [mm:ss.xx] 或 [hh:mm:ss.xx]
-                //     const match = line.match(/\[([0-9:.]+)\](.*)/);
-                //
-                //     // 如果匹配成功
-                //     if (match) {
-                //         // 获取时间戳后的歌词文本，并移除所有非英文字母字符和空白字符，再修剪两端的空白
-                //         // const text = match[2].replace(/[^a-zA-Z\s]/g, '').trim();
-                //         const text = match[2];
-                //         return text;
-                //     }
-                //     // 如果没有时间戳，移除所有非英文字母字符和空白字符，再修剪两端的空白
-                //     return line.replace(/[^a-zA-Z\s]/g, '').trim();
-                // })
-                // .filter(line => line !== ''); // 过滤掉可能的空行
-        },
         async fetchRecommendedArtists() {
-
             try {
                 const response = await getRecommArtist();
                 if (response.data.status === 200) {
@@ -396,9 +376,10 @@ export default {
         async fetchRecommendedTracks() {
             try {
                 // 并发请求
-                const [tfidfResponse, w2vResponse] = await Promise.all([
+                const [tfidfResponse, w2vResponse, ldaResponse] = await Promise.all([
                     getTfidfSimilarity(this.trackId),
-                    getW2VSimilarity(this.trackId)
+                    getW2VSimilarity(this.trackId),
+                    getLdaSimilarity(this.trackId)
                 ]);
 
                 // 处理 tfidfResponse
@@ -414,10 +395,43 @@ export default {
                 } else {
                     console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
                 }
+
+                if (ldaResponse.data.status === 200) {
+                    this.ldaRecommended = ldaResponse.data.data.reverse();
+                } else {
+                    console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
+                }
             } catch (err) {
                 console.error('Error fetching Recommended Tracks:', err.message);
             }
-        }
+        },
+        formatLyrics(lyrics) {
+            // 如果传入的 lyrics 对象有 lyric 属性，使用该属性，否则使用传入的 lyrics
+            lyrics = lyrics.lyric ? lyrics.lyric : lyrics;
+
+            // 将歌词按换行符分割成数组，然后对每一行进行处理
+            return lyrics.split('\n')
+            // .map(line => {
+            //     // 使用正则表达式匹配时间戳格式 [mm:ss.xx] 或 [hh:mm:ss.xx]
+            //     const match = line.match(/\[([0-9:.]+)\](.*)/);
+            //
+            //     // 如果匹配成功
+            //     if (match) {
+            //         // 获取时间戳后的歌词文本，并移除所有非英文字母字符和空白字符，再修剪两端的空白
+            //         // const text = match[2].replace(/[^a-zA-Z\s]/g, '').trim();
+            //         const text = match[2];
+            //         return text;
+            //     }
+            //     // 如果没有时间戳，移除所有非英文字母字符和空白字符，再修剪两端的空白
+            //     return line.replace(/[^a-zA-Z\s]/g, '').trim();
+            // })
+            // .filter(line => line !== ''); // 过滤掉可能的空行
+        },
+        openWindow: function(url) {
+            window.open(url, '_blank');
+        },
+        isValidMongoId,
+        millisecondsToMMss
     },
     computed: {
         itemTypes() {
