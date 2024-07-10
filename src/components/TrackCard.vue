@@ -5,7 +5,7 @@
                 <div class="position-relative">
                     <div class="ratio ratio-1x1">
                         <img :src="track.cover || 'https://placehold.co/600x600?text=No+Cover'"
-                             class="img-fluid d-block mx-auto rounded-4 object-fit-cover">
+                             class="img-fluid d-block mx-auto rounded-4 object-fit-cover" >
 
                     </div>
 
@@ -44,19 +44,19 @@ export default {
     },
     methods: {
         onMove(e) {
-            const card = e.currentTarget
-            card.style.transform = `scale(1.1)`; // Added scale
+            const img = e.currentTarget.querySelector('img');
+            img.style.transform = 'scale(1.3)'; // 改变img的scale
         },
         onLeave(e) {
-            const card = e.currentTarget
-            card.style.transform = `scale(1)`; // Added scale
+            const img = e.currentTarget.querySelector('img');
+            img.style.transform = 'scale(1)'; // 恢复img的scale
         }
     },
 };
 </script>
 
 <style scoped>
-.card{
+.card img{
  transition: 0.3s;
 }
 </style>
