@@ -1,7 +1,7 @@
 <template>
-    <router-link :to="`/track/${track._id}`">
+    <router-link :to="`/track/${track._id}`" class="TrackCard" >
         <div class="my-1">
-            <div class="card rounded-4 h-100 shadow-sm overflow-hidden">
+            <div class="card rounded-4 shadow-sm overflow-hidden" @mousemove="onMove" @mouseleave="onLeave">
                 <div class="position-relative">
                     <div class="ratio ratio-1x1">
                         <img :src="track.cover || 'https://placehold.co/600x600?text=No+Cover'"
@@ -43,6 +43,20 @@ export default {
         }
     },
     methods: {
+        onMove(e) {
+            const card = e.currentTarget
+            card.style.transform = `scale(1.1)`; // Added scale
+        },
+        onLeave(e) {
+            const card = e.currentTarget
+            card.style.transform = `scale(1)`; // Added scale
+        }
     },
 };
 </script>
+
+<style scoped>
+.card{
+ transition: 0.3s;
+}
+</style>

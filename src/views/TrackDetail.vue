@@ -96,42 +96,38 @@
                 </div>
 
                 <!--    Lyric-->
-                <div class="row row-gap-3 " >
+                <div class="row " >
                     <div class="col-12 card shadow p-5 my-2" >
                         <h3 class="text-center">Lyric</h3>
                         <div v-if="formattedLyrics.length>0" >
                             <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
                                 <p>{{ line }}</p>
                             </div>
-                            <div class="row d-flex flex-row" v-if="track.tags">
-                                <strong>Keyword:</strong>
-                                <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
-                                    <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
-                                </div>
-                            </div>
-
                         </div>
                         <div v-else class="mx-auto">No lyric is privided for this track</div>
                     </div>
                 </div>
 
+                <!--    Lyric Analysis -->
+                <div class="card shadow rounded-bottom-0 p-3" >
+                    <div class="row" >
+                        <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
+                        <div class="col-12 col-lg-6">
+                            <div class="row d-flex flex-row align-items-center" v-if="track.tags">
+                                <strong>Keyword:</strong>
+                                <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
+                                    <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
                 <!--Recommandation-->
                 <div >
-<!--                    <div class="row my-3">-->
-<!--                        <h3>Recommended Tracks for「{{track.name}}」From Third Party</h3>-->
-<!--                        <div v-if="spotifyRecommendedTracks.length > 0">-->
-<!--                            <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>-->
-<!--                            <div class="horizontal-scroll">-->
-<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in spotifyRecommendedTracks" :key="track.id">-->
-<!--                                    <TrackCard :track="track"></TrackCard>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
-<!--                    </div>-->
-
                     <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric Key words</h3>
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Key words</h3>
                         <div v-if="tfidfRecommended.length > 0">
                             <div class="horizontal-scroll">
                                 <div class="col-3 col-md-2 mx-2" v-for="track in tfidfRecommended" :key="track.id">
@@ -143,7 +139,7 @@
                     </div>
 
                     <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric Content</h3>
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Content</h3>
                         <div v-if="w2vRecommended.length > 0">
                             <div class="horizontal-scroll">
                                 <div class="col-3 col-md-2 mx-2" v-for="track in w2vRecommended" :key="track.id">
@@ -155,7 +151,7 @@
                     </div>
 
                     <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric Content</h3>
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Topic</h3>
                         <div v-if="ldaRecommended.length > 0">
                             <div class="horizontal-scroll">
                                 <div class="col-3 col-md-2 mx-2" v-for="track in ldaRecommended" :key="track.id">
@@ -197,8 +193,8 @@
 </template>
 
 <script>
-import {getLyricTopWords, getTrackById} from "@/api/tracks";
-import { millisecondsToMMss } from '@/utils/timeConverter';
+import {getLyricTopWords, getTrackById, getTrackTopic} from "@/api/tracks";
+import {millisecondsToMMss} from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
@@ -211,11 +207,15 @@ import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 import {getLdaSimilarity, getTfidfSimilarity, getW2VSimilarity} from "@/api/recommend";
+import Chart from 'chart.js'
 
 export default {
     components: {EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
     data() {
         return {
+            chartLabels: [],
+            chartData: [],
+            chart: null,
             trackId: this.$route.params.id,
             track: null,
             formattedLyrics: [],
@@ -234,7 +234,7 @@ export default {
             artistRating: 0,
         };
     },
-    async mounted() {
+    async created() {
         if (isValidMongoId(this.trackId)) {
             await this.fetchTrackById();
             await this.fetchRating()
@@ -243,7 +243,8 @@ export default {
         }
 
         await this.fetchRecommendedArtists();
-        await this.fetchRecommendedTracks()
+        await this.fetchRecommendedTracks();
+        await this.fetchTrackTopic();
     },
     watch: {
         async '$route'(to) {
@@ -255,10 +256,31 @@ export default {
                 await this.fetchSpotifyMetadata();
             }
             await this.fetchRecommendedArtists();
-            await this.fetchRecommendedTracks()
+            await this.fetchRecommendedTracks();
+            await this.fetchTrackTopic();
         }
     },
     methods: {
+        async fetchTrackTopic() {
+            try {
+                const response = await getTrackTopic(this.trackId);
+                if (response.status === 200) {
+                    const labels = response.data.map(topic => topic.top_words.slice(0, 5).join(','));
+                    const data = response.data.map(topic => Number((topic.probability * 100).toFixed(2)));
+                    this.chartLabels = labels
+                    this.chartData = data
+                    this.$nextTick(() => {
+                        this.createChart()
+                    })
+                } else {
+                    this.chartLabels = []
+                    this.chartData = []
+                    console.error('Error fetching Track Topic:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching Track Topic:', err.message);
+            }
+        },
         async updateRate(itemType,rating) {
             let response = null
             switch (itemType) {
@@ -431,7 +453,39 @@ export default {
             window.open(url, '_blank');
         },
         isValidMongoId,
-        millisecondsToMMss
+        millisecondsToMMss,
+        createChart() {
+            const ctx = this.$refs.radarChart.getContext('2d')
+            this.chart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: this.chartLabels,
+                    datasets: [{
+                        label: 'Topic Represent words',
+                        data: this.chartData,
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(255, 99, 132)'
+                    }]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                }
+            })
+        }
+    },
+    beforeDestroy() {
+        if (this.chart) {
+            this.chart.destroy()
+        }
     },
     computed: {
         itemTypes() {

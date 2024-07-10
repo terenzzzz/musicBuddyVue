@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "cal-heatmap": "^4.2.4",
+    "chart.js": "^2.9.4",
     "compromise": "^14.13.0",
     "core-js": "^3.8.3",
     "d3": "^7.9.0",

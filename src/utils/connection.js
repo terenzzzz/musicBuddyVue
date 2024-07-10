@@ -4,6 +4,7 @@
 
 // Development
 export const API_URL = 'http://0.0.0.0:6906'
+export const Model_API_URL = 'http://127.0.0.1:5002'
 
 
 export const SPOTIFY_AUTH_URL = `${API_URL}/api/spotifyLogin`
