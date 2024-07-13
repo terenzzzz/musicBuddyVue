@@ -13,7 +13,8 @@
                         <ul class="nav flex-row flex-md-column">
                             <li v-for="tag in tags" :key="tag.id" class="text-center mx-2"
                                 :class="selectedTags.includes(tag) ? 'bg-white text-secondary' : ''"
-                                @click="clickTag(tag)">{{ tag.name }}</li>
+                                @click="clickTag(tag)"
+                                style="cursor: pointer">{{ tag.name }}</li>
                         </ul>
                         <hr>
                     </div>

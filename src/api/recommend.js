@@ -20,6 +20,11 @@ export const getLdaSimilarity = (track) => request({
     params: {track: track}
 })
 
+export const getWeightedSimilarity = (track) => request({
+    url: `api/getWeightedSimilarity`,
+    method: 'get',
+    params: {track: track}
+})
 
 
 export const get2dModel = params => request({

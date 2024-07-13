@@ -127,6 +127,18 @@
                 <!--Recommandation-->
                 <div >
                     <div class="row my-3">
+                        <h3>Recommended Tracks for「{{track.name}}」From Lyric</h3>
+                        <div v-if="weightedRecommended.length > 0">
+                            <div class="horizontal-scroll">
+                                <div class="col-3 col-md-2 mx-2" v-for="track in weightedRecommended" :key="track.id">
+                                    <TrackCard :track="track"></TrackCard>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
+                    </div>
+
+                    <div class="row my-3">
                         <h3>Recommended Tracks for「{{track.name}}」From Lyric's Key words</h3>
                         <div v-if="tfidfRecommended.length > 0">
                             <div class="horizontal-scroll">
@@ -206,7 +218,7 @@ import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
-import {getLdaSimilarity, getTfidfSimilarity, getW2VSimilarity} from "@/api/recommend";
+import {getLdaSimilarity, getTfidfSimilarity, getW2VSimilarity, getWeightedSimilarity} from "@/api/recommend";
 import Chart from 'chart.js'
 
 export default {
@@ -222,6 +234,7 @@ export default {
             tfidfRecommended:[],
             w2vRecommended:[],
             ldaRecommended:[],
+            weightedRecommended:[],
             spotifyRecommendedTracks:[],
             recommendedArtists:[],
             spotifySimilarArtist:[],
@@ -398,10 +411,11 @@ export default {
         async fetchRecommendedTracks() {
             try {
                 // 并发请求
-                const [tfidfResponse, w2vResponse, ldaResponse] = await Promise.all([
+                const [tfidfResponse, w2vResponse, ldaResponse, weightedResponse] = await Promise.all([
                     getTfidfSimilarity(this.trackId),
                     getW2VSimilarity(this.trackId),
-                    getLdaSimilarity(this.trackId)
+                    getLdaSimilarity(this.trackId),
+                    getWeightedSimilarity(this.trackId)
                 ]);
 
                 // 处理 tfidfResponse
@@ -421,7 +435,13 @@ export default {
                 if (ldaResponse.data.status === 200) {
                     this.ldaRecommended = ldaResponse.data.data.reverse();
                 } else {
-                    console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
+                    console.error('Error fetching W2V Recommended Tracks:', ldaResponse.data.message);
+                }
+
+                if (weightedResponse.data.status === 200) {
+                    this.weightedRecommended = weightedResponse.data.data;
+                } else {
+                    console.error('Error fetching weighted Recommended Tracks:', weightedResponse.data.message);
                 }
             } catch (err) {
                 console.error('Error fetching Recommended Tracks:', err.message);
