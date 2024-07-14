@@ -10,14 +10,18 @@
                     </div>
 
                     <!-- 左上角的logo -->
-                    <div class="position-absolute top-0 start-0 bg-body bg-opacity-50 text-white p-1 rounded-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <div class="position-absolute top-0 start-0 bg-dark bg-opacity-50 text-white p-1 rounded-top-4 d-flex align-items-center
+                        flex-row justify-content-between w-100">
                         <img v-if="providedByMusicBuddy" src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid" style="width: 30px; height: 30px;">
                         <div v-else class="d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
                             <i class="fa-brands fa-spotify"></i>
                         </div>
+                        <span v-if="similarity !== -1" :class="similarityColor" >
+                            {{ (similarity * 100).toFixed(3) }}%
+                        </span>
                     </div>
 
-                    <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-2 rounded-bottom-4">
+                    <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-1 rounded-bottom-4">
                         <p class="card-title modelName mb-0 text-truncate ">{{track.name}}</p>
                         <span class="m-0 p-0 text-truncate d-block"><small>{{track.artist.name}}</small></span>
                     </div>
@@ -32,14 +36,32 @@ import isValidMongoId from "@/utils/isValidMongoId";
 
 export default {
     props: {
-      track: {
-        type: Object,
-        required: true
-      }
+        track: {
+            type: Object,
+            required: true
+        },
+        similarity:{
+            type: Number,
+            required: false,
+            default: -1
+        }
     },
     data() {
         return {
             providedByMusicBuddy: !!isValidMongoId(this.track._id),
+        }
+    },
+    computed: {
+        similarityColor() {
+            const similarity = this.similarity * 100
+            if (similarity > 0 && similarity < 35) {
+                return "text-light"; // 使用 Bootstrap 的类名
+            } else if (similarity >= 35 && similarity < 70) {
+                return "text-warning";
+            } else if (similarity >= 70) {
+                return "text-success";
+            }
+            return "text-light";
         }
     },
     methods: {

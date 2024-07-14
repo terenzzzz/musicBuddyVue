@@ -124,74 +124,137 @@
                     </div>
                 </div>
 
+
+
+
+
+
+
+
+
                 <!--Recommandation-->
-                <div >
-                    <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric</h3>
-                        <div v-if="weightedRecommended.length > 0">
-                            <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="track in weightedRecommended" :key="track.id">
-                                    <TrackCard :track="track"></TrackCard>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
+                <h3>Recommended Tracks for「{{track.name}}」</h3>
+                <div>
+                    <div class="btn-group  d-flex my-4 mx-auto" role="group">
+                        <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
+                        <label class="btn btn-outline-primary" for="weighted">Weighted</label>
+
+                        <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
+                        <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
+
+                        <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
+                        <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
+
+                        <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
+                        <label class="btn btn-outline-primary" for="lda">LDA</label>
                     </div>
 
-                    <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Key words</h3>
-                        <div v-if="tfidfRecommended.length > 0">
-                            <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="track in tfidfRecommended" :key="track.id">
-                                    <TrackCard :track="track"></TrackCard>
-                                </div>
+                    <div v-if="selectedRecommendation === 'weighted' && weightedRecommended.length > 0">
+                        <div class="row">
+                            <div class="col-4 col-md-2" v-for="track in weightedRecommended" :key="track.id">
+                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
                             </div>
                         </div>
-                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
                     </div>
 
-                    <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Content</h3>
-                        <div v-if="w2vRecommended.length > 0">
-                            <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="track in w2vRecommended" :key="track.id">
-                                    <TrackCard :track="track"></TrackCard>
-                                </div>
+                    <div v-else-if="selectedRecommendation === 'tfidf' && tfidfRecommended.length > 0">
+                        <div class="row">
+                            <div class="col-4 col-md-2" v-for="track in tfidfRecommended" :key="track.id">
+                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
                             </div>
                         </div>
-                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
                     </div>
 
-                    <div class="row my-3">
-                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Topic</h3>
-                        <div v-if="ldaRecommended.length > 0">
-                            <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="track in ldaRecommended" :key="track.id">
-                                    <TrackCard :track="track"></TrackCard>
-                                </div>
+                    <div v-else-if="selectedRecommendation === 'word2vec' && w2vRecommended.length > 0">
+                        <div class="row">
+                            <div class="col-4 col-md-2" v-for="track in w2vRecommended" :key="track.id">
+                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
                             </div>
                         </div>
-                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>
                     </div>
 
-
-
-                    <div class="row my-3">
-                        <h3>Recommended Artists for「{{track.artist.name}}」</h3>
-                        <div v-if="recommendedArtists.length > 0">
-                            <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                            <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
-                                    <ArtistCard :artist="artist"></ArtistCard>
-                                </div>
+                    <div v-else-if="selectedRecommendation === 'lda' && ldaRecommended.length > 0">
+                        <div class="row">
+                            <div class="col-4 col-md-2" v-for="track in ldaRecommended" :key="track.id">
+                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
                             </div>
                         </div>
-                        <div v-if="spotifySimilarArtist.length > 0">
-                            <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                            <div class="horizontal-scroll">
-                                <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
-                                    <ArtistCard :artist="artist"></ArtistCard>
-                                </div>
+                    </div>
+
+                    <div v-else>
+                        <p>No recommendations available.</p>
+                    </div>
+
+<!--                    <div class="row my-3">-->
+<!--                        <h3>Recommended Tracks for「{{track.name}}」From Lyric</h3>-->
+<!--                        <div v-if="weightedRecommended.length > 0">-->
+<!--                            <div class="horizontal-scroll">-->
+<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in weightedRecommended" :key="track.id">-->
+<!--                                    <TrackCard :track="track"></TrackCard>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row my-3">-->
+<!--                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Key words</h3>-->
+<!--                        <div v-if="tfidfRecommended.length > 0">-->
+<!--                            <div class="horizontal-scroll">-->
+<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in tfidfRecommended" :key="track.id">-->
+<!--                                    <TrackCard :track="track"></TrackCard>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row my-3">-->
+<!--                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Content</h3>-->
+<!--                        <div v-if="w2vRecommended.length > 0">-->
+<!--                            <div class="horizontal-scroll">-->
+<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in w2vRecommended" :key="track.id">-->
+<!--                                    <TrackCard :track="track"></TrackCard>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
+<!--                    </div>-->
+
+<!--                    <div class="row my-3">-->
+<!--                            <h3>Recommended Tracks for「{{track.name}}」From Lyric's Topic</h3>-->
+<!--                            <div v-if="ldaRecommended.length > 0">-->
+<!--                                <div class="horizontal-scroll">-->
+<!--                                    <div class="col-3 col-md-2 mx-2" v-for="track in ldaRecommended" :key="track.id">-->
+<!--                                        <TrackCard :track="track"></TrackCard>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
+<!--                        </div>-->
+                </div>
+
+
+
+
+
+
+
+                <div class="row my-3">
+                    <h3>Recommended Artists for「{{track.artist.name}}」</h3>
+                    <div v-if="recommendedArtists.length > 0">
+                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
+                        <div class="horizontal-scroll">
+                            <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
+                                <ArtistCard :artist="artist"></ArtistCard>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="spotifySimilarArtist.length > 0">
+                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
+                        <div class="horizontal-scroll">
+                            <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
+                                <ArtistCard :artist="artist"></ArtistCard>
                             </div>
                         </div>
                     </div>
@@ -225,6 +288,7 @@ export default {
     components: {EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
     data() {
         return {
+            selectedRecommendation: "weighted",
             chartLabels: [],
             chartData: [],
             chart: null,
@@ -420,26 +484,26 @@ export default {
 
                 // 处理 tfidfResponse
                 if (tfidfResponse.data.status === 200) {
-                    this.tfidfRecommended = tfidfResponse.data.data.reverse();
+                    this.tfidfRecommended = tfidfResponse.data.data.topsimilar;
                 } else {
                     console.error('Error fetching TFIDF Recommended Tracks:', tfidfResponse.data.message);
                 }
 
                 // 处理 w2vResponse
                 if (w2vResponse.data.status === 200) {
-                    this.w2vRecommended = w2vResponse.data.data.reverse();
+                    this.w2vRecommended = w2vResponse.data.data.topsimilar;
                 } else {
                     console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
                 }
 
                 if (ldaResponse.data.status === 200) {
-                    this.ldaRecommended = ldaResponse.data.data.reverse();
+                    this.ldaRecommended = ldaResponse.data.data.topsimilar;
                 } else {
                     console.error('Error fetching W2V Recommended Tracks:', ldaResponse.data.message);
                 }
 
                 if (weightedResponse.data.status === 200) {
-                    this.weightedRecommended = weightedResponse.data.data;
+                    this.weightedRecommended = weightedResponse.data.data.topsimilar;
                 } else {
                     console.error('Error fetching weighted Recommended Tracks:', weightedResponse.data.message);
                 }
