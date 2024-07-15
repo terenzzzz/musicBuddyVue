@@ -1,6 +1,11 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
+export const getTfidfRecommend = (lyric) => request({
+    url: `api/getTfidfRecommend`,
+    method: 'get',
+    params: {lyric: lyric}
+})
 
 export const getTfidfSimilarity = (track) => request({
     url: `api/getTfidfSimilarity`,

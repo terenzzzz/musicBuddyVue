@@ -48,6 +48,10 @@ export default {
     margin: 0;
 }
 
+.red-text{
+    color: #FF6666;
+}
+
 .red-bottom{
     border-bottom: 3px solid #FF6666;
 }

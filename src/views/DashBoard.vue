@@ -1,41 +1,57 @@
 <template>
-  <div class="px-1 px-sm-3 px-md-5 my-3">
-    <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="my-3 red-bottom">Recently Play</h3>
-    </div>
-      <div class="horizontal-scroll">
-          <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in recentlyPlay" :key="track.id">
-              <TrackCard :track="track"></TrackCard>
-          </div>
-      </div>
+    <div class="px-1 px-sm-3 px-md-5 my-3">
 
-    <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="my-3 red-bottom">Listen 「Lock Me Up」 also listening</h3>
-    </div>
-      <div class="horizontal-scroll">
-          <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in alsoListen" :key="track.id">
-              <TrackCard :track="track"></TrackCard>
-          </div>
-      </div>
+        <div class="mt-5">
+            <h3 class="my-3 red-bottom mx-auto fit-content">Recently Play</h3>
+            <div class="horizontal-scroll">
+                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in recentlyPlay" :key="track.id">
+                    <TrackCard :track="track"></TrackCard>
+                </div>
+            </div>
+        </div>
 
-    <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="my-3 red-bottom">Artist May Liked</h3>
-    </div>
-      <div class="horizontal-scroll">
-          <div class="col-3 col-md-2 col-xxl-1  mx-2" v-for="artist in artistMayLike" :key="artist.id">
-              <ArtistCard :artist="artist"></ArtistCard>
-          </div>
-      </div>
+        <div class="mt-5">
+            <h3 class="my-3 red-bottom mx-auto fit-content">
+                If you like「
+                <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
+                」, you may also like
+            </h3>
+            <div class="horizontal-scroll" v-if="alsoListen.length>0">
+                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in alsoListen" :key="track.id">
+                    <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                </div>
+            </div>
+            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+        </div>
 
-    <div class="title mt-5 d-flex justify-content-center">
-      <h3 class="my-3 red-bottom">Everyone's Listening</h3>
+        <div class="mt-5">
+            <h3 class="my-3 red-bottom mx-auto fit-content">Recommended for you</h3>
+            <div class="horizontal-scroll"  v-if="alsoListen.length>0">
+                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in alsoListen" :key="track.id">
+                    <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                </div>
+            </div>
+            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+        </div>
+
+        <div class="mt-5">
+            <h3 class="my-3 red-bottom mx-auto fit-content">Artist May Liked</h3>
+            <div class="horizontal-scroll">
+                <div class="col-3 col-md-2 col-xxl-1  mx-2" v-for="artist in artistMayLike" :key="artist.id">
+                  <ArtistCard :artist="artist"></ArtistCard>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h3 class="my-3 red-bottom mx-auto fit-content">Everyone's Listening</h3>
+            <div class="horizontal-scroll">
+                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in EveryoneListening" :key="track.id">
+                  <TrackCard :track="track"></TrackCard>
+                </div>
+            </div>
+        </div>
     </div>
-      <div class="horizontal-scroll">
-          <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in EveryoneListening" :key="track.id">
-              <TrackCard :track="track"></TrackCard>
-          </div>
-      </div>
-  </div>
 </template>
 
 <script>
@@ -43,9 +59,14 @@ import TrackCard from '@/components/TrackCard.vue';
 import {getRandomTrack} from "@/api/tracks";
 import {getRecommArtist} from "@/api/artists";
 import ArtistCard from "@/components/ArtistCard.vue";
+import {getRecentlyPlayed} from "@/api/spotify";
+import {getTfidfRecommend} from "@/api/recommend";
+import {getLyricsFromGenius} from "@/api/genius";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 export default {
     components: {
+        LoadingSpinner,
         ArtistCard,
         TrackCard,
     },
@@ -53,33 +74,61 @@ export default {
         return {
             recentlyPlay: [],
             alsoListen: [],
+            recommendForYou: [],
             artistMayLike: [],
-            EveryoneListening: []
+            EveryoneListening: [],
+
+            lyricsForRecentlyPlay:[]
         };
     },
     methods: {
+        async startRecommendation(){
+          if (this.recentlyPlay.length>0){
+              await this.fetchLyricFromGenius()
+              await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
+          }
+        },
+
+
         async fetchRecentlyPlay() {
             try {
-                const response = await getRandomTrack();
-                if (response.data.status === 200) {
-                    this.recentlyPlay = response.data.data;
-                } else {
-                    console.error('Error fetching tracks:', response.data.message);
-                }
-            } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+                const response = await getRecentlyPlayed();
+                this.recentlyPlay = response.data;
+                await this.startRecommendation()
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
             }
         },
-        async fetchAlsoListen() {
+
+        async fetchLyricFromGenius() {
+            let lyrics = [];
+
+            // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
+            for (let track of this.recentlyPlay.slice(0,10)) {
+                try {
+                    // Assuming track has properties artist and name
+                    let lyric = await getLyricsFromGenius(track.artist.name, track.name);
+                    lyrics.push(lyric.data.data.lyric);  // Use push to add items to an array
+                } catch (error) {
+                    console.error(`Failed to fetch lyrics for ${track.name} by ${track.artist.name}:`, error);
+                }
+            }
+
+            console.log(lyrics);  // Use console.log to print in JavaScript
+            this.lyricsForRecentlyPlay = lyrics;
+        },
+
+        async fetchAlsoListen(lyric) {
             try {
-                const response = await getRandomTrack();
+                console.log(`Getting TFIDF for lyric: ${lyric}`)
+                const response = await getTfidfRecommend(lyric);
                 if (response.data.status === 200) {
                     this.alsoListen = response.data.data;
                 } else {
-                    console.error('Error fetching tracks:', response.data.message);
+                    console.error('Error TFIDF Recommended tracks:', response.data.message);
                 }
             } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+                console.error('Error TFIDF Recommended tracks:', err.message);
             }
         },
         async fetchArtistMayLike() {
@@ -109,11 +158,16 @@ export default {
     },
     created() {
         this.fetchRecentlyPlay()
-        this.fetchAlsoListen()
         this.fetchArtistMayLike()
         this.fetchEveryoneListening()
     }
 }
 </script>
+
+<style>
+.fit-content{
+    width: fit-content;
+}
+</style>
 
 
