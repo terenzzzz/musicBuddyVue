@@ -1,6 +1,20 @@
 <template>
     <div class="px-1 px-sm-3 px-md-5 my-3">
 
+        <div class="btn-group d-flex justify-content-end" role="group">
+            <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
+            <label class="btn btn-outline-primary" for="weighted">Weighted</label>
+
+            <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
+            <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
+
+            <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
+            <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
+
+            <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
+            <label class="btn btn-outline-primary" for="lda">LDA</label>
+        </div>
+
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Recently Play</h3>
             <div class="horizontal-scroll">
@@ -26,8 +40,8 @@
 
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Recommended for you</h3>
-            <div class="horizontal-scroll"  v-if="alsoListen.length>0">
-                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in alsoListen" :key="track.id">
+            <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
+                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in recommendForYou" :key="track.id">
                     <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                 </div>
             </div>
@@ -60,7 +74,7 @@ import {getRandomTrack} from "@/api/tracks";
 import {getRecommArtist} from "@/api/artists";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getRecentlyPlayed} from "@/api/spotify";
-import {getTfidfRecommend} from "@/api/recommend";
+import {getTfidfRecommendByLyrics} from "@/api/recommend";
 import {getLyricsFromGenius} from "@/api/genius";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
@@ -72,6 +86,7 @@ export default {
     },
     data() {
         return {
+            selectedRecommendation: "weighted",
             recentlyPlay: [],
             alsoListen: [],
             recommendForYou: [],
@@ -86,6 +101,7 @@ export default {
           if (this.recentlyPlay.length>0){
               await this.fetchLyricFromGenius()
               await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
+              await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
           }
         },
 
@@ -104,7 +120,7 @@ export default {
             let lyrics = [];
 
             // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
-            for (let track of this.recentlyPlay.slice(0,10)) {
+            for (let track of this.recentlyPlay.slice(0,5)) {
                 try {
                     // Assuming track has properties artist and name
                     let lyric = await getLyricsFromGenius(track.artist.name, track.name);
@@ -117,11 +133,9 @@ export default {
             console.log(lyrics);  // Use console.log to print in JavaScript
             this.lyricsForRecentlyPlay = lyrics;
         },
-
         async fetchAlsoListen(lyric) {
             try {
-                console.log(`Getting TFIDF for lyric: ${lyric}`)
-                const response = await getTfidfRecommend(lyric);
+                const response = await getTfidfRecommendByLyrics(lyric);
                 if (response.data.status === 200) {
                     this.alsoListen = response.data.data;
                 } else {
@@ -131,6 +145,20 @@ export default {
                 console.error('Error TFIDF Recommended tracks:', err.message);
             }
         },
+        async fetchRecommendedForYou(lyric) {
+            try {
+                const response = await getTfidfRecommendByLyrics(lyric);
+                if (response.data.status === 200) {
+                    this.recommendForYou = response.data.data;
+                } else {
+                    console.error('Error TFIDF Recommended tracks:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error TFIDF Recommended tracks:', err.message);
+            }
+        },
+
+
         async fetchArtistMayLike() {
             try {
                 const response = await getRecommArtist();

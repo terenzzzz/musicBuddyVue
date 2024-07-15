@@ -1,32 +1,38 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
-export const getTfidfRecommend = (lyric) => request({
-    url: `api/getTfidfRecommend`,
-    method: 'get',
-    params: {lyric: lyric}
-})
+// export const getTfidfRecommend = (lyric) => request({
+//     url: `api/getTfidfRecommend`,
+//     method: 'get',
+//     params: {lyric: lyric}
+// })
 
-export const getTfidfSimilarity = (track) => request({
-    url: `api/getTfidfSimilarity`,
-    method: 'get',
-    params: {track: track}
-})
+export const getTfidfRecommendByLyrics = (lyric) => request({
+    url: `api/getTfidfRecommendByLyrics`,
+    method: 'post',
+    data: { lyric: lyric }
+});
 
-export const getW2VSimilarity = (track) => request({
-    url: `api/getW2VSimilarity`,
-    method: 'get',
-    params: {track: track}
-})
-
-export const getLdaSimilarity = (track) => request({
-    url: `api/getLdaSimilarity`,
+export const getTfidfRecommendByTrack = (track) => request({
+    url: `api/getTfidfRecommendByTrack`,
     method: 'get',
     params: {track: track}
 })
 
-export const getWeightedSimilarity = (track) => request({
-    url: `api/getWeightedSimilarity`,
+export const getW2VRecommendByTrack = (track) => request({
+    url: `api/getW2VRecommendByTrack`,
+    method: 'get',
+    params: {track: track}
+})
+
+export const getLdaRecommendByTrack = (track) => request({
+    url: `api/getLdaRecommendByTrack`,
+    method: 'get',
+    params: {track: track}
+})
+
+export const getWeightedRecommendByTrack = (track) => request({
+    url: `api/getWeightedRecommendByTrack`,
     method: 'get',
     params: {track: track}
 })

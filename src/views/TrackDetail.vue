@@ -281,7 +281,12 @@ import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
-import {getLdaSimilarity, getTfidfSimilarity, getW2VSimilarity, getWeightedSimilarity} from "@/api/recommend";
+import {
+    getLdaRecommendByTrack,
+    getTfidfRecommendByTrack,
+    getW2VRecommendByTrack,
+    getWeightedRecommendByTrack,
+} from "@/api/recommend";
 import Chart from 'chart.js'
 
 export default {
@@ -476,10 +481,10 @@ export default {
             try {
                 // 并发请求
                 const [tfidfResponse, w2vResponse, ldaResponse, weightedResponse] = await Promise.all([
-                    getTfidfSimilarity(this.trackId),
-                    getW2VSimilarity(this.trackId),
-                    getLdaSimilarity(this.trackId),
-                    getWeightedSimilarity(this.trackId)
+                    getTfidfRecommendByTrack(this.trackId),
+                    getW2VRecommendByTrack(this.trackId),
+                    getLdaRecommendByTrack(this.trackId),
+                    getWeightedRecommendByTrack(this.trackId)
                 ]);
 
                 // 处理 tfidfResponse
