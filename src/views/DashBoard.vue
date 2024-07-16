@@ -74,7 +74,12 @@ import {getRandomTrack} from "@/api/tracks";
 import {getRecommArtist} from "@/api/artists";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getRecentlyPlayed} from "@/api/spotify";
-import {getTfidfRecommendByLyrics} from "@/api/recommend";
+import {
+    getLDARecommendByLyrics,
+    getTfidfRecommendByLyrics,
+    getW2VRecommendByLyrics,
+    getWeightedRecommendByLyrics,
+} from "@/api/recommend";
 import {getLyricsFromGenius} from "@/api/genius";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
@@ -92,9 +97,14 @@ export default {
             recommendForYou: [],
             artistMayLike: [],
             EveryoneListening: [],
-
             lyricsForRecentlyPlay:[]
         };
+    },
+    watch: {
+        async selectedRecommendation() {
+            await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
+            await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
+        }
     },
     methods: {
         async startRecommendation(){
@@ -115,7 +125,6 @@ export default {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-
         async fetchLyricFromGenius() {
             let lyrics = [];
 
@@ -134,20 +143,40 @@ export default {
             this.lyricsForRecentlyPlay = lyrics;
         },
         async fetchAlsoListen(lyric) {
+            let response = {}
             try {
-                const response = await getTfidfRecommendByLyrics(lyric);
+                if (this.selectedRecommendation === "tfidf"){
+                    response = await getTfidfRecommendByLyrics(lyric)
+                }else if (this.selectedRecommendation === "word2vec"){
+                    response = await getW2VRecommendByLyrics(lyric)
+                }else if (this.selectedRecommendation === "lda"){
+                    response = await getLDARecommendByLyrics(lyric)
+                }else {
+                    response = await getWeightedRecommendByLyrics(lyric)
+                }
+
                 if (response.data.status === 200) {
                     this.alsoListen = response.data.data;
                 } else {
                     console.error('Error TFIDF Recommended tracks:', response.data.message);
                 }
             } catch (err) {
-                console.error('Error TFIDF Recommended tracks:', err.message);
+                console.error('Error Fetch AlsoListen Recommended tracks:', err.message);
             }
         },
         async fetchRecommendedForYou(lyric) {
+            let response = {}
             try {
-                const response = await getTfidfRecommendByLyrics(lyric);
+                if (this.selectedRecommendation === "tfidf"){
+                    response = await getTfidfRecommendByLyrics(lyric)
+                }else if (this.selectedRecommendation === "word2vec"){
+                    response = await getW2VRecommendByLyrics(lyric)
+                }else if (this.selectedRecommendation === "lda"){
+                    response = await getLDARecommendByLyrics(lyric)
+                }else {
+                    response = await getWeightedRecommendByLyrics(lyric)
+                }
+
                 if (response.data.status === 200) {
                     this.recommendForYou = response.data.data;
                 } else {

@@ -1,17 +1,30 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
-// export const getTfidfRecommend = (lyric) => request({
-//     url: `api/getTfidfRecommend`,
-//     method: 'get',
-//     params: {lyric: lyric}
-// })
-
 export const getTfidfRecommendByLyrics = (lyric) => request({
     url: `api/getTfidfRecommendByLyrics`,
     method: 'post',
     data: { lyric: lyric }
 });
+
+export const getW2VRecommendByLyrics = (lyric) => request({
+    url: `api/getW2VRecommendByLyrics`,
+    method: 'post',
+    data: { lyric: lyric }
+})
+
+export const getLDARecommendByLyrics = (lyric) => request({
+    url: `api/getLDARecommendByLyrics`,
+    method: 'post',
+    data: { lyric: lyric }
+})
+
+export const getWeightedRecommendByLyrics = (lyric) => request({
+    url: `api/getWeightedRecommendByLyrics`,
+    method: 'post',
+    data: { lyric: lyric }
+})
+
 
 export const getTfidfRecommendByTrack = (track) => request({
     url: `api/getTfidfRecommendByTrack`,
