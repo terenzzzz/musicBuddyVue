@@ -16,6 +16,8 @@
     "bootstrap-icons": "^1.11.3",
     "cal-heatmap": "^4.2.4",
     "chart.js": "^2.9.4",
+    "chartjs-plugin-datalabels": "^0.7.0",
+    "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "compromise": "^14.13.0",
     "core-js": "^3.8.3",
     "d3": "^7.9.0",

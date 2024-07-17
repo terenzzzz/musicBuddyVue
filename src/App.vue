@@ -49,11 +49,11 @@ export default {
 }
 
 .red-text{
-    color: #FF6666;
+    color: #0d6efd;
 }
 
 .red-bottom{
-    border-bottom: 3px solid #FF6666;
+    border-bottom: 3px solid #0d6efd;
 }
 
 .page-container {

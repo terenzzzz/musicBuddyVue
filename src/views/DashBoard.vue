@@ -1,19 +1,32 @@
 <template>
     <div class="px-1 px-sm-3 px-md-5 my-3">
+        <div class="row px-3 px-md-5">
+            <div class="card p-3 rounded-5">
+                <div class="btn-group d-flex justify-content-end container align-items-center" role="group">
+                    <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
+                    <label class="btn btn-outline-primary" for="weighted">Weighted</label>
 
-        <div class="btn-group d-flex justify-content-end" role="group">
-            <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
-            <label class="btn btn-outline-primary" for="weighted">Weighted</label>
+                    <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
+                    <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
 
-            <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
-            <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
+                    <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
+                    <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
 
-            <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
-            <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
+                    <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
+                    <label class="btn btn-outline-primary" for="lda">LDA</label>
 
-            <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
-            <label class="btn btn-outline-primary" for="lda">LDA</label>
+                    <i class="fa-solid ms-3 text-primary" :class="(showPieSlider)?'fa-chevron-down':'fa-chevron-up'"
+                       v-show="selectedRecommendation==='weighted'" @click="showPieSlider=!showPieSlider"></i>
+                </div>
+
+
+                <transition name="fade" mode="out-in">
+                    <PieSlider v-show="showPieSlider" class="pie-slider"/>
+                </transition>
+            </div>
         </div>
+
+
 
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Recently Play</h3>
@@ -82,15 +95,18 @@ import {
 } from "@/api/recommend";
 import {getLyricsFromGenius} from "@/api/genius";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import PieSlider from "@/components/PieSlider.vue";
 
 export default {
     components: {
+        PieSlider,
         LoadingSpinner,
         ArtistCard,
         TrackCard,
     },
     data() {
         return {
+            showPieSlider: true,
             selectedRecommendation: "weighted",
             recentlyPlay: [],
             alsoListen: [],
@@ -102,8 +118,15 @@ export default {
     },
     watch: {
         async selectedRecommendation() {
+            // 获取当前选中的推荐方法
+            const recommendationType = this.selectedRecommendation;
+            // 根据选中的推荐方法来设置 showPieSlider 的状态
+            this.showPieSlider = recommendationType === "weighted";
+
             await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
             await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
+
+
         }
     },
     methods: {
@@ -221,10 +244,17 @@ export default {
 }
 </script>
 
+
 <style>
-.fit-content{
+.fit-content {
     width: fit-content;
 }
+/* 过渡类名定义 */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active 在 <2.1.8 中 */ {
+    opacity: 0;
+}
 </style>
-
 

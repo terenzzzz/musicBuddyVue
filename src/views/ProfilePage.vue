@@ -188,7 +188,7 @@
                         <div class="mb-2 position-relative" v-for="tag in user.tags.slice(0, 6)" :key="tag.id">
                             <span class="tag-label">{{ tag.tag.name }}</span>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="background-color: #FF6666"
+                                <div class="progress-bar" role="progressbar" style="background-color: #0d6efd"
                                      :style="{ width: `${getProgressWidth(tag.count)}% ` }"
                                      :aria-valuenow="getProgressWidth(tag.count)" aria-valuemin="0" aria-valuemax="100">
                                 </div>
