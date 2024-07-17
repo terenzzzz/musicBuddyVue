@@ -152,7 +152,7 @@
                     <div v-if="selectedRecommendation === 'weighted' && weightedRecommended.length > 0">
                         <div class="row">
                             <div class="col-4 col-md-2" v-for="track in weightedRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
+                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                     <div v-else-if="selectedRecommendation === 'tfidf' && tfidfRecommended.length > 0">
                         <div class="row">
                             <div class="col-4 col-md-2" v-for="track in tfidfRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
+                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                     <div v-else-if="selectedRecommendation === 'word2vec' && w2vRecommended.length > 0">
                         <div class="row">
                             <div class="col-4 col-md-2" v-for="track in w2vRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
+                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                     <div v-else-if="selectedRecommendation === 'lda' && ldaRecommended.length > 0">
                         <div class="row">
                             <div class="col-4 col-md-2" v-for="track in ldaRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.value"></TrackCard>
+                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
                         </div>
                     </div>
@@ -282,10 +282,10 @@ import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 import {
-    getLdaRecommendByTrack,
-    getTfidfRecommendByTrack,
-    getW2VRecommendByTrack,
-    getWeightedRecommendByTrack,
+    getLDARecommendByLyrics,
+    getTfidfRecommendByLyrics,
+    getW2VRecommendByLyrics,
+    getWeightedRecommendByLyrics,
 } from "@/api/recommend";
 import Chart from 'chart.js'
 
@@ -481,34 +481,34 @@ export default {
             try {
                 // 并发请求
                 const [tfidfResponse, w2vResponse, ldaResponse, weightedResponse] = await Promise.all([
-                    getTfidfRecommendByTrack(this.trackId),
-                    getW2VRecommendByTrack(this.trackId),
-                    getLdaRecommendByTrack(this.trackId),
-                    getWeightedRecommendByTrack(this.trackId)
+                    getTfidfRecommendByLyrics(this.track.lyric),
+                    getW2VRecommendByLyrics(this.track.lyric),
+                    getLDARecommendByLyrics(this.track.lyric),
+                    getWeightedRecommendByLyrics(this.track.lyric)
                 ]);
 
                 // 处理 tfidfResponse
                 if (tfidfResponse.data.status === 200) {
-                    this.tfidfRecommended = tfidfResponse.data.data.topsimilar;
+                    this.tfidfRecommended = tfidfResponse.data.data;
                 } else {
                     console.error('Error fetching TFIDF Recommended Tracks:', tfidfResponse.data.message);
                 }
 
                 // 处理 w2vResponse
                 if (w2vResponse.data.status === 200) {
-                    this.w2vRecommended = w2vResponse.data.data.topsimilar;
+                    this.w2vRecommended = w2vResponse.data.data;
                 } else {
                     console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
                 }
 
                 if (ldaResponse.data.status === 200) {
-                    this.ldaRecommended = ldaResponse.data.data.topsimilar;
+                    this.ldaRecommended = ldaResponse.data.data;
                 } else {
                     console.error('Error fetching W2V Recommended Tracks:', ldaResponse.data.message);
                 }
 
                 if (weightedResponse.data.status === 200) {
-                    this.weightedRecommended = weightedResponse.data.data.topsimilar;
+                    this.weightedRecommended = weightedResponse.data.data;
                 } else {
                     console.error('Error fetching weighted Recommended Tracks:', weightedResponse.data.message);
                 }
