@@ -2,25 +2,25 @@
 import request from "@/utils/request"
 
 export const getTfidfRecommendByLyrics = (lyric) => request({
-    url: `api/getTfidfRecommendByLyrics`,
+    url: `/api/getTfidfRecommendByLyrics`,
     method: 'post',
     data: { lyric: lyric }
 });
 
 export const getW2VRecommendByLyrics = (lyric) => request({
-    url: `api/getW2VRecommendByLyrics`,
+    url: `/api/getW2VRecommendByLyrics`,
     method: 'post',
     data: { lyric: lyric }
 })
 
 export const getLDARecommendByLyrics = (lyric) => request({
-    url: `api/getLDARecommendByLyrics`,
+    url: `/api/getLDARecommendByLyrics`,
     method: 'post',
     data: { lyric: lyric }
 })
 
 export const getWeightedRecommendByLyrics = (lyric,tfidf_weight, w2v_weight, lda_weight) => request({
-    url: `api/getWeightedRecommendByLyrics`,
+    url: `/api/getWeightedRecommendByLyrics`,
     method: 'post',
     data: {
         lyric,

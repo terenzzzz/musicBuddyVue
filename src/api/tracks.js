@@ -11,10 +11,22 @@ export const getTrackTopic = (track) => requestModelling({
     params: {track: track}
 })
 
+export const getTrackTopicByLyric = (lyric) => request({
+    url: `/app/getTrackTopicByLyric`,
+    method: 'post',
+    data: { lyric: lyric }
+})
+
 export const getLyricTopWords = (track) => request({
     url: `/app/getLyricTopWords`,
     method: 'get',
     params: {track: track}
+})
+
+export const getLyricTopWordsByLyric = (lyric) => request({
+    url: `/app/getLyricTopWordsByLyric`,
+    method: 'post',
+    data: { lyric: lyric }
 })
 
 export const getRandomTrack = params => request({

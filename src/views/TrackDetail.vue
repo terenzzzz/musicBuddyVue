@@ -103,6 +103,7 @@
                             <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
                                 <p>{{ line }}</p>
                             </div>
+                            <p class="text-muted mt-3" v-if="track.lyric.lyricAPI">Lyric Provider: <a>{{track.lyric.lyricAPI}}</a></p>
                         </div>
                         <div v-else class="mx-auto">No lyric is privided for this track</div>
                     </div>
@@ -113,7 +114,7 @@
                     <div class="row" >
                         <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
                         <div class="col-12 col-lg-6">
-                            <div class="row d-flex flex-row align-items-center" v-if="track.tags">
+                            <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
                                 <strong>Keyword:</strong>
                                 <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
                                     <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
@@ -268,7 +269,7 @@
 </template>
 
 <script>
-import {getLyricTopWords, getTrackById, getTrackTopic} from "@/api/tracks";
+import {getLyricTopWordsByLyric, getTrackById, getTrackTopicByLyric} from "@/api/tracks";
 import {millisecondsToMMss} from '@/utils/timeConverter';
 import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
@@ -345,10 +346,10 @@ export default {
     methods: {
         async fetchTrackTopic() {
             try {
-                const response = await getTrackTopic(this.trackId);
+                const response = await getTrackTopicByLyric(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric);
                 if (response.status === 200) {
-                    const labels = response.data.map(topic => topic.top_words.slice(0, 5).join(','));
-                    const data = response.data.map(topic => Number((topic.probability * 100).toFixed(2)));
+                    const labels = response.data.data.map(topic => topic.top_words.slice(0, 5).join(','));
+                    const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
                     this.chartLabels = labels
                     this.chartData = data
                     this.$nextTick(() => {
@@ -414,6 +415,7 @@ export default {
                     this.formattedLyrics = this.formatLyrics(response.data.lyric)
                     this.spotifyTrackUrl = response.data.external_urls
                     this.spotifyArtistUrl = response.data.artist.external_urls
+                    await this.fetchLyricTopWords()
                 } else {
                     console.error('Error search Spotify Metadata else:', response.data.message);
                 }
@@ -438,9 +440,9 @@ export default {
         },
         async fetchLyricTopWords() {
             try {
-                const response = await getLyricTopWords(this.trackId);
+                const response = await getLyricTopWordsByLyric(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric);
                 if (response.data.status === 200) {
-                    this.lyricTopWords = response.data.data.topwords;
+                    this.lyricTopWords = response.data.data;
                 } else {
                     console.error('Error fetching lyricTopWords By Id:', response.data.message);
                 }
@@ -456,7 +458,7 @@ export default {
                     this.formattedLyrics = this.formatLyrics(response.data.data.lyric)
                     let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
                     await this.searchSpotify(keyword, "track")
-                    await this.fetchLyricTopWords(this.trackId)
+                    await this.fetchLyricTopWords()
 
                 } else {
                     console.error('Error fetching Track By Id:', response.data.message);
@@ -479,12 +481,13 @@ export default {
         },
         async fetchRecommendedTracks() {
             try {
+                const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
                 // 并发请求
                 const [tfidfResponse, w2vResponse, ldaResponse, weightedResponse] = await Promise.all([
-                    getTfidfRecommendByLyrics(this.track.lyric),
-                    getW2VRecommendByLyrics(this.track.lyric),
-                    getLDARecommendByLyrics(this.track.lyric),
-                    getWeightedRecommendByLyrics(this.track.lyric)
+                    getTfidfRecommendByLyrics(lyric),
+                    getW2VRecommendByLyrics(lyric),
+                    getLDARecommendByLyrics(lyric),
+                    getWeightedRecommendByLyrics(lyric, 0.33,0.33,0.34)
                 ]);
 
                 // 处理 tfidfResponse
