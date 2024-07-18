@@ -19,10 +19,15 @@ export const getLDARecommendByLyrics = (lyric) => request({
     data: { lyric: lyric }
 })
 
-export const getWeightedRecommendByLyrics = (lyric) => request({
+export const getWeightedRecommendByLyrics = (lyric,tfidf_weight, w2v_weight, lda_weight) => request({
     url: `api/getWeightedRecommendByLyrics`,
     method: 'post',
-    data: { lyric: lyric }
+    data: {
+        lyric,
+        tfidf_weight,
+        w2v_weight,
+        lda_weight,
+    }
 })
 
 

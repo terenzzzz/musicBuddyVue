@@ -6,7 +6,7 @@
                 <canvas id="weightChart"></canvas>
             </div>
             <div class="col-6">
-                <div class="model-weight" v-for="(model, index) in models" :key="index">
+                <div class="model-weight" v-for="(model, index) in modelWeighting" :key="index">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <label :for="model.name" class="font-weight-bold">{{ model.name }}</label>
                         <span class="badge badge-primary">{{ model.value }}%</span>
@@ -18,7 +18,7 @@
                         v-model.number="model.value"
                         min="0"
                         max="100"
-                        @input="updateWeights"
+                        @change="updateWeights"
                     />
                 </div>
             </div>
@@ -34,15 +34,11 @@ Chart.plugins.unregister(ChartDataLabels);
 Chart.plugins.register(ChartDataLabels);
 
 export default {
-    data() {
-        return {
-            models: [
-                { name: 'TFIDF', value: 33 },
-                { name: 'Word2Vec', value: 33 },
-                { name: 'LDA', value: 34 }
-            ],
-            chart: null,
-        };
+    props: {
+        modelWeighting: {
+            type: Array,
+            required: true
+        }
     },
     mounted() {
         this.initChart();
@@ -53,9 +49,9 @@ export default {
             this.chart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: this.models.map(model => model.name),
+                    labels: this.modelWeighting.map(model => model.name),
                     datasets: [{
-                        data: this.models.map(model => model.value),
+                        data: this.modelWeighting.map(model => model.value),
                         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
                     }]
                 },
@@ -87,8 +83,9 @@ export default {
             });
         },
         updateWeights() {
-            this.chart.data.datasets[0].data = this.models.map(model => model.value);
+            this.chart.data.datasets[0].data = this.modelWeighting.map(model => model.value);
             this.chart.update();
+            this.$emit('update:models', this.modelWeighting);
         },
     },
 };

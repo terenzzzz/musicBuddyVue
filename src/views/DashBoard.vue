@@ -21,7 +21,13 @@
 
 
                 <transition name="fade" mode="out-in">
-                    <PieSlider v-show="showPieSlider" class="pie-slider"/>
+
+                    <PieSlider
+                        v-show="showPieSlider"
+                        class="pie-slider"
+                        :modelWeighting.sync="modelWeighting"
+                        @update:models="handleModelUpdate"
+                    />
                 </transition>
             </div>
         </div>
@@ -113,7 +119,12 @@ export default {
             recommendForYou: [],
             artistMayLike: [],
             EveryoneListening: [],
-            lyricsForRecentlyPlay:[]
+            lyricsForRecentlyPlay:[],
+            modelWeighting: [
+                { name: 'TFIDF', value: 33},
+                { name: 'Word2Vec', value: 33},
+                { name: 'LDA', value: 34 }
+            ]
         };
     },
     watch: {
@@ -129,6 +140,28 @@ export default {
 
         }
     },
+    computed:{
+        calculatedWeighting() {
+            // 计算总和
+            const totalValue = this.modelWeighting.reduce((sum, model) => sum + model.value, 0);
+
+            // 计算每个模型的权重，但不立即舍入
+            let calculatedWeighting = this.modelWeighting.map(model => model.value / totalValue);
+
+            // 对前n-1个权重进行舍入
+            for (let i = 0; i < calculatedWeighting.length - 1; i++) {
+                calculatedWeighting[i] = Number(calculatedWeighting[i].toFixed(4));
+            }
+
+            // 计算前n-1个权重的总和
+            const sumOfN1 = calculatedWeighting.slice(0, -1).reduce((sum, weight) => sum + weight, 0);
+
+            // 最后一个权重设为1减去其他权重之和
+            calculatedWeighting[calculatedWeighting.length - 1] = Number((1 - sumOfN1).toFixed(4));
+
+            return calculatedWeighting;
+        }
+    },
     methods: {
         async startRecommendation(){
           if (this.recentlyPlay.length>0){
@@ -137,8 +170,6 @@ export default {
               await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
           }
         },
-
-
         async fetchRecentlyPlay() {
             try {
                 const response = await getRecentlyPlayed();
@@ -161,8 +192,6 @@ export default {
                     console.error(`Failed to fetch lyrics for ${track.name} by ${track.artist.name}:`, error);
                 }
             }
-
-            console.log(lyrics);  // Use console.log to print in JavaScript
             this.lyricsForRecentlyPlay = lyrics;
         },
         async fetchAlsoListen(lyric) {
@@ -175,7 +204,8 @@ export default {
                 }else if (this.selectedRecommendation === "lda"){
                     response = await getLDARecommendByLyrics(lyric)
                 }else {
-                    response = await getWeightedRecommendByLyrics(lyric)
+                    response = await getWeightedRecommendByLyrics(lyric,this.calculatedWeighting[0],
+                        this.calculatedWeighting[1], this.calculatedWeighting[2])
                 }
 
                 if (response.data.status === 200) {
@@ -197,7 +227,9 @@ export default {
                 }else if (this.selectedRecommendation === "lda"){
                     response = await getLDARecommendByLyrics(lyric)
                 }else {
-                    response = await getWeightedRecommendByLyrics(lyric)
+
+                    response = await getWeightedRecommendByLyrics(lyric,this.calculatedWeighting[0],
+                        this.calculatedWeighting[1], this.calculatedWeighting[2])
                 }
 
                 if (response.data.status === 200) {
@@ -209,8 +241,6 @@ export default {
                 console.error('Error TFIDF Recommended tracks:', err.message);
             }
         },
-
-
         async fetchArtistMayLike() {
             try {
                 const response = await getRecommArtist();
@@ -234,7 +264,27 @@ export default {
             } catch (err) {
                 console.error('Error fetching tracks:', err.message);
             }
-        }
+        },
+        async handleModelUpdate(updatedModels) {
+            this.modelWeighting = updatedModels;
+
+            const [alsoLikeResponse, recommendForYouResponse] = await Promise.all([
+                getWeightedRecommendByLyrics(this.lyricsForRecentlyPlay[0],this.calculatedWeighting[0],
+                    this.calculatedWeighting[1],this.calculatedWeighting[2]),
+                getWeightedRecommendByLyrics(this.lyricsForRecentlyPlay,this.calculatedWeighting[0],
+                    this.calculatedWeighting[1],this.calculatedWeighting[2])
+            ]);
+
+            if (alsoLikeResponse.status === 200) {
+                this.alsoListen = alsoLikeResponse.data.data;
+            }
+
+            if (recommendForYouResponse.status === 200) {
+                this.recommendForYou = recommendForYouResponse.data.data;
+            }
+
+        },
+
     },
     created() {
         this.fetchRecentlyPlay()
