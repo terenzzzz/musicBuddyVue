@@ -21,7 +21,6 @@
 
 
                 <transition name="fade" mode="out-in">
-
                     <PieSlider
                         v-show="showPieSlider"
                         class="pie-slider"
@@ -193,6 +192,7 @@ export default {
                 }
             }
             this.lyricsForRecentlyPlay = lyrics;
+            console.log(this.lyricsForRecentlyPlay)
         },
         async fetchAlsoListen(lyric) {
             let response = {}

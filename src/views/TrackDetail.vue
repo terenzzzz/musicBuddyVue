@@ -136,18 +136,33 @@
                 <!--Recommandation-->
                 <div class="my-3">
                     <h3 class="red-bottom">Recommended Tracks for「{{track.name}}」</h3>
-                    <div class="btn-group  d-flex my-4 mx-auto" role="group">
-                        <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
-                        <label class="btn btn-outline-primary" for="weighted">Weighted</label>
+                    <div class="card p-3 rounded-5 my-3">
+                        <div class="btn-group d-flex justify-content-end container align-items-center" role="group">
+                            <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
+                            <label class="btn btn-outline-primary" for="weighted">Weighted</label>
 
-                        <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
-                        <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
+                            <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
+                            <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
 
-                        <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
-                        <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
+                            <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
+                            <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
 
-                        <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
-                        <label class="btn btn-outline-primary" for="lda">LDA</label>
+                            <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
+                            <label class="btn btn-outline-primary" for="lda">LDA</label>
+
+                            <i class="fa-solid ms-3 text-primary" :class="(showPieSlider)?'fa-chevron-down':'fa-chevron-up'"
+                               v-show="selectedRecommendation==='weighted'" @click="showPieSlider=!showPieSlider"></i>
+                        </div>
+
+
+                        <transition name="fade" mode="out-in">
+                            <PieSlider
+                                v-show="showPieSlider"
+                                class="pie-slider"
+                                :modelWeighting.sync="modelWeighting"
+                                @update:models="handleModelUpdate"
+                            />
+                        </transition>
                     </div>
 
                     <div v-if="selectedRecommendation === 'weighted' && weightedRecommended.length > 0">
@@ -185,54 +200,6 @@
                     <div v-else>
                         <p>No recommendations available.</p>
                     </div>
-
-<!--                    <div class="row my-3">-->
-<!--                        <h3>Recommended Tracks for「{{track.name}}」From Lyric</h3>-->
-<!--                        <div v-if="weightedRecommended.length > 0">-->
-<!--                            <div class="horizontal-scroll">-->
-<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in weightedRecommended" :key="track.id">-->
-<!--                                    <TrackCard :track="track"></TrackCard>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
-<!--                    </div>-->
-
-<!--                    <div class="row my-3">-->
-<!--                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Key words</h3>-->
-<!--                        <div v-if="tfidfRecommended.length > 0">-->
-<!--                            <div class="horizontal-scroll">-->
-<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in tfidfRecommended" :key="track.id">-->
-<!--                                    <TrackCard :track="track"></TrackCard>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
-<!--                    </div>-->
-
-<!--                    <div class="row my-3">-->
-<!--                        <h3>Recommended Tracks for「{{track.name}}」From Lyric's Content</h3>-->
-<!--                        <div v-if="w2vRecommended.length > 0">-->
-<!--                            <div class="horizontal-scroll">-->
-<!--                                <div class="col-3 col-md-2 mx-2" v-for="track in w2vRecommended" :key="track.id">-->
-<!--                                    <TrackCard :track="track"></TrackCard>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
-<!--                    </div>-->
-
-<!--                    <div class="row my-3">-->
-<!--                            <h3>Recommended Tracks for「{{track.name}}」From Lyric's Topic</h3>-->
-<!--                            <div v-if="ldaRecommended.length > 0">-->
-<!--                                <div class="horizontal-scroll">-->
-<!--                                    <div class="col-3 col-md-2 mx-2" v-for="track in ldaRecommended" :key="track.id">-->
-<!--                                        <TrackCard :track="track"></TrackCard>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div v-else class="mx-auto">Sorry, We can't find any recommended base on this content.</div>-->
-<!--                        </div>-->
                 </div>
 
 
@@ -287,11 +254,18 @@ import {
     getWeightedRecommendByLyrics,
 } from "@/api/recommend";
 import Chart from 'chart.js'
+import PieSlider from "@/components/PieSlider.vue";
 
 export default {
-    components: {EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
+    components: {PieSlider, EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
     data() {
         return {
+            showPieSlider: true,
+            modelWeighting: [
+                { name: 'TFIDF', value: 33},
+                { name: 'Word2Vec', value: 33},
+                { name: 'LDA', value: 34 }
+            ],
             selectedRecommendation: "weighted",
             chartLabels: [],
             chartData: [],
@@ -342,6 +316,14 @@ export default {
         }
     },
     methods: {
+        async handleModelUpdate(updatedModels) {
+            this.modelWeighting = updatedModels;
+            const response = await getWeightedRecommendByLyrics(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric,this.calculatedWeighting[0],
+                this.calculatedWeighting[1], this.calculatedWeighting[2])
+            if (response.status === 200) {
+                this.weightedRecommended = response.data.data;
+            }
+        },
         async fetchTrackTopic() {
             try {
                 const response = await getTrackTopicByLyric(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric);
@@ -486,7 +468,8 @@ export default {
                     getTfidfRecommendByLyrics(lyric),
                     getW2VRecommendByLyrics(lyric),
                     getLDARecommendByLyrics(lyric),
-                    getWeightedRecommendByLyrics(lyric, 0.33,0.33,0.34)
+                    getWeightedRecommendByLyrics(lyric, this.calculatedWeighting[0],
+                        this.calculatedWeighting[1], this.calculatedWeighting[2])
                 ]);
 
                 // 处理 tfidfResponse
@@ -589,6 +572,26 @@ export default {
                 backgroundSize: 'cover',
                 backgroundPosition: 'right'
             };
+        },
+        calculatedWeighting() {
+            // 计算总和
+            const totalValue = this.modelWeighting.reduce((sum, model) => sum + model.value, 0);
+
+            // 计算每个模型的权重，但不立即舍入
+            let calculatedWeighting = this.modelWeighting.map(model => model.value / totalValue);
+
+            // 对前n-1个权重进行舍入
+            for (let i = 0; i < calculatedWeighting.length - 1; i++) {
+                calculatedWeighting[i] = Number(calculatedWeighting[i].toFixed(4));
+            }
+
+            // 计算前n-1个权重的总和
+            const sumOfN1 = calculatedWeighting.slice(0, -1).reduce((sum, weight) => sum + weight, 0);
+
+            // 最后一个权重设为1减去其他权重之和
+            calculatedWeighting[calculatedWeighting.length - 1] = Number((1 - sumOfN1).toFixed(4));
+
+            return calculatedWeighting;
         }
     }
 };
