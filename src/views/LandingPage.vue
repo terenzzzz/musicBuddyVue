@@ -69,7 +69,7 @@
                         </div>
                     </div>
 
-                    <p class="mt-2">Up to 50,000 songs from 2008 to 2010 and offers demo features</p>
+                    <p class="mt-2">Up to 45,000 songs from 2007 to 2010 and offers demo features</p>
                 </div>
             </div>
             <div class="col-12 col-md-6 col-xl-3">

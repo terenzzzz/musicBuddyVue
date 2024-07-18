@@ -96,18 +96,18 @@
                 </div>
 
                 <!--    Lyric-->
-                <div class="row " >
-                    <div class="col-12 card shadow p-5 my-2" >
-                        <h3 class="text-center">Lyric</h3>
-                        <div v-if="formattedLyrics.length>0" >
-                            <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
-                                <p>{{ line }}</p>
-                            </div>
-                            <p class="text-muted mt-3" v-if="track.lyric.lyricAPI">Lyric Provider: <a>{{track.lyric.lyricAPI}}</a></p>
+
+                <div class="card shadow p-5 my-2" >
+                    <h3 class="text-center">Lyric</h3>
+                    <div v-if="formattedLyrics.length>0" >
+                        <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">
+                            <p>{{ line }}</p>
                         </div>
-                        <div v-else class="mx-auto">No lyric is privided for this track</div>
+                        <p class="text-muted mt-3" v-if="track.lyric.lyricAPI">Lyric Provider: <a>{{track.lyric.lyricAPI}}</a></p>
                     </div>
+                    <div v-else class="mx-auto">No lyric is privided for this track</div>
                 </div>
+
 
                 <!--    Lyric Analysis -->
                 <div class="card shadow rounded-bottom-0 p-3" >
@@ -134,8 +134,8 @@
 
 
                 <!--Recommandation-->
-                <h3>Recommended Tracks for「{{track.name}}」</h3>
-                <div>
+                <div class="my-3">
+                    <h3 class="red-bottom">Recommended Tracks for「{{track.name}}」</h3>
                     <div class="btn-group  d-flex my-4 mx-auto" role="group">
                         <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
                         <label class="btn btn-outline-primary" for="weighted">Weighted</label>
@@ -241,10 +241,9 @@
 
 
 
-                <div class="row my-3">
-                    <h3>Recommended Artists for「{{track.artist.name}}」</h3>
+                <div class="my-3">
+                    <h3 class="red-bottom">Recommended Artists for「{{track.artist.name}}」</h3>
                     <div v-if="recommendedArtists.length > 0">
-                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                         <div class="horizontal-scroll">
                             <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
                                 <ArtistCard :artist="artist"></ArtistCard>
@@ -252,7 +251,6 @@
                         </div>
                     </div>
                     <div v-if="spotifySimilarArtist.length > 0">
-                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
                         <div class="horizontal-scroll">
                             <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
                                 <ArtistCard :artist="artist"></ArtistCard>
@@ -424,6 +422,7 @@ export default {
             }
         },
         async searchSpotify(keyword, type) {
+            // 访问本地数据库时,查询spotify获取播放资源
             try {
                 const response = await searchSpotifyTracks(keyword, type);
                 if (response.status === 200) {
@@ -556,12 +555,12 @@ export default {
                         label: 'Topic Represent words',
                         data: this.chartData,
                         fill: true,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        pointBackgroundColor: 'rgb(255, 99, 132)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(255, 99, 132)'
+                        backgroundColor: 'rgba(13, 110, 253, 0.2)',  // #0d6efd with 0.2 opacity
+                        borderColor: 'rgb(13, 110, 253)',            // #0d6efd
+                        pointBackgroundColor: 'rgb(13, 110, 253)',   // #0d6efd
+                        pointBorderColor: '#fff',                    // 保持白色
+                        pointHoverBackgroundColor: '#fff',           // 保持白色
+                        pointHoverBorderColor: 'rgb(11, 94, 215)'    // 稍微深一点的蓝色
                     }]
                 },
                 options: {

@@ -53,6 +53,7 @@ export default {
 }
 
 .red-bottom{
+    width: fit-content;
     border-bottom: 3px solid #0d6efd;
 }
 
