@@ -4,7 +4,7 @@
         <div v-if="artist" class="page-container mx-auto my-5">
 
             <div class="card shadow mt-5 p-2 rounded-bottom-0 p-4" >
-                <div class="d-flex justify-content-end" v-if="isValidMongoId(this.artistId)">
+                <div class="d-flex justify-content-end my-2" v-if="isValidMongoId(this.artistId)">
                     <RateBtn :rating="artistRating" :on-rate="updateRate" :item-type="itemTypes.ARTIST"></RateBtn>
                 </div>
                 <div class="row">
@@ -55,11 +55,26 @@
                 </div>
             </div>
 
+            <!--    Lyric Analysis -->
+            <div class="card shadow p-3 my-3" >
+                <div class="row" >
+                    <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
+                    <div class="col-12 col-lg-6">
+                        <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
+                            <strong>Keyword:</strong>
+                            <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
+                                <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <!--Recommandation-->
             <div class="mt-5">
                 <h3>Similar Artists</h3>
                 <div v-if="similarArtist.length > 0">
-                    <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                     <div class="horizontal-scroll">
                         <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
                             <ArtistCard :artist="artist"></ArtistCard>
@@ -67,7 +82,6 @@
                     </div>
                 </div>
                 <div v-if="spotifySimilarArtist.length > 0">
-                    <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
                     <div class="horizontal-scroll">
                         <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
                             <ArtistCard :artist="artist"></ArtistCard>
@@ -82,7 +96,6 @@
                 <h3>Top Tracks</h3>
                 <div v-if="tracks.length > 0">
                     <div class="row">
-                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
                         <div class="col-3 col-md-2" v-for="track in tracks" :key="track.id">
                             <TrackCard :track="track"></TrackCard>
                         </div>
@@ -94,16 +107,16 @@
 </template>
 
 <script>
-import { millisecondsToMMss } from '@/utils/timeConverter';
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getArtist, getSimilarArtists} from "@/api/artists";
-import {getTracksByArtist} from "@/api/tracks";
+import {getLyricTopWordsByLyric, getTracksByArtist, getTrackTopicByLyric} from "@/api/tracks";
 import {getArtistRelatedArtists, getSpotifyArtistById, searchSpotifyArtists} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
+import Chart from "chart.js";
 
 export default {
     components: {RateBtn, AlertComponents, ArtistCard, TrackCard},
@@ -116,6 +129,11 @@ export default {
             spotifySimilarArtist: [],
             spotifyArtistUrl: "",
             artistRating: 0,
+
+            allTracksLyrics:[],
+            lyricTopWords: [],
+            chartLabels: [],
+            chartData: [],
         };
     },
     created() {
@@ -145,7 +163,7 @@ export default {
     },
     methods: {
         async searchSpotify(keyword) {
-            // 访问本地数据库时,查询spotify获取播放资源
+            // 访问本地数据库时,查询spotify获取spotify跳转连接
             try {
                 const response = await searchSpotifyArtists(keyword);
                 if (response.status === 200) {
@@ -157,7 +175,8 @@ export default {
             } catch (err) {
                 console.error('Error search Spotify:', err.message);
             }
-        },        async updateRate(itemType,rating) {
+        },
+        async updateRate(itemType,rating) {
             const response = await addRating(this.artistId, itemType, rating)
             if (response.status === 200) {
                 this.artistRating = response.data.rate
@@ -179,7 +198,6 @@ export default {
             window.open(url, '_blank');
         },
         isValidMongoId,
-        millisecondsToMMss,
         async fetchSpotifyMetadata() {
             try {
                 const response = await getSpotifyArtistById(this.artistId);
@@ -206,12 +224,26 @@ export default {
                 console.error('Error fetching Track By Id:', err.message);
             }
         },
-
+        async fetchLyricTopWords() {
+            try {
+                const response = await getLyricTopWordsByLyric(this.allTracksLyrics);
+                if (response.data.status === 200) {
+                    this.lyricTopWords = response.data.data;
+                } else {
+                    console.error('Error fetching lyricTopWords By Id:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching lyricTopWords By Id:', err.message);
+            }
+        },
         async fetchTracksByArtist() {
             try {
                 const response = await getTracksByArtist(this.artistId);
                 if (response.data.status === 200) {
                     this.tracks = response.data.data;
+                    this.allTracksLyrics = this.tracks.map(track => track.lyric);
+                    await this.fetchLyricTopWords()
+                    await this.fetchTrackTopic();
                 } else {
                     console.error('Error fetching Track By Id:', response.data.message);
                 }
@@ -219,7 +251,6 @@ export default {
                 console.error('Error fetching Track By Id:', err.message);
             }
         },
-
         async fetchSimilarArtists() {
             try {
                 const response = await getSimilarArtists(this.artistId);
@@ -244,6 +275,53 @@ export default {
                 console.error('Error fetching spotify Recommended Artists:', err.message);
             }
         },
+        async fetchTrackTopic() {
+            try {
+                const response = await getTrackTopicByLyric(this.allTracksLyrics);
+                if (response.status === 200) {
+                    const labels = response.data.data.map(topic => topic.top_words.slice(0, 5).join(','));
+                    const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
+                    this.chartLabels = labels
+                    this.chartData = data
+                    this.$nextTick(() => {
+                        this.createChart()
+                    })
+                } else {
+                    this.chartLabels = []
+                    this.chartData = []
+                    console.error('Error fetching Track Topic:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching Track Topic:', err.message);
+            }
+        },
+        createChart() {
+            const ctx = this.$refs.radarChart.getContext('2d')
+            this.chart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: this.chartLabels,
+                    datasets: [{
+                        label: 'Topic Represent words',
+                        data: this.chartData,
+                        fill: true,
+                        backgroundColor: 'rgba(13, 110, 253, 0.2)',  // #0d6efd with 0.2 opacity
+                        borderColor: 'rgb(13, 110, 253)',            // #0d6efd
+                        pointBackgroundColor: 'rgb(13, 110, 253)',   // #0d6efd
+                        pointBorderColor: '#fff',                    // 保持白色
+                        pointHoverBackgroundColor: '#fff',           // 保持白色
+                        pointHoverBorderColor: 'rgb(11, 94, 215)'    // 稍微深一点的蓝色
+                    }]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                }
+            })
+        }
     },
 
     computed: {

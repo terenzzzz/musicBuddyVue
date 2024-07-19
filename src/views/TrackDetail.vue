@@ -86,12 +86,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <router-link :to="`/artist/${track.artist._id}`" >
+                                    <router-link :to="`/artist/${track.artist._id}`" v-if="isValidMongoId(track.artist._id)" class="me-2">
                                         <button class="btn btn-primary my-2 d-inline ">
                                             <i class="fa-brands fa-spotify mx-2"></i>More In MusicBuddy
                                         </button>
                                     </router-link>
-                                    <button class="btn btn-success my-2 d-inline mx-2" @click="openWindow(spotifyArtistUrl)">
+                                    <button class="btn btn-success my-2 d-inline" @click="openWindow(spotifyArtistUrl)">
                                         <i class="fa-brands fa-spotify mx-2"></i>More In Spotify
                                     </button>
                                 </div>
@@ -115,7 +115,7 @@
 
 
                 <!--    Lyric Analysis -->
-                <div class="card shadow rounded-bottom-0 p-3" >
+                <div class="card shadow p-3" >
                     <div class="row" >
                         <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
                         <div class="col-12 col-lg-6">
@@ -129,14 +129,6 @@
 
                     </div>
                 </div>
-
-
-
-
-
-
-
-
 
                 <!--Recommandation-->
                 <div class="my-3">
@@ -298,7 +290,6 @@ export default {
 
         await this.fetchRecommendedArtists();
         await this.fetchRecommendedTracks();
-        await this.fetchTrackTopic();
     },
     watch: {
         async '$route'(to) {
@@ -311,7 +302,6 @@ export default {
             }
             await this.fetchRecommendedArtists();
             await this.fetchRecommendedTracks();
-            await this.fetchTrackTopic();
         }
     },
     methods: {
@@ -439,6 +429,7 @@ export default {
                     let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
                     await this.searchSpotify(keyword)
                     await this.fetchLyricTopWords()
+                    await this.fetchTrackTopic();
 
                 } else {
                     console.error('Error fetching Track By Id:', response.data.message);
