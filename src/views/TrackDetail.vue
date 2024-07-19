@@ -85,9 +85,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12 col-sm-6">
-                                    <button class="btn btn-dark my-2" @click="openWindow(spotifyArtistUrl)">
-                                        <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
+                                <div class="col-12">
+                                    <router-link :to="`/artist/${track.artist._id}`" >
+                                        <button class="btn btn-primary my-2 d-inline ">
+                                            <i class="fa-brands fa-spotify mx-2"></i>More In MusicBuddy
+                                        </button>
+                                    </router-link>
+                                    <button class="btn btn-success my-2 d-inline mx-2" @click="openWindow(spotifyArtistUrl)">
+                                        <i class="fa-brands fa-spotify mx-2"></i>More In Spotify
                                     </button>
                                 </div>
                             </div>
@@ -201,12 +206,6 @@
                         <p>No recommendations available.</p>
                     </div>
                 </div>
-
-
-
-
-
-
 
                 <div class="my-3">
                     <h3 class="red-bottom">Recommended Artists for「{{track.artist.name}}」</h3>
@@ -403,10 +402,10 @@ export default {
                 console.error('Error search Spotify Metadata:', err.message);
             }
         },
-        async searchSpotify(keyword, type) {
+        async searchSpotify(keyword) {
             // 访问本地数据库时,查询spotify获取播放资源
             try {
-                const response = await searchSpotifyTracks(keyword, type);
+                const response = await searchSpotifyTracks(keyword);
                 if (response.status === 200) {
                     let firstTrack = response.data[0]
                     this.spotifyUri = firstTrack.uri;
@@ -438,7 +437,7 @@ export default {
                     this.track = response.data.data;
                     this.formattedLyrics = this.formatLyrics(response.data.data.lyric)
                     let keyword = `${response.data.data.name} ${response.data.data.artist.name}`
-                    await this.searchSpotify(keyword, "track")
+                    await this.searchSpotify(keyword)
                     await this.fetchLyricTopWords()
 
                 } else {

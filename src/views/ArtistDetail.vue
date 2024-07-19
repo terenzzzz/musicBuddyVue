@@ -4,6 +4,9 @@
         <div v-if="artist" class="page-container mx-auto my-5">
 
             <div class="card shadow mt-5 p-2 rounded-bottom-0 p-4" >
+                <div class="d-flex justify-content-end" v-if="isValidMongoId(this.artistId)">
+                    <RateBtn :rating="artistRating" :on-rate="updateRate" :item-type="itemTypes.ARTIST"></RateBtn>
+                </div>
                 <div class="row">
                     <div class="col-6 col-md-3 col-xl-2 m-auto ">
                         <img :src="artist.avatar || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid rounded-circle">
@@ -30,6 +33,14 @@
                         <div class="row d-flex flex-row" v-if="artist.tags">
                             <div class="col-auto" v-for="tag in artist.tags" :key="tag.id">
                                 <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button class="btn btn-success my-2 d-inline" @click="openWindow(spotifyArtistUrl)">
+                                    <i class="fa-brands fa-spotify mx-2"></i>More In Spotify
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -88,12 +99,14 @@ import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getArtist, getSimilarArtists} from "@/api/artists";
 import {getTracksByArtist} from "@/api/tracks";
-import {getArtistRelatedArtists, getSpotifyArtistById} from "@/api/spotify";
+import {getArtistRelatedArtists, getSpotifyArtistById, searchSpotifyArtists} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
+import RateBtn from "@/components/RateBtn.vue";
+import {addRating, getRating, itemTypes} from "@/api/ratings";
 
 export default {
-    components: {AlertComponents, ArtistCard, TrackCard},
+    components: {RateBtn, AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
             artistId: this.$route.params.id,
@@ -101,32 +114,67 @@ export default {
             tracks: [],
             similarArtist: [],
             spotifySimilarArtist: [],
+            spotifyArtistUrl: "",
+            artistRating: 0,
         };
     },
     created() {
         if (isValidMongoId(this.artistId)){
             this.fetchArtistById();
-            this.fetchSimilarArtists();
-            this.fetchTracksByArtist();
+            this.fetchRating()
         }else{
             this.fetchSpotifyMetadata();
             this.fetchSpotifySimilarArtists();
         }
+        this.fetchSimilarArtists();
+        this.fetchTracksByArtist();
     },
     watch: {
         '$route'(to) {
             this.artistId = to.params.id;
             if (isValidMongoId(this.artistId)){
                 this.fetchArtistById();
-                this.fetchSimilarArtists();
-                this.fetchTracksByArtist();
+                this.fetchRating()
             }else{
                 this.fetchSpotifyMetadata();
                 this.fetchSpotifySimilarArtists();
             }
+            this.fetchSimilarArtists();
+            this.fetchTracksByArtist();
         }
     },
     methods: {
+        async searchSpotify(keyword) {
+            // 访问本地数据库时,查询spotify获取播放资源
+            try {
+                const response = await searchSpotifyArtists(keyword);
+                if (response.status === 200) {
+                    let firstTrack = response.data[0]
+                    this.spotifyArtistUrl = firstTrack.external_urls
+                } else {
+                    console.error('Error search Spotify else:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error search Spotify:', err.message);
+            }
+        },        async updateRate(itemType,rating) {
+            const response = await addRating(this.artistId, itemType, rating)
+            if (response.status === 200) {
+                this.artistRating = response.data.rate
+            } else {
+                alert("Rate Artist Failed")
+            }
+        },
+        async fetchRating() {
+            try {
+                const response =  await getRating(this.artistId, itemTypes.ARTIST)
+                if (response.status === 200 && response.data?.data) {
+                    this.artistRating = response.data.data.rate ?? 0;
+                }
+            } catch (err) {
+                console.error('Error fetching ratings:', err.message);
+            }
+        },
         openWindow: function(url) {
             window.open(url, '_blank');
         },
@@ -150,6 +198,7 @@ export default {
                 const response = await getArtist(this.artistId);
                 if (response.data.status === 200) {
                     this.artist = response.data.data;
+                    await this.searchSpotify(this.artist.name)
                 } else {
                     console.error('Error fetching Track By Id:', response.data.message);
                 }
@@ -198,6 +247,9 @@ export default {
     },
 
     computed: {
+        itemTypes() {
+            return itemTypes
+        }
 
     }
 };
@@ -205,24 +257,4 @@ export default {
 
 <style>
 
-.track-info {
-    max-width: 50%; /* 可根据需要调整 */
-}
-
-.buttons {
-    margin-top: 20px;
-}
-
-.buttons button {
-    margin-right: 10px;
-}
-
-.stats {
-    margin-top: 20px;
-    font-size: 14px;
-}
-
-.stats span {
-    margin-right: 20px;
-}
 </style>
