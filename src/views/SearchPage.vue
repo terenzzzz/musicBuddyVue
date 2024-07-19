@@ -1,27 +1,28 @@
 <template>
     <div class="Search">
 
-        <div class="px-1 px-sm-3 px-md-5">
-            <div class="row d-flex justify-content-center mt-5">
-                <div class="col-12 col-md-6 d-flex">
+        <div class="px-2 px-sm-3 px-md-5">
+            <div class="row d-flex justify-content-center mt-5 card pt-3 rounded-5">
+                <form @submit.prevent="fetchSearchResult" class="col-12 d-flex">
                     <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
                            placeholder="Search Tracks, Artists, Lyrics..." v-model="keyword">
-                    <button class="btn btn-primary rounded-start-0" @click="fetchSearchResult">Search</button>
+                    <button class="btn btn-primary rounded-start-0" >Search</button>
+                </form>
+                <div class="btn-group col-8 col-md-4 d-flex my-4 mx-auto"
+                     role="group"
+                     aria-label="Basic checkbox toggle button group"
+                     :class="{ 'no-selection': !hasSelection }">
+                    <input type="checkbox" class="btn-check" id="tracks" value="tracks" v-model="selectedTypes">
+                    <label class="btn btn-outline-primary" for="tracks">Tracks</label>
+
+                    <input type="checkbox" class="btn-check" id="artists" value="artists" v-model="selectedTypes">
+                    <label class="btn btn-outline-primary" for="artists">Artists</label>
+
+                    <input type="checkbox" class="btn-check" id="lyrics" value="lyrics" v-model="selectedTypes">
+                    <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
                 </div>
             </div>
-            <div class="btn-group col-8 col-md-4 d-flex my-4 mx-auto"
-                 role="group"
-                 aria-label="Basic checkbox toggle button group"
-                 :class="{ 'no-selection': !hasSelection }">
-                <input type="checkbox" class="btn-check" id="tracks" value="tracks" v-model="selectedTypes">
-                <label class="btn btn-outline-primary" for="tracks">Tracks</label>
 
-                <input type="checkbox" class="btn-check" id="artists" value="artists" v-model="selectedTypes">
-                <label class="btn btn-outline-primary" for="artists">Artists</label>
-
-                <input type="checkbox" class="btn-check" id="lyrics" value="lyrics" v-model="selectedTypes">
-                <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
-            </div>
 
             <div class="p-3 my-2" v-if="selectedTypes.includes('tracks')">
                 <div class="row" >
