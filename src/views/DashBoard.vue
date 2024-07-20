@@ -133,8 +133,6 @@ export default {
 
             await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
             await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
-
-
         }
     },
     computed:{

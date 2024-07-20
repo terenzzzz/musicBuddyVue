@@ -152,7 +152,7 @@
                         </div>
 
 
-                        <transition name="fade" mode="out-in">
+                        <transition name="fade" mode="out-in" >
                             <PieSlider
                                 v-show="showPieSlider"
                                 class="pie-slider"
@@ -162,38 +162,13 @@
                         </transition>
                     </div>
 
-                    <div v-if="selectedRecommendation === 'weighted' && weightedRecommended.length > 0">
+                    <div v-if="recommendedTracks.length>0">
                         <div class="row">
-                            <div class="col-4 col-md-2" v-for="track in weightedRecommended" :key="track.id">
+                            <div class="col-4 col-md-2" v-for="track in recommendedTracks" :key="track.id">
                                 <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
                         </div>
                     </div>
-
-                    <div v-else-if="selectedRecommendation === 'tfidf' && tfidfRecommended.length > 0">
-                        <div class="row">
-                            <div class="col-4 col-md-2" v-for="track in tfidfRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-else-if="selectedRecommendation === 'word2vec' && w2vRecommended.length > 0">
-                        <div class="row">
-                            <div class="col-4 col-md-2" v-for="track in w2vRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-else-if="selectedRecommendation === 'lda' && ldaRecommended.length > 0">
-                        <div class="row">
-                            <div class="col-4 col-md-2" v-for="track in ldaRecommended" :key="track.id">
-                                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
-                            </div>
-                        </div>
-                    </div>
-
                     <div v-else>
                         <p>No recommendations available.</p>
                     </div>
@@ -264,10 +239,7 @@ export default {
             trackId: this.$route.params.id,
             track: null,
             formattedLyrics: [],
-            tfidfRecommended:[],
-            w2vRecommended:[],
-            ldaRecommended:[],
-            weightedRecommended:[],
+            recommendedTracks:[],
             spotifyRecommendedTracks:[],
             recommendedArtists:[],
             spotifySimilarArtist:[],
@@ -302,6 +274,14 @@ export default {
             }
             await this.fetchRecommendedArtists();
             await this.fetchRecommendedTracks();
+        },
+        async selectedRecommendation() {
+            // 获取当前选中的推荐方法
+            const recommendationType = this.selectedRecommendation;
+            // 根据选中的推荐方法来设置 showPieSlider 的状态
+            this.showPieSlider = recommendationType === "weighted";
+
+            await this.fetchRecommendedTracks()
         }
     },
     methods: {
@@ -310,7 +290,7 @@ export default {
             const response = await getWeightedRecommendByLyrics(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric,this.calculatedWeighting[0],
                 this.calculatedWeighting[1], this.calculatedWeighting[2])
             if (response.status === 200) {
-                this.weightedRecommended = response.data.data;
+                this.recommendedTracks = response.data.data;
             }
         },
         async fetchTrackTopic() {
@@ -453,39 +433,26 @@ export default {
         async fetchRecommendedTracks() {
             try {
                 const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
-                // 并发请求
-                const [tfidfResponse, w2vResponse, ldaResponse, weightedResponse] = await Promise.all([
-                    getTfidfRecommendByLyrics(lyric),
-                    getW2VRecommendByLyrics(lyric),
-                    getLDARecommendByLyrics(lyric),
-                    getWeightedRecommendByLyrics(lyric, this.calculatedWeighting[0],
-                        this.calculatedWeighting[1], this.calculatedWeighting[2])
-                ]);
+                let response = {}
+                try {
+                    if (this.selectedRecommendation === "tfidf"){
+                        response = await getTfidfRecommendByLyrics(lyric)
+                    }else if (this.selectedRecommendation === "word2vec"){
+                        response = await getW2VRecommendByLyrics(lyric)
+                    }else if (this.selectedRecommendation === "lda"){
+                        response = await getLDARecommendByLyrics(lyric)
+                    }else {
+                        response = await getWeightedRecommendByLyrics(lyric,this.calculatedWeighting[0],
+                            this.calculatedWeighting[1], this.calculatedWeighting[2])
+                    }
 
-                // 处理 tfidfResponse
-                if (tfidfResponse.data.status === 200) {
-                    this.tfidfRecommended = tfidfResponse.data.data;
-                } else {
-                    console.error('Error fetching TFIDF Recommended Tracks:', tfidfResponse.data.message);
-                }
-
-                // 处理 w2vResponse
-                if (w2vResponse.data.status === 200) {
-                    this.w2vRecommended = w2vResponse.data.data;
-                } else {
-                    console.error('Error fetching W2V Recommended Tracks:', w2vResponse.data.message);
-                }
-
-                if (ldaResponse.data.status === 200) {
-                    this.ldaRecommended = ldaResponse.data.data;
-                } else {
-                    console.error('Error fetching W2V Recommended Tracks:', ldaResponse.data.message);
-                }
-
-                if (weightedResponse.data.status === 200) {
-                    this.weightedRecommended = weightedResponse.data.data;
-                } else {
-                    console.error('Error fetching weighted Recommended Tracks:', weightedResponse.data.message);
+                    if (response.data.status === 200) {
+                        this.recommendedTracks = response.data.data;
+                    } else {
+                        console.error('Error TFIDF Recommended tracks:', response.data.message);
+                    }
+                } catch (err) {
+                    console.error('Error TFIDF Recommended tracks:', err.message);
                 }
             } catch (err) {
                 console.error('Error fetching Recommended Tracks:', err.message);
