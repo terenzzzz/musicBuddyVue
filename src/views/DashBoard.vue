@@ -31,12 +31,10 @@
             </div>
         </div>
 
-
-
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Recently Play</h3>
             <div class="horizontal-scroll">
-                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in recentlyPlay" :key="track.id">
+                <div class="col-3 col-md-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
                     <TrackCard :track="track"></TrackCard>
                 </div>
             </div>
@@ -49,7 +47,7 @@
                 」, you may also like
             </h3>
             <div class="horizontal-scroll" v-if="alsoListen.length>0">
-                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in alsoListen" :key="track.id">
+                <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">
                     <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                 </div>
             </div>
@@ -59,7 +57,7 @@
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Recommended for you</h3>
             <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
-                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in recommendForYou" :key="track.id">
+                <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">
                     <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                 </div>
             </div>
@@ -78,7 +76,7 @@
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Everyone's Listening</h3>
             <div class="horizontal-scroll">
-                <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in EveryoneListening" :key="track.id">
+                <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
                   <TrackCard :track="track"></TrackCard>
                 </div>
             </div>
