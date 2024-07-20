@@ -1,6 +1,33 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
+export const getTfidfRecommendArtistsByArtist = (artist) => request({
+    url: `/api/getTfidfRecommendArtistsByArtist`,
+    method: 'post',
+    data: { artist: artist }
+});
+
+export const getW2VRecommendArtistsByArtist = (artist) => request({
+    url: `/api/getW2VRecommendArtistsByArtist`,
+    method: 'post',
+    data: { artist: artist }
+});
+
+export const getLDARecommendArtistsByArtist = (artist) => request({
+    url: `/api/getLDARecommendArtistsByArtist`,
+    method: 'post',
+    data: { artist: artist }
+});
+
+export const getWeightedRecommendArtistsByArtist = (artist,tfidf_weight, w2v_weight, lda_weight) => request({
+    url: `/api/getWeightedRecommendArtistsByArtist`,
+    method: 'post',
+    data: { artist,
+        tfidf_weight,
+        w2v_weight,
+        lda_weight}
+});
+
 export const getTfidfRecommendByLyrics = (lyric) => request({
     url: `/api/getTfidfRecommendByLyrics`,
     method: 'post',

@@ -132,7 +132,7 @@
 
                 <!--Recommandation-->
                 <div class="my-3">
-                    <h3 class="red-bottom">Recommended Tracks for「{{track.name}}」</h3>
+
                     <div class="card p-3 rounded-5 my-3">
                         <div class="btn-group d-flex justify-content-end container align-items-center" role="group">
                             <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
@@ -162,7 +162,9 @@
                         </transition>
                     </div>
 
+
                     <div v-if="recommendedTracks.length>0">
+                        <h3 class="red-bottom">Recommended Tracks for「{{track.name}}」</h3>
                         <div class="row">
                             <div class="col-4 col-md-2" v-for="track in recommendedTracks" :key="track.id">
                                 <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
@@ -179,7 +181,7 @@
                     <div v-if="recommendedArtists.length > 0">
                         <div class="horizontal-scroll">
                             <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
-                                <ArtistCard :artist="artist"></ArtistCard>
+                                <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
                             </div>
                         </div>
                     </div>
@@ -202,7 +204,6 @@
 <script>
 import {getLyricTopWordsByLyric, getTrackById, getTrackTopicByLyric} from "@/api/tracks";
 import {millisecondsToMMss} from '@/utils/timeConverter';
-import {getRecommArtist} from "@/api/artists";
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
@@ -214,9 +215,10 @@ import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 import {
-    getLDARecommendByLyrics,
-    getTfidfRecommendByLyrics,
-    getW2VRecommendByLyrics,
+    getLDARecommendArtistsByArtist,
+    getLDARecommendByLyrics, getTfidfRecommendArtistsByArtist,
+    getTfidfRecommendByLyrics, getW2VRecommendArtistsByArtist,
+    getW2VRecommendByLyrics, getWeightedRecommendArtistsByArtist,
     getWeightedRecommendByLyrics,
 } from "@/api/recommend";
 import Chart from 'chart.js'
@@ -282,6 +284,7 @@ export default {
             this.showPieSlider = recommendationType === "weighted";
 
             await this.fetchRecommendedTracks()
+            await this.fetchRecommendedArtists();
         }
     },
     methods: {
@@ -291,6 +294,12 @@ export default {
                 this.calculatedWeighting[1], this.calculatedWeighting[2])
             if (response.status === 200) {
                 this.recommendedTracks = response.data.data;
+            }
+
+            const artistResponse = await getWeightedRecommendArtistsByArtist(this.track.artist._id,this.calculatedWeighting[0],
+                this.calculatedWeighting[1], this.calculatedWeighting[2])
+            if (artistResponse.status === 200) {
+                this.recommendedArtists = artistResponse.data.data;
             }
         },
         async fetchTrackTopic() {
@@ -420,11 +429,25 @@ export default {
         },
         async fetchRecommendedArtists() {
             try {
-                const response = await getRecommArtist();
-                if (response.data.status === 200) {
-                    this.recommendedArtists = response.data.data;
-                } else {
-                    console.error('Error fetching Recommended Artists:', response.data.message);
+                let response = {}
+                try {
+                    if (this.selectedRecommendation === "tfidf"){
+                        response = await getTfidfRecommendArtistsByArtist(this.track.artist._id)
+                    }else if (this.selectedRecommendation === "word2vec"){
+                        response = await getW2VRecommendArtistsByArtist(this.track.artist._id)
+                    }else if (this.selectedRecommendation === "lda"){
+                        response = await getLDARecommendArtistsByArtist(this.track.artist._id)
+                    }else {
+                        response = await getWeightedRecommendArtistsByArtist(this.track.artist._id,this.calculatedWeighting[0],
+                            this.calculatedWeighting[1], this.calculatedWeighting[2])
+                    }
+                    if (response.data.status === 200) {
+                        this.recommendedArtists = response.data.data;
+                    } else {
+                        console.error('Error TFIDF Recommended tracks:', response.data.message);
+                    }
+                } catch (err) {
+                    console.error('Error TFIDF Recommended tracks:', err.message);
                 }
             } catch (err) {
                 console.error('Error fetching Recommended Artists:', err.message);
