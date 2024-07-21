@@ -1,5 +1,5 @@
 <template>
-    <div class="px-1 px-sm-3 px-md-5 my-3">
+    <div class="px-1 px-sm-3 px-md-5 my-3 container-lg">
         <div class="row px-3 px-md-5">
             <div class="card p-3 rounded-5">
                 <div class="btn-group d-flex justify-content-end container align-items-center" role="group">
@@ -32,7 +32,11 @@
         </div>
 
         <div class="mt-5">
-            <h3 class="my-3 red-bottom mx-auto fit-content">Recently Play</h3>
+            <div class="my-3 red-bottom mx-auto fit-content">
+                <h3 class="text-center text-primary">Recently Play</h3>
+                <p class="text-muted text-center small">* Collected by the third party you have collected</p>
+            </div>
+
             <div class="horizontal-scroll">
                 <div class="col-3 col-md-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
                     <TrackCard :track="track"></TrackCard>
@@ -41,11 +45,13 @@
         </div>
 
         <div class="mt-5">
-            <h3 class="my-3 red-bottom mx-auto fit-content">
-                If you like「
-                <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
-                」, you may also like
-            </h3>
+            <div class="my-3 red-bottom mx-auto fit-content">
+                <h3 class="text-center text-primary">If you like「
+                    <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
+                    」, you may also like</h3>
+                <p class="text-muted text-center small">* Recommended by the lyric base on your most recently played </p>
+            </div>
+
             <div class="horizontal-scroll" v-if="alsoListen.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">
                     <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
@@ -55,7 +61,10 @@
         </div>
 
         <div class="mt-5">
-            <h3 class="my-3 red-bottom mx-auto fit-content">Recommended for you</h3>
+            <div class="my-3 red-bottom mx-auto fit-content">
+                <h3 class="text-center text-primary">Recommended for you</h3>
+                <p class="text-muted text-center small">* Recommended by the lyrics base on your recently played </p>
+            </div>
             <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">
                     <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
@@ -65,9 +74,12 @@
         </div>
 
         <div class="mt-5">
-            <h3 class="my-3 red-bottom mx-auto fit-content">Artist May Liked</h3>
+            <div class="my-3 red-bottom mx-auto fit-content">
+                <h3 class="text-center text-primary">Artist May Liked</h3>
+                <p class="text-muted text-center small">* Recommended by the lyrics base on your recently played </p>
+            </div>
             <div class="horizontal-scroll" v-if="artistMayLike.length>0">
-                <div class="col-3 col-md-2 col-xxl-1  mx-2" v-for="artist in artistMayLike" :key="artist.id">
+                <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
                   <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
                 </div>
             </div>
@@ -75,7 +87,10 @@
         </div>
 
         <div class="mt-5">
-            <h3 class="my-3 red-bottom mx-auto fit-content">Everyone's Listening</h3>
+            <div class="my-3 red-bottom mx-auto fit-content">
+                <h3 class="text-center text-primary">Everyone's listening</h3>
+                <p class="text-muted text-center small">* Recommended by the user similar to you </p>
+            </div>
             <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
                   <TrackCard :track="track"></TrackCard>
