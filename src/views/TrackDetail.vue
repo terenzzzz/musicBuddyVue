@@ -185,13 +185,6 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="spotifySimilarArtist.length > 0">
-                        <div class="horizontal-scroll">
-                            <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
-                                <ArtistCard :artist="artist"></ArtistCard>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -215,11 +208,9 @@ import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 import {
-    getLDARecommendArtistsByArtist,
-    getLDARecommendByLyrics, getTfidfRecommendArtistsByArtist,
-    getTfidfRecommendByLyrics, getW2VRecommendArtistsByArtist,
-    getW2VRecommendByLyrics, getWeightedRecommendArtistsByArtist,
-    getWeightedRecommendByLyrics,
+    getLDARecommendArtistsByLyrics, getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
+    getTfidfRecommendByLyrics, getW2VRecommendArtistsByLyrics, getW2VRecommendByLyrics,
+    getWeightedRecommendArtistsByLyrics, getWeightedRecommendByLyrics,
 } from "@/api/recommend";
 import Chart from 'chart.js'
 import PieSlider from "@/components/PieSlider.vue";
@@ -242,9 +233,7 @@ export default {
             track: null,
             formattedLyrics: [],
             recommendedTracks:[],
-            spotifyRecommendedTracks:[],
             recommendedArtists:[],
-            spotifySimilarArtist:[],
             spotifyUri: "",
             spotifyTrackUrl: "",
             spotifyArtistUrl: "",
@@ -296,11 +285,12 @@ export default {
                 this.recommendedTracks = response.data.data;
             }
 
-            const artistResponse = await getWeightedRecommendArtistsByArtist(this.track.artist._id,this.calculatedWeighting[0],
+            const artistResponse = await getWeightedRecommendArtistsByLyrics(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric,this.calculatedWeighting[0],
                 this.calculatedWeighting[1], this.calculatedWeighting[2])
             if (artistResponse.status === 200) {
                 this.recommendedArtists = artistResponse.data.data;
             }
+
         },
         async fetchTrackTopic() {
             try {
@@ -429,16 +419,17 @@ export default {
         },
         async fetchRecommendedArtists() {
             try {
+                const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
                 let response = {}
                 try {
                     if (this.selectedRecommendation === "tfidf"){
-                        response = await getTfidfRecommendArtistsByArtist(this.track.artist._id)
+                        response = await getTfidfRecommendArtistsByLyrics(lyric)
                     }else if (this.selectedRecommendation === "word2vec"){
-                        response = await getW2VRecommendArtistsByArtist(this.track.artist._id)
+                        response = await getW2VRecommendArtistsByLyrics(lyric)
                     }else if (this.selectedRecommendation === "lda"){
-                        response = await getLDARecommendArtistsByArtist(this.track.artist._id)
+                        response = await getLDARecommendArtistsByLyrics(lyric)
                     }else {
-                        response = await getWeightedRecommendArtistsByArtist(this.track.artist._id,this.calculatedWeighting[0],
+                        response = await getWeightedRecommendArtistsByLyrics(lyric,this.calculatedWeighting[0],
                             this.calculatedWeighting[1], this.calculatedWeighting[2])
                     }
                     if (response.data.status === 200) {

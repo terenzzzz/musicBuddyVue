@@ -31,7 +31,7 @@ export default {
     },
     data() {
         return {
-            providedByMusicBuddy: !!isValidMongoId(this.track._id),
+            providedByMusicBuddy: !!isValidMongoId(this.artist._id),
         }
     },
     computed: {
