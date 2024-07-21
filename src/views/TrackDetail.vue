@@ -363,6 +363,7 @@ export default {
                     this.formattedLyrics = this.formatLyrics(response.data.lyric)
                     this.spotifyTrackUrl = response.data.external_urls
                     this.spotifyArtistUrl = response.data.artist.external_urls
+                    await this.fetchTrackTopic();
                     await this.fetchLyricTopWords()
                 } else {
                     console.error('Error search Spotify Metadata else:', response.data.message);
