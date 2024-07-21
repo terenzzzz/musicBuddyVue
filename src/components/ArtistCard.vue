@@ -1,10 +1,10 @@
 <template>
     <router-link :to="`/artist/${artist._id}`">
-        <div class="card rounded-4 border-0 bg-transparent" >
-            <div class="position-relative">
-                <div class="ratio ratio-1x1">
+        <div class="card rounded-4 border-0 bg-transparent overflow-hidden"  @mousemove="onMove" @mouseleave="onLeave">
+            <div class="position-relative ">
+                <div class="ratio ratio-1x1 overflow-hidden rounded-4">
                     <img :src="artist.avatar || 'https://placehold.co/600x600?text=No+Cover'"
-                         class="img-fluid d-block mx-auto rounded-circle object-fit-cover">
+                         class="img-fluid d-block mx-auto object-fit-cover  ">
                 </div>
 
                 <h5 class="card-title text-center text-truncate">{{ artist.name }}</h5>
@@ -73,5 +73,9 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.card img{
+    transition: 0.3s;
 }
 </style>

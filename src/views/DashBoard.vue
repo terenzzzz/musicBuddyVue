@@ -66,20 +66,22 @@
 
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Artist May Liked</h3>
-            <div class="horizontal-scroll">
+            <div class="horizontal-scroll" v-if="artistMayLike.length>0">
                 <div class="col-3 col-md-2 col-xxl-1  mx-2" v-for="artist in artistMayLike" :key="artist.id">
-                  <ArtistCard :artist="artist"></ArtistCard>
+                  <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
                 </div>
             </div>
+            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
         </div>
 
         <div class="mt-5">
             <h3 class="my-3 red-bottom mx-auto fit-content">Everyone's Listening</h3>
-            <div class="horizontal-scroll">
+            <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
                   <TrackCard :track="track"></TrackCard>
                 </div>
             </div>
+            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
         </div>
     </div>
 </template>
@@ -87,13 +89,13 @@
 <script>
 import TrackCard from '@/components/TrackCard.vue';
 import {getRandomTrack} from "@/api/tracks";
-import {getRecommArtist} from "@/api/artists";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getRecentlyPlayed} from "@/api/spotify";
 import {
-    getLDARecommendByLyrics,
-    getTfidfRecommendByLyrics,
-    getW2VRecommendByLyrics,
+    getLDARecommendArtistsByLyrics,
+    getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
+    getTfidfRecommendByLyrics, getW2VRecommendArtistsByLyrics,
+    getW2VRecommendByLyrics, getWeightedRecommendArtistsByLyrics,
     getWeightedRecommendByLyrics,
 } from "@/api/recommend";
 import {getLyricsFromGenius} from "@/api/genius";
@@ -133,6 +135,7 @@ export default {
 
             await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
             await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
+            await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
         }
     },
     computed:{
@@ -163,6 +166,8 @@ export default {
               await this.fetchLyricFromGenius()
               await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
               await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
+              await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
+              await this.fetchEveryoneListening()
           }
         },
         async fetchRecentlyPlay() {
@@ -176,7 +181,6 @@ export default {
         },
         async fetchLyricFromGenius() {
             let lyrics = [];
-
             // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
             for (let track of this.recentlyPlay.slice(0,5)) {
                 try {
@@ -237,16 +241,23 @@ export default {
                 console.error('Error TFIDF Recommended tracks:', err.message);
             }
         },
-        async fetchArtistMayLike() {
-            try {
-                const response = await getRecommArtist();
-                if (response.data.status === 200) {
-                    this.artistMayLike = response.data.data;
-                } else {
-                    console.error('Error fetching tracks:', response.data.message);
-                }
-            } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+        async fetchArtistMayLike(lyric) {
+            let response = {};
+            if (this.selectedRecommendation === "tfidf"){
+                response = await getTfidfRecommendArtistsByLyrics(lyric)
+            }else if (this.selectedRecommendation === "word2vec"){
+                response = await getW2VRecommendArtistsByLyrics(lyric)
+            }else if (this.selectedRecommendation === "lda"){
+                response = await getLDARecommendArtistsByLyrics(lyric)
+            }else {
+                response = await getWeightedRecommendArtistsByLyrics(lyric,this.calculatedWeighting[0],
+                    this.calculatedWeighting[1], this.calculatedWeighting[2])
+            }
+
+            if (response.data.status === 200) {
+                this.artistMayLike = response.data.data;
+            } else {
+                console.error('Error artistMayLike Recommended:', response.data.message);
             }
         },
         async fetchEveryoneListening() {
@@ -264,10 +275,12 @@ export default {
         async handleModelUpdate(updatedModels) {
             this.modelWeighting = updatedModels;
 
-            const [alsoLikeResponse, recommendForYouResponse] = await Promise.all([
+            const [alsoLikeResponse, recommendForYouResponse, artistMayLikeResponse] = await Promise.all([
                 getWeightedRecommendByLyrics(this.lyricsForRecentlyPlay[0],this.calculatedWeighting[0],
                     this.calculatedWeighting[1],this.calculatedWeighting[2]),
                 getWeightedRecommendByLyrics(this.lyricsForRecentlyPlay,this.calculatedWeighting[0],
+                    this.calculatedWeighting[1],this.calculatedWeighting[2]),
+                getWeightedRecommendArtistsByLyrics(this.lyricsForRecentlyPlay,this.calculatedWeighting[0],
                     this.calculatedWeighting[1],this.calculatedWeighting[2])
             ]);
 
@@ -279,13 +292,14 @@ export default {
                 this.recommendForYou = recommendForYouResponse.data.data;
             }
 
-        },
+            if (artistMayLikeResponse.status === 200) {
+                this.artistMayLike = artistMayLikeResponse.data.data;
+            }
 
+        },
     },
     created() {
         this.fetchRecentlyPlay()
-        this.fetchArtistMayLike()
-        this.fetchEveryoneListening()
     }
 }
 </script>
