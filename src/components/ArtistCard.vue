@@ -7,8 +7,20 @@
                          class="img-fluid d-block mx-auto object-fit-cover  ">
                 </div>
 
+                <!-- 左上角的logo -->
+                <div class="position-absolute top-0 start-0 bg-dark bg-opacity-50 text-white p-1 rounded-top-4 d-flex align-items-center
+                        flex-row justify-content-between w-100">
+                    <img v-if="providedByMusicBuddy" src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid" style="width: 30px; height: 30px;">
+                    <div v-else class="d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                        <i class="fa-brands fa-spotify"></i>
+                    </div>
+                    <span v-if="similarity !== -1" :class="similarityColor" >
+                            {{ (similarity * 100).toFixed(3) }}%
+                        </span>
+                </div>
+
                 <h5 class="card-title text-center text-truncate">{{ artist.name }}</h5>
-                <p v-if="similarity !== -1" :class="similarityColor" class="text-center">{{ (similarity * 100).toFixed(3) }}%</p>
+
             </div>
         </div>
     </router-link>

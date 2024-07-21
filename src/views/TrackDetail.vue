@@ -86,7 +86,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <router-link :to="`/artist/${track.artist._id}`" v-if="isValidMongoId(track.artist._id)" class="me-2">
+                                    <router-link :to="`/artist/${track.artist._id}`"  class="me-2">
                                         <button class="btn btn-primary my-2 d-inline ">
                                             <i class="fa-brands fa-spotify mx-2"></i>More In MusicBuddy
                                         </button>
@@ -359,6 +359,7 @@ export default {
                 const response = await getSpotifyTrackById(this.trackId);
                 if (response.status === 200) {
                     this.track = response.data;
+                    console.log(response.data)
                     this.spotifyUri = response.data.uri;
                     this.formattedLyrics = this.formatLyrics(response.data.lyric)
                     this.spotifyTrackUrl = response.data.external_urls

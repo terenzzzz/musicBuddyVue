@@ -56,7 +56,7 @@
             </div>
 
             <!--    Lyric Analysis -->
-            <div class="card shadow p-3 my-3" >
+            <div class="card shadow p-3 my-3" v-if="(chartLabels.length>0 || lyricTopWords.length>0)">
                 <div class="row" >
                     <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
                     <div class="col-12 col-lg-6">
@@ -71,26 +71,6 @@
                 </div>
             </div>
 
-            <!--Recommandation-->
-            <div class="mt-5">
-                <h3>Similar Artists</h3>
-                <div v-if="similarArtist.length > 0">
-                    <div class="horizontal-scroll">
-                        <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
-                            <ArtistCard :artist="artist"></ArtistCard>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="spotifySimilarArtist.length > 0">
-                    <div class="horizontal-scroll">
-                        <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
-                            <ArtistCard :artist="artist"></ArtistCard>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
             <!--Tracks-->
             <div class="mt-5">
                 <h3>Top Tracks</h3>
@@ -102,6 +82,55 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card p-3 rounded-5 my-3">
+                <div class="btn-group d-flex justify-content-end container align-items-center" role="group">
+                    <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
+                    <label class="btn btn-outline-primary" for="weighted">Weighted</label>
+
+                    <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
+                    <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
+
+                    <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
+                    <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
+
+                    <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
+                    <label class="btn btn-outline-primary" for="lda">LDA</label>
+
+                    <i class="fa-solid ms-3 text-primary" :class="(showPieSlider)?'fa-chevron-down':'fa-chevron-up'"
+                       v-show="selectedRecommendation==='weighted'" @click="showPieSlider=!showPieSlider"></i>
+                </div>
+
+
+                <transition name="fade" mode="out-in" >
+                    <PieSlider
+                        v-show="showPieSlider"
+                        class="pie-slider"
+                        :modelWeighting.sync="modelWeighting"
+                        @update:models="handleModelUpdate"
+                    />
+                </transition>
+            </div>
+
+            <!--Recommandation-->
+            <div class="mt-5">
+                <h3>Similar Artists</h3>
+                <div v-if="similarArtist.length > 0" class="my-2">
+                    <div class="horizontal-scroll">
+                        <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
+                            <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="spotifySimilarArtist.length > 0" class="my-2">
+                    <div class="horizontal-scroll">
+                        <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
+                            <ArtistCard :artist="artist"></ArtistCard>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -109,7 +138,7 @@
 <script>
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
-import {getArtist, getSimilarArtists} from "@/api/artists";
+import {getArtist} from "@/api/artists";
 import {getLyricTopWordsByLyric, getTracksByArtist, getTrackTopicByLyric} from "@/api/tracks";
 import {getArtistRelatedArtists, getSpotifyArtistById, searchSpotifyArtists} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
@@ -117,18 +146,34 @@ import AlertComponents from "@/components/AlertComponents.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
 import Chart from "chart.js";
+import {
+    getLDARecommendArtistsByArtist, getLDARecommendArtistsByLyrics,
+    getTfidfRecommendArtistsByArtist, getTfidfRecommendArtistsByLyrics,
+    getW2VRecommendArtistsByArtist, getW2VRecommendArtistsByLyrics,
+    getWeightedRecommendArtistsByArtist, getWeightedRecommendArtistsByLyrics
+} from "@/api/recommend";
+import PieSlider from "@/components/PieSlider.vue";
+import {getLyricsFromGenius} from "@/api/genius";
 
 export default {
-    components: {RateBtn, AlertComponents, ArtistCard, TrackCard},
+    components: {PieSlider, RateBtn, AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
+            showPieSlider: true,
+            modelWeighting: [
+                { name: 'TFIDF', value: 33},
+                { name: 'Word2Vec', value: 33},
+                { name: 'LDA', value: 34 }
+            ],
+            selectedRecommendation: "weighted",
             artistId: this.$route.params.id,
             artist: null,
             tracks: [],
             similarArtist: [],
-            spotifySimilarArtist: [],
             spotifyArtistUrl: "",
             artistRating: 0,
+            spotifySimilarArtist:[],
+            lyricsForTracks:[],
 
             allTracksLyrics:[],
             lyricTopWords: [],
@@ -142,11 +187,12 @@ export default {
             this.fetchRating()
         }else{
             this.fetchSpotifyMetadata();
-            this.fetchSpotifySimilarArtists();
+            this.fetchSpotifySimilarArtists()
         }
-        this.fetchSimilarArtists();
+        this.fetchSimilarArtistsByArtist();
         this.fetchTracksByArtist();
     },
+
     watch: {
         '$route'(to) {
             this.artistId = to.params.id;
@@ -155,13 +201,56 @@ export default {
                 this.fetchRating()
             }else{
                 this.fetchSpotifyMetadata();
-                this.fetchSpotifySimilarArtists();
+                this.fetchSpotifySimilarArtists()
             }
-            this.fetchSimilarArtists();
+            this.fetchSimilarArtistsByArtist();
             this.fetchTracksByArtist();
-        }
+        },
+        async selectedRecommendation() {
+            // 获取当前选中的推荐方法
+            const recommendationType = this.selectedRecommendation;
+            // 根据选中的推荐方法来设置 showPieSlider 的状态
+            this.showPieSlider = recommendationType === "weighted";
+            if (isValidMongoId(this.artistId)) {
+                await this.fetchSimilarArtistsByArtist();
+            }else{
+                await this.fetchSimilarArtistsByLyrics();
+            }
+        },
     },
     methods: {
+        async handleModelUpdate(updatedModels) {
+            this.modelWeighting = updatedModels;
+            if (isValidMongoId(this.artistId)){
+                const artistResponse = await getWeightedRecommendArtistsByArtist(this.artistId,this.calculatedWeighting[0],
+                    this.calculatedWeighting[1], this.calculatedWeighting[2])
+                if (artistResponse.status === 200) {
+                    this.similarArtist = artistResponse.data.data;
+                }
+            }else{
+                const artistResponse = await getWeightedRecommendArtistsByLyrics(this.lyricsForTracks,this.calculatedWeighting[0],
+                    this.calculatedWeighting[1], this.calculatedWeighting[2])
+                if (artistResponse.status === 200) {
+                    this.similarArtist = artistResponse.data.data;
+                }
+            }
+
+        },
+        async fetchLyricFromGenius() {
+            let lyrics = [];
+            // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
+            for (let track of this.tracks.slice(0,5)) {
+                try {
+                    // Assuming track has properties artist and name
+                    let lyric = await getLyricsFromGenius(track.artist.name, track.name);
+                    lyrics.push(lyric.data.data.lyric);  // Use push to add items to an array
+                } catch (error) {
+                    console.error(`Failed to fetch lyrics for ${track.name} by ${track.artist.name}:`, error);
+                }
+            }
+            this.lyricsForTracks = lyrics;
+            console.log(this.lyricsForTracks)
+        },
         async searchSpotify(keyword) {
             // 访问本地数据库时,查询spotify获取spotify跳转连接
             try {
@@ -204,6 +293,11 @@ export default {
                 if (response.status === 200) {
                     this.tracks = response.data.tracks;
                     this.artist = response.data.artist;
+                    if (this.tracks.length>0){
+                        await this.fetchLyricFromGenius()
+                        await this.fetchSimilarArtistsByLyrics()
+                    }
+
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
@@ -251,13 +345,53 @@ export default {
                 console.error('Error fetching Track By Id:', err.message);
             }
         },
-        async fetchSimilarArtists() {
+        async fetchSimilarArtistsByArtist() {
             try {
-                const response = await getSimilarArtists(this.artistId);
-                if (response.data.status === 200) {
-                    this.similarArtist = response.data.data;
-                } else {
-                    console.error('Error fetching Recommended Artists:', response.data.message);
+                let response = {}
+                try {
+                    if (this.selectedRecommendation === "tfidf"){
+                        response = await getTfidfRecommendArtistsByArtist(this.artistId)
+                    }else if (this.selectedRecommendation === "word2vec"){
+                        response = await getW2VRecommendArtistsByArtist(this.artistId)
+                    }else if (this.selectedRecommendation === "lda"){
+                        response = await getLDARecommendArtistsByArtist(this.artistId)
+                    }else {
+                        response = await getWeightedRecommendArtistsByArtist(this.artistId,this.calculatedWeighting[0],
+                            this.calculatedWeighting[1], this.calculatedWeighting[2])
+                    }
+                    if (response.data.status === 200) {
+                        this.similarArtist = response.data.data;
+                    } else {
+                        console.error('Error Recommended artists:', response.data.message);
+                    }
+                } catch (err) {
+                    console.error('Error Recommended artists:', err.message);
+                }
+            } catch (err) {
+                console.error('Error fetching Recommended Artists:', err.message);
+            }
+        },
+        async fetchSimilarArtistsByLyrics() {
+            try {
+                let response = {}
+                try {
+                    if (this.selectedRecommendation === "tfidf"){
+                        response = await getTfidfRecommendArtistsByLyrics(this.lyricsForTracks)
+                    }else if (this.selectedRecommendation === "word2vec"){
+                        response = await getW2VRecommendArtistsByLyrics(this.lyricsForTracks)
+                    }else if (this.selectedRecommendation === "lda"){
+                        response = await getLDARecommendArtistsByLyrics(this.lyricsForTracks)
+                    }else {
+                        response = await getWeightedRecommendArtistsByLyrics(this.lyricsForTracks,this.calculatedWeighting[0],
+                            this.calculatedWeighting[1], this.calculatedWeighting[2])
+                    }
+                    if (response.data.status === 200) {
+                        this.similarArtist = response.data.data;
+                    } else {
+                        console.error('Error Recommended artists:', response.data.message);
+                    }
+                } catch (err) {
+                    console.error('Error Recommended artists:', err.message);
                 }
             } catch (err) {
                 console.error('Error fetching Recommended Artists:', err.message);
@@ -327,6 +461,26 @@ export default {
     computed: {
         itemTypes() {
             return itemTypes
+        },
+        calculatedWeighting() {
+            // 计算总和
+            const totalValue = this.modelWeighting.reduce((sum, model) => sum + model.value, 0);
+
+            // 计算每个模型的权重，但不立即舍入
+            let calculatedWeighting = this.modelWeighting.map(model => model.value / totalValue);
+
+            // 对前n-1个权重进行舍入
+            for (let i = 0; i < calculatedWeighting.length - 1; i++) {
+                calculatedWeighting[i] = Number(calculatedWeighting[i].toFixed(4));
+            }
+
+            // 计算前n-1个权重的总和
+            const sumOfN1 = calculatedWeighting.slice(0, -1).reduce((sum, weight) => sum + weight, 0);
+
+            // 最后一个权重设为1减去其他权重之和
+            calculatedWeighting[calculatedWeighting.length - 1] = Number((1 - sumOfN1).toFixed(4));
+
+            return calculatedWeighting;
         }
 
     }
