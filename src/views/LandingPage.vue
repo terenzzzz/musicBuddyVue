@@ -212,7 +212,7 @@ export default {
     },
     created() {
         this.fetchRandomTracks();
-        this.fetch2dModel();
+        // this.fetch2dModel();
     }
 };
 </script>
