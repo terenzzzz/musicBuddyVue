@@ -15,6 +15,7 @@
                     <div class="col-4 col-md-3 col-xl-2 d-flex flex-column justify-content-center text-center">
                         <div class="ratio ratio-1x1"><img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid object-fit-cover" ></div>
                         <strong>{{ user.name }}</strong>
+                        <p class="text-muted">{{user.email}}</p>
                     </div>
                 </div>
 
@@ -35,7 +36,7 @@
                             <p class="text-muted">Rated Artisted</p>
                         </div>
                         <div class="col d-flex flex-column" v-if="user&& user.tags.length > 0">
-                            <p><strong>「{{user.tags[0].tag.name}}」</strong></p>
+                            <p><strong>「{{topTags.length>0? topTags[0].tag.name : user.tags[0].tag.name}}」</strong></p>
                             <p class="text-muted">Personality</p>
                         </div>
                     </div>
@@ -184,8 +185,8 @@
                         <h5 class="red-bottom">Top Tags</h5>
                         <a href="#" class="text-white">All</a>
                     </div>
-                    <div v-if="user && user.tags.length>0">
-                        <div class="mb-2 position-relative" v-for="tag in user.tags.slice(0, 6)" :key="tag.id">
+                    <div v-if="user && topTags.length>0">
+                        <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 6)" :key="tag.id">
                             <span class="tag-label">{{ tag.tag.name }}</span>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" style="background-color: #0d6efd"
@@ -205,7 +206,7 @@
 </template>
 
 <script>
-import {getUser, updateSpotifyRefreshToken} from '@/api/users';
+import {getUser, updateSpotifyRefreshToken, updateTags} from '@/api/users';
 import {API_URL, SPOTIFY_AUTH_URL} from "@/utils/connection";
 import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
@@ -235,6 +236,7 @@ export default {
             ratedArtists: [],
             savedTracks: [],
             topArtists: [],
+            topTags: [],
             isSpotifyConnected: false
         };
     },
@@ -243,6 +245,7 @@ export default {
         this.fetchRatings()
         this.checkForSpotifyRefreshToken();
         this.fetchSpotifyData();
+        this.fetchUserTags();
     },
 
     methods: {
@@ -253,6 +256,15 @@ export default {
             try {
                 const response = await getUser(); // 传递适当的参数
                 this.user = response.data.data;
+            } catch (error) {
+                console.error('Failed to fetch user:', error);
+            }
+        },
+
+        async fetchUserTags() {
+            try {
+                const response = await updateTags(); // 传递适当的参数
+                this.topTags = response.data.data;
             } catch (error) {
                 console.error('Failed to fetch user:', error);
             }

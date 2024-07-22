@@ -20,6 +20,14 @@ export const getUser = data => request({
     data
 });
 
+
+
+export const updateTags = () => request({
+    url: `/app/updateTags`,
+    method: 'post',
+    data: { }
+});
+
 export const updateSpotifyRefreshToken = (refreshToken) => {
     const formData = new FormData();
     formData.append('refreshToken', refreshToken);
