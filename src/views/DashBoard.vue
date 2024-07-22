@@ -19,6 +19,23 @@
                        v-show="selectedRecommendation==='weighted'" @click="showPieSlider=!showPieSlider"></i>
                 </div>
 
+                <div class="container my-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label for="inputTracksCount" class="font-weight-bold">Tracks Count to Generate Recommendation:</label>
+                        <span class="badge badge-primary">{{ inputTracksCount }}</span>
+                    </div>
+                    <input
+                        id="inputTracksCount"
+                        type="range"
+                        class="custom-range"
+                        v-model.number="inputTracksCount"
+                        min="1"
+                        max="30"
+                        @change="updateInputTracksCount"
+                    />
+                    <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
+                </div>
+
 
                 <transition name="fade" mode="out-in">
                     <PieSlider
@@ -32,8 +49,9 @@
         </div>
 
         <div class="mt-5">
-            <div class="my-3 mx-auto fit-content">
+            <div class="my-3 mx-auto fit-content text-center">
                 <h3 class="text-center text-primary">Recently Play</h3>
+                <p class="badge text-bg-primary fs-6 fst-italic">The {{inputTracksCount}} most recently tracks being used</p>
                 <p class="text-muted text-center small">* Collected by the third party you have collected</p>
             </div>
 
@@ -142,7 +160,8 @@ export default {
                 { name: 'TFIDF', value: 33},
                 { name: 'Word2Vec', value: 33},
                 { name: 'LDA', value: 34 }
-            ]
+            ],
+            inputTracksCount: 5
         };
     },
     watch: {
@@ -193,7 +212,7 @@ export default {
     methods: {
         async startRecommendation(){
           if (this.recentlyPlay.length>0){
-              await this.fetchLyricFromGenius()
+              await this.fetchLyricFromGenius(this.inputTracksCount)
               await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
               await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
               await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
@@ -209,10 +228,10 @@ export default {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-        async fetchLyricFromGenius() {
+        async fetchLyricFromGenius(trackCount) {
             let lyrics = [];
             // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
-            for (let track of this.recentlyPlay.slice(0,5)) {
+            for (let track of this.recentlyPlay.slice(0,trackCount)) {
                 try {
                     // Assuming track has properties artist and name
                     let lyric = await getLyricsFromGenius(track.artist.name, track.name);
@@ -302,6 +321,10 @@ export default {
                 console.error('Error fetching tracks:', err.message);
             }
         },
+        async updateInputTracksCount(){
+            console.log(this.inputTracksCount)
+            await this.startRecommendation()
+        },
         async handleModelUpdate(updatedModels) {
             this.modelWeighting = updatedModels;
 
@@ -335,7 +358,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .fit-content {
     width: fit-content;
 }
@@ -345,6 +368,30 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active 在 <2.1.8 中 */ {
     opacity: 0;
+}
+
+.model-weight {
+    margin-bottom: 1rem;
+}
+
+.custom-range {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.custom-range:hover {
+    opacity: 1;
+}
+
+
+.badge-primary {
+    background-color: #0d6efd;
+    padding: 0.5em 0.75em;
+    font-size: 0.9em;
 }
 </style>
 

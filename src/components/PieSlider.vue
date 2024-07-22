@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5 w-100 PieSlider">
+    <div class="container mt-2 w-100 PieSlider">
         <h3 class="mb-4">Adjust Model Weights</h3>
         <div class="row">
             <div class="col-12 col-md-6">
@@ -7,7 +7,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <div class="model-weight" v-for="(model, index) in modelWeighting" :key="index">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
                         <label :for="model.name" class="font-weight-bold">{{ model.name }}</label>
                         <span class="badge badge-primary">{{ model.value }}%</span>
                     </div>
@@ -97,7 +97,7 @@ export default {
 }
 
 .model-weight {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .custom-range {

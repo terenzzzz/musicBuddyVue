@@ -15,7 +15,8 @@
             </div>
         </div>
 
-        <div class="row bg-light pb-3 d-flex justify-content-center px-1 px-sm-3 px-md-5">
+
+        <div class="row pb-3 d-flex justify-content-center px-1 px-sm-3 px-md-5 ">
             <div class="col-12">
                 <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
                 <p class="text-center mb-2">Take a look at some of the Tracks on our platform.</p>
