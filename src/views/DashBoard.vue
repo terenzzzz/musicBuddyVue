@@ -32,7 +32,7 @@
         </div>
 
         <div class="mt-5">
-            <div class="my-3 red-bottom mx-auto fit-content">
+            <div class="my-3 mx-auto fit-content">
                 <h3 class="text-center text-primary">Recently Play</h3>
                 <p class="text-muted text-center small">* Collected by the third party you have collected</p>
             </div>
@@ -45,11 +45,12 @@
         </div>
 
         <div class="mt-5">
-            <div class="my-3 red-bottom mx-auto fit-content">
-                <h3 class="text-center text-primary">If you like「
+            <div class="my-3 mx-auto fit-content text-center">
+                <h3 class="text-primary">If you like「
                     <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
-                    」, you may also like</h3>
-                <p class="text-muted text-center small">* Recommended by the lyric base on your most recently played </p>
+                    」, you may also like </h3>
+                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                <p class="text-muted small">* Recommended by the lyric base on your most recently played </p>
             </div>
 
             <div class="horizontal-scroll" v-if="alsoListen.length>0">
@@ -61,9 +62,10 @@
         </div>
 
         <div class="mt-5">
-            <div class="my-3 red-bottom mx-auto fit-content">
-                <h3 class="text-center text-primary">Recommended for you</h3>
-                <p class="text-muted text-center small">* Recommended by the lyrics base on your recently played </p>
+            <div class="my-3 mx-auto fit-content text-center">
+                <h3 class="text-primary">Recommended for you</h3>
+                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
             </div>
             <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">
@@ -74,9 +76,10 @@
         </div>
 
         <div class="mt-5">
-            <div class="my-3 red-bottom mx-auto fit-content">
-                <h3 class="text-center text-primary">Artist May Liked</h3>
-                <p class="text-muted text-center small">* Recommended by the lyrics base on your recently played </p>
+            <div class="my-3 mx-auto fit-content text-center">
+                <h3 class="text-primary">Artist May Liked</h3>
+                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
             </div>
             <div class="horizontal-scroll" v-if="artistMayLike.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
@@ -87,9 +90,10 @@
         </div>
 
         <div class="mt-5">
-            <div class="my-3 red-bottom mx-auto fit-content">
-                <h3 class="text-center text-primary">Everyone's listening</h3>
-                <p class="text-muted text-center small">* Recommended by the user similar to you </p>
+            <div class="my-3 mx-auto fit-content text-center">
+                <h3 class="text-primary">Everyone's listening</h3>
+                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                <p class="text-muted small">* Recommended by the user similar to you </p>
             </div>
             <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
                 <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
@@ -173,6 +177,17 @@ export default {
             calculatedWeighting[calculatedWeighting.length - 1] = Number((1 - sumOfN1).toFixed(4));
 
             return calculatedWeighting;
+        },
+        recommendedModeText(){
+            let mode = this.selectedRecommendation.toUpperCase()
+            let weights = this.calculatedWeighting
+            if (mode === "WEIGHTED"){
+                mode = `${mode}
+                tfidf=${(weights[0]*100).toFixed(0)}%
+                word2vec=${(weights[1]*100).toFixed(0)}%
+                lda=${(weights[2]*100).toFixed(0)}%`
+            }
+            return mode
         }
     },
     methods: {

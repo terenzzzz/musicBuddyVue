@@ -114,7 +114,10 @@
 
             <!--Recommandation-->
             <div class="mt-5">
-                <h3>Similar Artists</h3>
+                <div>
+                    <h3 class="red-bottom d-inline me-2">Similar Artists</h3>
+                    <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
+                </div>
                 <div v-if="similarArtist.length > 0" class="my-2">
                     <div class="horizontal-scroll">
                         <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
@@ -189,8 +192,8 @@ export default {
             this.fetchSpotifyMetadata();
             this.fetchSpotifySimilarArtists()
         }
-        this.fetchSimilarArtistsByArtist();
         this.fetchTracksByArtist();
+        this.fetchSimilarArtistsByArtist();
     },
 
     watch: {
@@ -203,8 +206,8 @@ export default {
                 this.fetchSpotifyMetadata();
                 this.fetchSpotifySimilarArtists()
             }
-            this.fetchSimilarArtistsByArtist();
             this.fetchTracksByArtist();
+            this.fetchSimilarArtistsByArtist();
         },
         async selectedRecommendation() {
             // 获取当前选中的推荐方法
@@ -481,6 +484,17 @@ export default {
             calculatedWeighting[calculatedWeighting.length - 1] = Number((1 - sumOfN1).toFixed(4));
 
             return calculatedWeighting;
+        },
+        recommendedModeText(){
+            let mode = this.selectedRecommendation.toUpperCase()
+            let weights = this.calculatedWeighting
+            if (mode === "WEIGHTED"){
+                mode = `${mode}
+                tfidf=${(weights[0]*100).toFixed(0)}%
+                word2vec=${(weights[1]*100).toFixed(0)}%
+                lda=${(weights[2]*100).toFixed(0)}%`
+            }
+            return mode
         }
 
     }

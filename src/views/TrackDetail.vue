@@ -164,8 +164,11 @@
 
 
                     <div v-if="recommendedTracks.length>0">
-                        <h3 class="red-bottom">Recommended Tracks for「{{track.name}}」</h3>
-                        <div class="row">
+                        <div>
+                            <h3 class="red-bottom d-inline me-2">Recommended Tracks for「{{track.name}}」</h3>
+                            <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
+                        </div>
+                        <div class="row mt-2">
                             <div class="col-4 col-md-2" v-for="track in recommendedTracks" :key="track.id">
                                 <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
@@ -177,8 +180,11 @@
                 </div>
 
                 <div class="my-3">
-                    <h3 class="red-bottom">Recommended Artists for「{{track.artist.name}}」</h3>
-                    <div v-if="recommendedArtists.length > 0">
+                    <div>
+                        <h3 class="red-bottom d-inline me-2">Recommended Artists for「{{track.artist.name}}」</h3>
+                        <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
+                    </div>
+                    <div v-if="recommendedArtists.length > 0" class="mt-2">
                         <div class="horizontal-scroll">
                             <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
                                 <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
@@ -565,6 +571,17 @@ export default {
             calculatedWeighting[calculatedWeighting.length - 1] = Number((1 - sumOfN1).toFixed(4));
 
             return calculatedWeighting;
+        },
+        recommendedModeText(){
+            let mode = this.selectedRecommendation.toUpperCase()
+            let weights = this.calculatedWeighting
+            if (mode === "WEIGHTED"){
+                mode = `${mode}
+                tfidf=${(weights[0]*100).toFixed(0)}%
+                word2vec=${(weights[1]*100).toFixed(0)}%
+                lda=${(weights[2]*100).toFixed(0)}%`
+            }
+            return mode
         }
     }
 };
