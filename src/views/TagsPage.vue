@@ -6,22 +6,27 @@
                     <div class="position-sticky">
                         <input type="search" class="form-control form-control-sm ds-input mb-2" id="search-input"
                                placeholder="Search Tags" v-model="keyword">
-                            <button class="btn btn-sm btn-danger w-50" @click="clearSelected">Clear</button>
-                            <button class="btn btn-sm btn-success w-50" @click="fetchTagsByKeyword">Search</button>
+                            <button class="btn btn-sm btn-light w-50" @click="clearSelected">Clear</button>
+                            <button class="btn btn-sm btn-primary w-50" @click="fetchTagsByKeyword">Search</button>
                         <hr>
 
-                        <ul class="nav flex-row flex-md-column">
-                            <li v-for="tag in tags" :key="tag.id" class="text-center mx-2"
-                                :class="selectedTags.includes(tag) ? 'bg-white text-secondary' : ''"
-                                @click="clickTag(tag)"
-                                style="cursor: pointer">{{ tag.name }}</li>
-                        </ul>
+                        <div class="tag-container" style="max-height: 100vh; overflow-y: auto;">
+                            <ul class="nav flex-row flex-md-column">
+                                <li v-for="tag in tags" :key="tag.id"
+                                    class="text-center mx-2"
+                                    :class="selectedTags.includes(tag) ? 'bg-white text-secondary' : ''"
+                                    @click="clickTag(tag)"
+                                    style="cursor: pointer">
+                                    {{ tag.name }}
+                                </li>
+                            </ul>
+                        </div>
                         <hr>
                     </div>
                 </nav>
             </div>
 
-            <div class="col-12 col-md-9 col-lg-10 px-md-4 p-3 " >
+            <div class="col-12 col-md-9 col-lg-10 px-md-4 p-5" >
                 <div class="d-flex flex-column">
                     <strong>Selected Tags:</strong>
                     <div class="d-flex flex-wrap">

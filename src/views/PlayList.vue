@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="mt-5 px-5">
+        <div class="mt-5 px-5 container-lg">
             <div v-if="tracks.length > 0">
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>

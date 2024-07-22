@@ -1,5 +1,5 @@
 <template>
-    <div class="Search">
+    <div class="Search container-lg">
 
         <div class="px-2 px-sm-3 px-md-5">
             <div class="row d-flex justify-content-center mt-5 card pt-3 rounded-5">

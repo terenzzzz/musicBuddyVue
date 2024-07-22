@@ -84,15 +84,17 @@
                                     <TagButton :tag="tag.tag"></TagButton>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-12">
-                                    <router-link :to="`/artist/${track.artist._id}`"  class="me-2">
-                                        <button class="btn btn-primary my-2 d-inline ">
-                                            <i class="fa-brands fa-spotify mx-2"></i>More In MusicBuddy
+                                    <router-link :to="`/artist/${track.artist._id}`" class="me-2 ">
+                                        <button class="btn btn-primary d-inline-flex align-items-center h-100">
+                                            <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid ratio-1x1 me-2" style="width: 30px; height: 30px;">
+                                            <span>More In MusicBuddy</span>
                                         </button>
                                     </router-link>
-                                    <button class="btn btn-success my-2 d-inline" @click="openWindow(spotifyArtistUrl)">
-                                        <i class="fa-brands fa-spotify mx-2"></i>More In Spotify
+                                    <button class="btn btn-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyArtistUrl)">
+                                        <i class="fa-brands fa-spotify me-2"></i>
+                                        <span>More In Spotify</span>
                                     </button>
                                 </div>
                             </div>
