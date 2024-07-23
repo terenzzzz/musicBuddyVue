@@ -140,14 +140,14 @@
                             <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
                             <label class="btn btn-outline-primary" for="weighted">Weighted</label>
 
-                            <input type="radio" class="btn-check" id="tfidf" value="tfidf" name="recommendation" v-model="selectedRecommendation">
-                            <label class="btn btn-outline-primary" for="tfidf">TF-IDF</label>
+                            <input type="radio" class="btn-check" id="keywords" value="keywords" name="recommendation" v-model="selectedRecommendation">
+                            <label class="btn btn-outline-primary" for="keywords">Keywords</label>
 
-                            <input type="radio" class="btn-check" id="w2v" value="word2vec" name="recommendation" v-model="selectedRecommendation">
-                            <label class="btn btn-outline-primary" for="w2v">Word 2 Vec</label>
+                            <input type="radio" class="btn-check" id="semantics" value="semantics" name="recommendation" v-model="selectedRecommendation">
+                            <label class="btn btn-outline-primary" for="semantics">Semantics</label>
 
-                            <input type="radio" class="btn-check" id="lda" value="lda" name="recommendation" v-model="selectedRecommendation">
-                            <label class="btn btn-outline-primary" for="lda">LDA</label>
+                            <input type="radio" class="btn-check" id="topics" value="topics" name="recommendation" v-model="selectedRecommendation">
+                            <label class="btn btn-outline-primary" for="topics">Topics</label>
 
                             <i class="fa-solid ms-3 text-primary" :class="(showPieSlider)?'fa-chevron-down':'fa-chevron-up'"
                                v-show="selectedRecommendation==='weighted'" @click="showPieSlider=!showPieSlider"></i>
@@ -229,9 +229,9 @@ export default {
         return {
             showPieSlider: true,
             modelWeighting: [
-                { name: 'TFIDF', value: 33},
-                { name: 'Word2Vec', value: 33},
-                { name: 'LDA', value: 34 }
+                { name: 'Keywords', value: 33},
+                { name: 'Semantics', value: 33},
+                { name: 'Topics', value: 34 }
             ],
             selectedRecommendation: "weighted",
             chartLabels: [],
@@ -432,11 +432,11 @@ export default {
                 const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
                 let response = {}
                 try {
-                    if (this.selectedRecommendation === "tfidf"){
+                    if (this.selectedRecommendation === "keywords"){
                         response = await getTfidfRecommendArtistsByLyrics(lyric)
-                    }else if (this.selectedRecommendation === "word2vec"){
+                    }else if (this.selectedRecommendation === "semantics"){
                         response = await getW2VRecommendArtistsByLyrics(lyric)
-                    }else if (this.selectedRecommendation === "lda"){
+                    }else if (this.selectedRecommendation === "topics"){
                         response = await getLDARecommendArtistsByLyrics(lyric)
                     }else {
                         response = await getWeightedRecommendArtistsByLyrics(lyric,this.calculatedWeighting[0],
@@ -459,11 +459,11 @@ export default {
                 const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
                 let response = {}
                 try {
-                    if (this.selectedRecommendation === "tfidf"){
+                    if (this.selectedRecommendation === "keywords"){
                         response = await getTfidfRecommendByLyrics(lyric)
-                    }else if (this.selectedRecommendation === "word2vec"){
+                    }else if (this.selectedRecommendation === "semantics"){
                         response = await getW2VRecommendByLyrics(lyric)
-                    }else if (this.selectedRecommendation === "lda"){
+                    }else if (this.selectedRecommendation === "topics"){
                         response = await getLDARecommendByLyrics(lyric)
                     }else {
                         response = await getWeightedRecommendByLyrics(lyric,this.calculatedWeighting[0],
@@ -579,9 +579,9 @@ export default {
             let weights = this.calculatedWeighting
             if (mode === "WEIGHTED"){
                 mode = `${mode}
-                tfidf=${(weights[0]*100).toFixed(0)}%
-                word2vec=${(weights[1]*100).toFixed(0)}%
-                lda=${(weights[2]*100).toFixed(0)}%`
+                Keywords=${(weights[0]*100).toFixed(0)}%
+                Semantics=${(weights[1]*100).toFixed(0)}%
+                Topics=${(weights[2]*100).toFixed(0)}%`
             }
             return mode
         }
