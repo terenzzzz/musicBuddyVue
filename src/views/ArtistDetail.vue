@@ -1,5 +1,5 @@
 <template>
-    <div class="ArtistDetail" >
+    <div class="ArtistDetail container-lg" >
         <AlertComponents :title="isValidMongoId(this.artistId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
         <div v-if="artist" class="page-container mx-auto my-5">
 
@@ -32,7 +32,7 @@
                         </div>
                         <div class="row d-flex flex-row" v-if="artist.tags">
                             <div class="col-auto" v-for="tag in artist.tags" :key="tag.id">
-                                <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                                <TagButton :tag="tag.tag"></TagButton>
                             </div>
                         </div>
 
@@ -157,9 +157,10 @@ import {
 } from "@/api/recommend";
 import PieSlider from "@/components/PieSlider.vue";
 import {getLyricsFromGenius} from "@/api/genius";
+import TagButton from "@/components/TagButton.vue";
 
 export default {
-    components: {PieSlider, RateBtn, AlertComponents, ArtistCard, TrackCard},
+    components: {TagButton, PieSlider, RateBtn, AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
             showPieSlider: true,

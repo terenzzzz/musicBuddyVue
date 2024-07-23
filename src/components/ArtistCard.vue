@@ -16,7 +16,10 @@
                     </div>
                     <span v-if="similarity !== -1" :class="similarityColor" >
                             {{ (similarity * 100).toFixed(3) }}%
-                        </span>
+                    </span>
+                    <span v-else-if="rating !== -1" >
+                        <SingleStar :rating="rating"></SingleStar>
+                    </span>
                 </div>
 
                 <h5 class="card-title text-center text-truncate">{{ artist.name }}</h5>
@@ -28,14 +31,21 @@
 
 <script>
 import isValidMongoId from "@/utils/isValidMongoId";
+import SingleStar from "@/components/SingleStar.vue";
 
 export default {
+    components: {SingleStar},
     props: {
         artist: {
             type: Object,
             required: true
         },
         similarity:{
+            type: Number,
+            required: false,
+            default: -1
+        },
+        rating:{
             type: Number,
             required: false,
             default: -1

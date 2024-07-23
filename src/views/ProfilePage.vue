@@ -54,8 +54,8 @@
                     </router-link>
                 </div>
                 <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="track in ratedTracks" :key="track.id">
-                        <TrackCard :track="track.item"></TrackCard>
+                    <div class="col-3 col-md-2 mx-2" v-for="track in ratedTracks" :key="track.id">
+                        <TrackCard :track="track.item" :rating="track.rate"></TrackCard>
                     </div>
                 </div>
             </div>
@@ -71,8 +71,8 @@
                     </router-link>
                 </div>
                 <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 col-xxl-1 mx-2" v-for="artist in ratedArtists" :key="artist.id">
-                        <ArtistCard :artist="artist.item"></ArtistCard>
+                    <div class="col-3 col-md-2 mx-2" v-for="artist in ratedArtists" :key="artist.id">
+                        <ArtistCard :artist="artist.item" :rating="artist.rate"></ArtistCard>
                     </div>
                 </div>
             </div>

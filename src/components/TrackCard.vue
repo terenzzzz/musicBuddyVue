@@ -19,6 +19,9 @@
                         <span v-if="similarity !== -1" :class="similarityColor" >
                             {{ (similarity * 100).toFixed(3) }}%
                         </span>
+                        <span v-else-if="rating !== -1" >
+                            <SingleStar :rating="rating"></SingleStar>
+                        </span>
                     </div>
 
                     <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-1 rounded-bottom-4">
@@ -33,8 +36,10 @@
 
 <script>
 import isValidMongoId from "@/utils/isValidMongoId";
+import SingleStar from "@/components/SingleStar.vue";
 
 export default {
+    components: {SingleStar},
     props: {
         track: {
             type: Object,
@@ -44,7 +49,13 @@ export default {
             type: Number,
             required: false,
             default: -1
+        },
+        rating:{
+            type: Number,
+            required: false,
+            default: -1
         }
+
     },
     data() {
         return {

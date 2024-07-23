@@ -1,5 +1,5 @@
 <template>
-    <div class="TrackDetail" >
+    <div class="TrackDetail container-lg" >
         <AlertComponents :title="isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
         <div v-if="track">
             <div class="mt-5 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
