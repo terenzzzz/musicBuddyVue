@@ -1,44 +1,44 @@
 <template>
-    <div class="profile">
-        <div v-if="user" class="my-3">
-            <div class="row d-flex justify-content-end container-fluid">
-                <div class="col-12 col-sm-6 col-md-4 d-flex justify-content-end">
+    <div class="profile container-lg">
+        <div v-if="user" class="row my-3 px-3 px-md-5">
+            <div class="card shadow rounded-5 mt-5 rounded-bottom-0 p-4 " >
+                <div class="d-flex justify-content-end my-2">
                     <button :class="['mb-2', 'btn', isSpotifyConnected ? 'btn-success text-white' : 'btn-outline-secondary']" @click="loginWithSpotify">
                         <i class="fa-brands fa-spotify"></i> {{ isSpotifyConnected ? 'Connected to Spotify' : 'Connect to Spotify' }}
                     </button>
                 </div>
-            </div>
-
-
-            <div class="w-75 mx-auto my-3">
-                <div class="row d-flex justify-content-center my-5">
-                    <div class="col-4 col-md-3 col-xl-2 d-flex flex-column justify-content-center text-center">
+                <div class="row">
+                    <div class="col-4 col-md-3 col-xl-2 m-auto ">
                         <div class="ratio ratio-1x1"><img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid object-fit-cover" ></div>
-                        <strong>{{ user.name }}</strong>
-                        <p class="text-muted">{{user.email}}</p>
+                    </div>
+                    <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
+                        <div class="mb-2">
+                            <h3 class="m-0">{{ user.name }}</h3>
+                            <p class="text-muted">{{ user.email }}</p>
+                        </div>
+                        <div class="row d-flex flex-row" v-if="user">
+                            <div class="col-auto" v-for="tag in (topTags.length>0? topTags : user.tags).slice(0,10)" :key="tag.id">
+                                <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="card shadow rounded-5 rounded-top-0" >
+                <div class="row text-center py-3">
+                    <div class="col-4 d-flex flex-column" >
+                        <p><strong>{{ratedTracks.length}}</strong></p>
+                        <p class="text-muted">Rated Song</p>
+                    </div>
 
-<!--                    <div class="row w-75 mx-auto">-->
-<!--                        <div class="col-6 d-flex justify-content-center">-->
-<!--                            <HeatMap></HeatMap>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="col-4 d-flex flex-column">
+                        <p><strong>{{ratedArtists.length}}</strong></p>
+                        <p class="text-muted">Rated Artisted</p>
+                    </div>
 
-                <div class="card shadow rounded-5">
-                    <div class="row text-center my-3">
-                        <div class="col d-flex flex-column">
-                            <p><strong>{{ratedTracks.length}}</strong></p>
-                            <p class="text-muted">Rated Song</p>
-                        </div>
-                        <div class="col d-flex flex-column">
-                            <p><strong>{{ratedArtists.length}}</strong></p>
-                            <p class="text-muted">Rated Artisted</p>
-                        </div>
-                        <div class="col d-flex flex-column" v-if="user&& user.tags.length > 0">
-                            <p><strong>「{{topTags.length>0? topTags[0].tag.name : user.tags[0].tag.name}}」</strong></p>
-                            <p class="text-muted">Personality</p>
-                        </div>
+                    <div class="col-4 d-flex flex-column" >
+                        <p><strong>「{{topTags.length>0? topTags[0].tag.name : user.tags[0].tag.name}}」</strong></p>
+                        <p class="text-muted">Personality</p>
                     </div>
                 </div>
             </div>

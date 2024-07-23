@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-2 w-100 PieSlider">
-        <h3 class="mb-4">Adjust Model Weights</h3>
+        <h4 class="red-bottom">Adjust Model Weights</h4>
         <div class="row">
             <div class="col-12 col-md-6">
                 <canvas id="weightChart"></canvas>
