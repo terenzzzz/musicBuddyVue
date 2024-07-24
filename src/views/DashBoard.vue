@@ -1,6 +1,6 @@
 <template>
     <div class="DashBoard">
-        <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvas">
+        <div class="offcanvas offcanvas-start custom-width" tabindex="-1" id="offcanvas">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title d-none d-sm-block red-bottom" id="offcanvas">Recommendation Mode</h3>
                 <button type="button" class="btn-close" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
@@ -99,7 +99,7 @@
 
         </div>
         <div class="container-lg">
-            <button class="btn btn-sm float-end btn-outline-primary d-flex align-items-center justify-content-center"
+            <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center float-end"
                     data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
                 <i class="bi bi-gear-fill fs-4"></i>
                 <span class="fw-bold mx-2">{{ selectedRecommendationText }}</span>
@@ -107,6 +107,7 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </button>
+
 
 
             <div class="mt-5">
@@ -437,6 +438,31 @@ export default {
 .fit-content {
     width: fit-content;
 }
+
+.custom-width {
+    width: 100% !important;
+}
+
+@media (min-width: 768px) {
+    .custom-width {
+        width: 50% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .custom-width {
+        width: 35% !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .custom-width {
+        width: 25% !important;
+    }
+}
+
+
+
 /* 过渡类名定义 */
 .fade-enter-active, .fade-leave-active {
     transition: opacity 0.3s;
