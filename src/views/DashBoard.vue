@@ -1,15 +1,17 @@
 <template>
     <div class="DashBoard">
-        <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvas" >
+        <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvas">
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title d-none d-sm-block red-bottom" id="offcanvas">Recommendation Mode</h3>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
+                        data-bs-dismiss="offcanvas"></button>
             </div>
 
             <div class="offcanvas-body p-3">
                 <div class="d-flex justify-content-between align-items-center my-2">
                     <label for="dropdownMenuButton" class="my-2 fw-bold">Current Mode:</label>
-                    <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false" :class="isRecommending?'disabled':''">
                         {{ selectedRecommendationText }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -20,23 +22,76 @@
                     </ul>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center">
-                    <label for="inputTracksCount" class="fw-bold ">Tracks Count to Generate Recommendation:</label>
-                    <span class="badge badge-primary">{{ inputTracksCount }}</span>
+                <div class="d-flex justify-content-between align-items-center my-2">
+                    <label for="recentlyPlayedRadio" class="my-2 fw-bold">Recommend by Recently Played:</label>
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="recentlyPlayedRadio">
+                        <input type="radio" class="btn-check" name="recentlyPlayedRadio" id="yesRecentlyPlayed"
+                               @click="selectRecentlyPlayed(true)" autocomplete="off" checked
+                               :disabled="isRecommending">
+                        <label class="btn btn-sm btn-outline-primary" for="yesRecentlyPlayed">Yes</label>
+
+                        <input type="radio" class="btn-check" name="recentlyPlayedRadio" id="noRecentlyPlayed"
+                               @click="selectRecentlyPlayed(false)" autocomplete="off"
+                               :disabled="isRecommending">
+                        <label class="btn btn-sm btn-outline-primary" for="noRecentlyPlayed">No</label>
+                    </div>
                 </div>
-                <input
-                    id="inputTracksCount"
-                    type="range"
-                    class="custom-range"
-                    v-model.number="inputTracksCount"
-                    min="1"
-                    max="30"
-                    @change="updateInputTracksCount"
-                />
-                <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
+
+                <div v-show="isRecentlyPlayed">
+                    <div class="d-flex justify-content-between align-items-center my-2">
+                        <label for="inputTracksCount" class="fw-bold ">Amount of Recently Played Tracks to use:</label>
+                        <span class="badge badge-primary">{{ selectedRecentlyPlayedAmount }}</span>
+                    </div>
+                    <input
+                        id="inputTracksCount"
+                        type="range"
+                        class="custom-range"
+                        v-model.number="selectedRecentlyPlayedAmount"
+                        min="1"
+                        max="30"
+                        @change="startRecommendation"
+                        :disabled="isRecommending"
+                    />
+                    <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center my-2">
+                    <label for="topTracksRadio" class="my-2 fw-bold">Recommend by Top Tracks:</label>
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="topTracksRadio">
+                        <input type="radio" class="btn-check" name="topTracksRadio" id="yesTopTracks"
+                               @click="selectTopTracks(true)" autocomplete="off" checked
+                               :disabled="isRecommending">
+                        <label class="btn btn-sm btn-outline-primary" for="yesTopTracks">Yes</label>
+
+                        <input type="radio" class="btn-check" name="topTracksRadio" id="noTopTracks"
+                               @click="selectTopTracks(false)" autocomplete="off"
+                               :disabled="isRecommending">
+                        <label class="btn btn-sm btn-outline-primary" for="noTopTracks">No</label>
+                    </div>
+                </div>
+
+                <div  v-show="isTopTracks">
+                    <div class="d-flex justify-content-between align-items-center my-2">
+                        <label for="inputTracksCount" class="fw-bold ">Amount of Top Tracks Tracks to use:</label>
+                        <span class="badge badge-primary">{{ selectedTopTracksAmount }}</span>
+                    </div>
+                    <input
+                        :disabled="isRecommending"
+                        id="inputTracksCount"
+                        type="range"
+                        class="custom-range"
+                        v-model.number="selectedTopTracksAmount"
+                        min="1"
+                        max="30"
+                        @change="startRecommendation"
+                    />
+                    <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
+                </div>
 
                 <PieSlider
+                    v-show="showPieSlider"
                     class="pie-slider my-5"
+                    :disabled="isRecommending"
                     :modelWeighting.sync="modelWeighting"
                     @update:models="handleModelUpdate"
                 />
@@ -44,29 +99,21 @@
 
         </div>
         <div class="container-lg">
-            <button class="btn float-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
-                <i class="bi bi-gear-fill fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
+            <button class="btn btn-sm float-end btn-outline-primary d-flex align-items-center justify-content-center"
+                    data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
+                <i class="bi bi-gear-fill fs-4"></i>
+                <span class="fw-bold mx-2">{{ selectedRecommendationText }}</span>
+                <div class="spinner-border text-primary spinner-border-sm" role="status" v-show="isRecommending">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </button>
-            <div class="mt-5">
-                <div class="my-3 mx-auto fit-content text-center">
-                    <h3 class="text-center text-primary">Recently Play</h3>
-                    <p class="badge text-bg-primary fs-6 fst-italic">The {{inputTracksCount}} most recently tracks being used</p>
-                    <p class="text-muted text-center small">* Collected by the third party you have collected</p>
-                </div>
 
-                <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
-                    </div>
-                </div>
-            </div>
 
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
                     <h3 class="text-primary">If you like「
                         <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
                         」, you may also like </h3>
-                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
                     <p class="text-muted small">* Recommended by the lyric base on your most recently played </p>
                 </div>
 
@@ -81,7 +128,6 @@
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
                     <h3 class="text-primary">Recommended for you</h3>
-                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
                     <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
                 <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
@@ -95,7 +141,6 @@
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
                     <h3 class="text-primary">Artist May Liked</h3>
-                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
                     <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
                 <div class="horizontal-scroll" v-if="artistMayLike.length>0">
@@ -109,7 +154,6 @@
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
                     <h3 class="text-primary">Everyone's listening</h3>
-                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
                     <p class="text-muted small">* Recommended by the user similar to you </p>
                 </div>
                 <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
@@ -127,7 +171,7 @@
 import TrackCard from '@/components/TrackCard.vue';
 import {getRandomTrack} from "@/api/tracks";
 import ArtistCard from "@/components/ArtistCard.vue";
-import {getRecentlyPlayed} from "@/api/spotify";
+import {getRecentlyPlayed, getTopTracks} from "@/api/spotify";
 import {
     getLDARecommendArtistsByLyrics,
     getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
@@ -149,19 +193,28 @@ export default {
     data() {
         return {
             showSidebar: true,
+            isRecentlyPlayed: true,
+            isTopTracks: true,
             selectedRecommendation: "weighted",
-            recentlyPlay: [],
-            alsoListen: [],
-            recommendForYou: [],
-            artistMayLike: [],
-            EveryoneListening: [],
-            lyricsForRecentlyPlay:[],
+            showPieSlider: true,
             modelWeighting: [
                 { name: 'Keywords', value: 33},
                 { name: 'Semantics', value: 33},
                 { name: 'Topics', value: 34 }
             ],
-            inputTracksCount: 5
+            selectedRecentlyPlayedAmount: 3,
+            selectedTopTracksAmount: 3,
+
+            lyricsForRecommend:[],
+
+            isRecommending: true,
+
+            recentlyPlay: [],
+            topTracks:[],
+            alsoListen: [],
+            recommendForYou: [],
+            artistMayLike: [],
+            EveryoneListening: [],
         };
     },
     computed:{
@@ -185,17 +238,6 @@ export default {
 
             return calculatedWeighting;
         },
-        recommendedModeText(){
-            let mode = this.selectedRecommendation.toUpperCase()
-            let weights = this.calculatedWeighting
-            if (mode === "WEIGHTED"){
-                mode = `${mode}
-                Keywords=${(weights[0]*100).toFixed(0)}%
-                Semantics=${(weights[1]*100).toFixed(0)}%
-                Topics=${(weights[2]*100).toFixed(0)}%`
-            }
-            return mode
-        },
         selectedRecommendationText() {
             const options = {
                 weighted: 'Weighted',
@@ -207,39 +249,86 @@ export default {
         }
     },
     methods: {
+        // =============================================
         async selectRecommendation(option) {
             this.selectedRecommendation = option
-            // 获取当前选中的推荐方法
-            const recommendationType = this.selectedRecommendation;
             // 根据选中的推荐方法来设置 showPieSlider 的状态
-            this.showPieSlider = recommendationType === "weighted";
+            this.showPieSlider = (option === "weighted");
+            await this.startRecommendation()
+        },
+        async selectRecentlyPlayed(option) {
+            this.isRecentlyPlayed = option
+            console.log(this.isRecentlyPlayed)
+            await this.startRecommendation()
+        },
+        async selectTopTracks(option) {
+            this.isTopTracks = option
+            console.log(this.isTopTracks)
+            await this.startRecommendation()
+        },
+        async handleModelUpdate(updatedModels) {
+            this.modelWeighting = updatedModels;
+            await this.startRecommendation()
+        },
 
-            await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
-            await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
-            await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
+
+        // ==== NEEDED ======
+        async getSpotifyData(){
+            await this.fetchRecentlyPlay()
+            await this.fetchTopTracks()
         },
         async startRecommendation(){
-          if (this.recentlyPlay.length>0){
-              await this.fetchLyricFromGenius(this.inputTracksCount)
-              await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
-              await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
-              await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
-              await this.fetchEveryoneListening()
-          }
+            this.isRecommending = true
+            console.log("start Recommendation")
+            // const mode = this.selectedRecommendation // weighted/keywords/semantics/topics
+            const isRecentlyPlayed = this.isRecentlyPlayed
+            const isTopTracks = this.isTopTracks
+
+            if (!isRecentlyPlayed && !isTopTracks){
+                this.resetRecommended()
+            }else{
+                const selectedRecentlyPlayedAmount = isRecentlyPlayed? this.selectedRecentlyPlayedAmount : 0
+                const selectedTopTracksAmount = isTopTracks? this.selectedTopTracksAmount : 0
+
+
+                const slicedRecentlyPlayed =  this.recentlyPlay.slice(0,selectedRecentlyPlayedAmount)
+                const slicedTopTracks =  this.topTracks.slice(0,selectedTopTracksAmount)
+                const combinedTracks = [...slicedRecentlyPlayed, ...slicedTopTracks];
+
+                await this.fetchLyricFromGenius(combinedTracks)
+
+                if (this.lyricsForRecommend.length>0){
+                    await this.fetchAlsoListen(this.lyricsForRecommend[0])
+                    await this.fetchRecommendedForYou(this.lyricsForRecommend)
+                    await this.fetchArtistMayLike(this.lyricsForRecommend)
+                    await this.fetchEveryoneListening()
+                }
+            }
+
+
+            this.isRecommending = false
         },
         async fetchRecentlyPlay() {
             try {
                 const response = await getRecentlyPlayed();
                 this.recentlyPlay = response.data;
-                await this.startRecommendation()
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-        async fetchLyricFromGenius(trackCount) {
+        async fetchTopTracks() {
+            try {
+                const response = await getTopTracks();
+                this.topTracks = response.data;
+            } catch (error) {
+                console.error('Failed to fetch recently played tracks:', error);
+            }
+        },
+        async fetchLyricFromGenius(tracks) {
+            console.log("Getting lyrics from genius")
             let lyrics = [];
             // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
-            for (let track of this.recentlyPlay.slice(0,trackCount)) {
+            for (let track of tracks) {
                 try {
                     // Assuming track has properties artist and name
                     let lyric = await getLyricsFromGenius(track.artist.name, track.name);
@@ -248,8 +337,8 @@ export default {
                     console.error(`Failed to fetch lyrics for ${track.name} by ${track.artist.name}:`, error);
                 }
             }
-            this.lyricsForRecentlyPlay = lyrics;
-            console.log(this.lyricsForRecentlyPlay)
+            this.lyricsForRecommend = lyrics;
+            console.log(this.lyricsForRecommend)
         },
         async fetchAlsoListen(lyric) {
             let response = {}
@@ -329,38 +418,16 @@ export default {
                 console.error('Error fetching tracks:', err.message);
             }
         },
-        async updateInputTracksCount(){
-            console.log(this.inputTracksCount)
-            await this.startRecommendation()
-        },
-        async handleModelUpdate(updatedModels) {
-            this.modelWeighting = updatedModels;
-
-            const [alsoLikeResponse, recommendForYouResponse, artistMayLikeResponse] = await Promise.all([
-                getWeightedRecommendByLyrics(this.lyricsForRecentlyPlay[0],this.calculatedWeighting[0],
-                    this.calculatedWeighting[1],this.calculatedWeighting[2]),
-                getWeightedRecommendByLyrics(this.lyricsForRecentlyPlay,this.calculatedWeighting[0],
-                    this.calculatedWeighting[1],this.calculatedWeighting[2]),
-                getWeightedRecommendArtistsByLyrics(this.lyricsForRecentlyPlay,this.calculatedWeighting[0],
-                    this.calculatedWeighting[1],this.calculatedWeighting[2])
-            ]);
-
-            if (alsoLikeResponse.status === 200) {
-                this.alsoListen = alsoLikeResponse.data.data;
-            }
-
-            if (recommendForYouResponse.status === 200) {
-                this.recommendForYou = recommendForYouResponse.data.data;
-            }
-
-            if (artistMayLikeResponse.status === 200) {
-                this.artistMayLike = artistMayLikeResponse.data.data;
-            }
-
-        },
+        resetRecommended(){
+            this.alsoListen= []
+            this.recommendForYou= []
+            this.artistMayLike= []
+            this.EveryoneListening= []
+        }
     },
-    created() {
-        this.fetchRecentlyPlay()
+    async created() {
+        await this.getSpotifyData()
+        await this.startRecommendation()
     }
 }
 </script>

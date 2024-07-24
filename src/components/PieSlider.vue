@@ -19,6 +19,7 @@
                         min="0"
                         max="100"
                         @change="updateWeights"
+                        :disabled="disabled"
                     />
                 </div>
             </div>
@@ -38,6 +39,11 @@ export default {
         modelWeighting: {
             type: Array,
             required: true
+        },
+        disabled: {
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
     mounted() {
