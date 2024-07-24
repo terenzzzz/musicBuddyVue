@@ -1,14 +1,14 @@
 <template>
     <div class="DashBoard">
-        <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
+        <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvas" >
             <div class="offcanvas-header">
-                <h3 class="offcanvas-title d-none d-sm-block" id="offcanvas">Recommendation Mode</h3>
+                <h3 class="offcanvas-title d-none d-sm-block red-bottom" id="offcanvas">Recommendation Mode</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
 
             <div class="offcanvas-body p-3">
-                <div class="dropdown d-flex justify-content-between align-items-center">
-                    <label for="dropdownMenuButton" class="me-2">Current Mode:</label>
+                <div class="d-flex justify-content-between align-items-center my-2">
+                    <label for="dropdownMenuButton" class="my-2 fw-bold">Current Mode:</label>
                     <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ selectedRecommendationText }}
                     </button>
@@ -19,24 +19,24 @@
                         <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('topics')">Topics</a></li>
                     </ul>
                 </div>
-                <div class="container my-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label for="inputTracksCount" class="font-weight-bold">Tracks Count to Generate Recommendation:</label>
-                        <span class="badge badge-primary">{{ inputTracksCount }}</span>
-                    </div>
-                    <input
-                        id="inputTracksCount"
-                        type="range"
-                        class="custom-range"
-                        v-model.number="inputTracksCount"
-                        min="1"
-                        max="30"
-                        @change="updateInputTracksCount"
-                    />
-                    <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <label for="inputTracksCount" class="fw-bold ">Tracks Count to Generate Recommendation:</label>
+                    <span class="badge badge-primary">{{ inputTracksCount }}</span>
                 </div>
+                <input
+                    id="inputTracksCount"
+                    type="range"
+                    class="custom-range"
+                    v-model.number="inputTracksCount"
+                    min="1"
+                    max="30"
+                    @change="updateInputTracksCount"
+                />
+                <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
+
                 <PieSlider
-                    class="pie-slider"
+                    class="pie-slider my-5"
                     :modelWeighting.sync="modelWeighting"
                     @update:models="handleModelUpdate"
                 />

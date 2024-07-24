@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-2 w-100 PieSlider">
+    <div class="mt-2 w-100 PieSlider">
         <h4 class="red-bottom">Adjust Model Weights</h4>
         <div class="row">
             <div class="col-12">
