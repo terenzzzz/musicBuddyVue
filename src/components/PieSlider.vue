@@ -2,10 +2,10 @@
     <div class="container mt-2 w-100 PieSlider">
         <h4 class="red-bottom">Adjust Model Weights</h4>
         <div class="row">
-            <div class="col-12 col-md-6">
+            <div class="col-12">
                 <canvas id="weightChart"></canvas>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12">
                 <div class="model-weight" v-for="(model, index) in modelWeighting" :key="index">
                     <div class="d-flex justify-content-between align-items-center">
                         <label :for="model.name" class="font-weight-bold">{{ model.name }}</label>

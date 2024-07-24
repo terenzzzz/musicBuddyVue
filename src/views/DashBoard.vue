@@ -1,24 +1,24 @@
 <template>
-    <div class="px-1 px-sm-3 px-md-5 my-3 container-lg">
-        <div class="row px-3 px-md-5">
-            <div class="card p-3 rounded-5">
-                <div class="btn-group d-flex justify-content-end container align-items-center" role="group">
-                    <input type="radio" class="btn-check" id="weighted" value="weighted" name="recommendation" v-model="selectedRecommendation" checked>
-                    <label class="btn btn-outline-primary" for="weighted">Weighted</label>
+    <div class="DashBoard">
+        <div class="offcanvas offcanvas-start w-50" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
+            <div class="offcanvas-header">
+                <h3 class="offcanvas-title d-none d-sm-block" id="offcanvas">Recommendation Mode</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
 
-                    <input type="radio" class="btn-check" id="keywords" value="keywords" name="recommendation" v-model="selectedRecommendation">
-                    <label class="btn btn-outline-primary" for="keywords">Keywords</label>
-
-                    <input type="radio" class="btn-check" id="semantics" value="semantics" name="recommendation" v-model="selectedRecommendation">
-                    <label class="btn btn-outline-primary" for="semantics">Semantics</label>
-
-                    <input type="radio" class="btn-check" id="topics" value="topics" name="recommendation" v-model="selectedRecommendation">
-                    <label class="btn btn-outline-primary" for="topics">Topics</label>
-
-                    <i class="fa-solid ms-3 text-primary" :class="(showPieSlider)?'fa-chevron-down':'fa-chevron-up'"
-                       v-show="selectedRecommendation==='weighted'" @click="showPieSlider=!showPieSlider"></i>
+            <div class="offcanvas-body p-3">
+                <div class="dropdown d-flex justify-content-between align-items-center">
+                    <label for="dropdownMenuButton" class="me-2">Current Mode:</label>
+                    <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ selectedRecommendationText }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('weighted')">Weighted</a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('keywords')">Keywords</a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('semantics')">Semantics</a></li>
+                        <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('topics')">Topics</a></li>
+                    </ul>
                 </div>
-
                 <div class="container my-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <label for="inputTracksCount" class="font-weight-bold">Tracks Count to Generate Recommendation:</label>
@@ -35,90 +35,90 @@
                     />
                     <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
                 </div>
-
-
-                <transition name="fade" mode="out-in">
-                    <PieSlider
-                        v-show="showPieSlider"
-                        class="pie-slider"
-                        :modelWeighting.sync="modelWeighting"
-                        @update:models="handleModelUpdate"
-                    />
-                </transition>
+                <PieSlider
+                    class="pie-slider"
+                    :modelWeighting.sync="modelWeighting"
+                    @update:models="handleModelUpdate"
+                />
             </div>
+
         </div>
+        <div class="container-lg">
+            <button class="btn float-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+                <i class="bi bi-gear-fill fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
+            </button>
+            <div class="mt-5">
+                <div class="my-3 mx-auto fit-content text-center">
+                    <h3 class="text-center text-primary">Recently Play</h3>
+                    <p class="badge text-bg-primary fs-6 fst-italic">The {{inputTracksCount}} most recently tracks being used</p>
+                    <p class="text-muted text-center small">* Collected by the third party you have collected</p>
+                </div>
 
-        <div class="mt-5">
-            <div class="my-3 mx-auto fit-content text-center">
-                <h3 class="text-center text-primary">Recently Play</h3>
-                <p class="badge text-bg-primary fs-6 fst-italic">The {{inputTracksCount}} most recently tracks being used</p>
-                <p class="text-muted text-center small">* Collected by the third party you have collected</p>
-            </div>
-
-            <div class="horizontal-scroll">
-                <div class="col-3 col-md-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
-                    <TrackCard :track="track"></TrackCard>
+                <div class="horizontal-scroll">
+                    <div class="col-3 col-md-2 mx-2" v-for="track in recentlyPlay" :key="track.id">
+                        <TrackCard :track="track"></TrackCard>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mt-5">
-            <div class="my-3 mx-auto fit-content text-center">
-                <h3 class="text-primary">If you like「
-                    <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
-                    」, you may also like </h3>
-                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
-                <p class="text-muted small">* Recommended by the lyric base on your most recently played </p>
-            </div>
-
-            <div class="horizontal-scroll" v-if="alsoListen.length>0">
-                <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">
-                    <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+            <div class="mt-5">
+                <div class="my-3 mx-auto fit-content text-center">
+                    <h3 class="text-primary">If you like「
+                        <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
+                        」, you may also like </h3>
+                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                    <p class="text-muted small">* Recommended by the lyric base on your most recently played </p>
                 </div>
-            </div>
-            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
-        </div>
 
-        <div class="mt-5">
-            <div class="my-3 mx-auto fit-content text-center">
-                <h3 class="text-primary">Recommended for you</h3>
-                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
-                <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
-            </div>
-            <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
-                <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">
-                    <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                <div class="horizontal-scroll" v-if="alsoListen.length>0">
+                    <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">
+                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                    </div>
                 </div>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
             </div>
-            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
-        </div>
 
-        <div class="mt-5">
-            <div class="my-3 mx-auto fit-content text-center">
-                <h3 class="text-primary">Artist May Liked</h3>
-                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
-                <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
-            </div>
-            <div class="horizontal-scroll" v-if="artistMayLike.length>0">
-                <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
-                  <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
+            <div class="mt-5">
+                <div class="my-3 mx-auto fit-content text-center">
+                    <h3 class="text-primary">Recommended for you</h3>
+                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                    <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
+                <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
+                    <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">
+                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                    </div>
+                </div>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
             </div>
-            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
-        </div>
 
-        <div class="mt-5">
-            <div class="my-3 mx-auto fit-content text-center">
-                <h3 class="text-primary">Everyone's listening</h3>
-                <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
-                <p class="text-muted small">* Recommended by the user similar to you </p>
-            </div>
-            <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
-                <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
-                  <TrackCard :track="track"></TrackCard>
+            <div class="mt-5">
+                <div class="my-3 mx-auto fit-content text-center">
+                    <h3 class="text-primary">Artist May Liked</h3>
+                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                    <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
+                <div class="horizontal-scroll" v-if="artistMayLike.length>0">
+                    <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
+                        <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
+                    </div>
+                </div>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
             </div>
-            <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+
+            <div class="mt-5">
+                <div class="my-3 mx-auto fit-content text-center">
+                    <h3 class="text-primary">Everyone's listening</h3>
+                    <p class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</p>
+                    <p class="text-muted small">* Recommended by the user similar to you </p>
+                </div>
+                <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
+                    <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
+                        <TrackCard :track="track"></TrackCard>
+                    </div>
+                </div>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+            </div>
         </div>
     </div>
 </template>
@@ -148,7 +148,7 @@ export default {
     },
     data() {
         return {
-            showPieSlider: true,
+            showSidebar: true,
             selectedRecommendation: "weighted",
             recentlyPlay: [],
             alsoListen: [],
@@ -163,18 +163,6 @@ export default {
             ],
             inputTracksCount: 5
         };
-    },
-    watch: {
-        async selectedRecommendation() {
-            // 获取当前选中的推荐方法
-            const recommendationType = this.selectedRecommendation;
-            // 根据选中的推荐方法来设置 showPieSlider 的状态
-            this.showPieSlider = recommendationType === "weighted";
-
-            await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
-            await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
-            await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
-        }
     },
     computed:{
         calculatedWeighting() {
@@ -207,9 +195,29 @@ export default {
                 Topics=${(weights[2]*100).toFixed(0)}%`
             }
             return mode
+        },
+        selectedRecommendationText() {
+            const options = {
+                weighted: 'Weighted',
+                keywords: 'Keywords',
+                semantics: 'Semantics',
+                topics: 'Topics'
+            }
+            return options[this.selectedRecommendation] || 'Select Option'
         }
     },
     methods: {
+        async selectRecommendation(option) {
+            this.selectedRecommendation = option
+            // 获取当前选中的推荐方法
+            const recommendationType = this.selectedRecommendation;
+            // 根据选中的推荐方法来设置 showPieSlider 的状态
+            this.showPieSlider = recommendationType === "weighted";
+
+            await this.fetchAlsoListen(this.lyricsForRecentlyPlay[0])
+            await this.fetchRecommendedForYou(this.lyricsForRecentlyPlay)
+            await this.fetchArtistMayLike(this.lyricsForRecentlyPlay)
+        },
         async startRecommendation(){
           if (this.recentlyPlay.length>0){
               await this.fetchLyricFromGenius(this.inputTracksCount)
