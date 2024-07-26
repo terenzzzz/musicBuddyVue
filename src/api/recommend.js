@@ -1,6 +1,13 @@
 // 导入 axios配置
 import request from "@/utils/request"
 
+
+export const getCollaborateSimilarUsersTracks = (user) => request({
+    url: `/api/getCollaborateSimilarUsersTracks`,
+    method: 'post',
+    data: { user: user }
+});
+
 export const getTfidfRecommendArtistsByLyrics = (lyrics) => request({
     url: `/api/getTfidfRecommendArtistsByLyrics`,
     method: 'post',

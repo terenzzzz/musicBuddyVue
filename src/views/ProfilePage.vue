@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="col-4 d-flex flex-column" >
-                        <p><strong>「{{topTags.length>0? topTags[0].tag.name : user.tags[0].tag.name}}」</strong></p>
+                        <p><strong>「{{topTags.length>0? topTags[0].tag.name : user.tags[0]?.tag.name}}」</strong></p>
                         <p class="text-muted">Personality</p>
                     </div>
                 </div>
@@ -254,7 +254,7 @@ export default {
         },
         async fetchUser() {
             try {
-                const response = await getUser(); // 传递适当的参数
+                const response = await getUser();
                 this.user = response.data.data;
             } catch (error) {
                 console.error('Failed to fetch user:', error);

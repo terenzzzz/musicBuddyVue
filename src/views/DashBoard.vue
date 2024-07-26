@@ -159,7 +159,7 @@
                 </div>
                 <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
                     <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
+                        <TrackCard :track="track.track"></TrackCard>
                     </div>
                 </div>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
@@ -170,10 +170,10 @@
 
 <script>
 import TrackCard from '@/components/TrackCard.vue';
-import {getRandomTrack} from "@/api/tracks";
 import ArtistCard from "@/components/ArtistCard.vue";
 import {getRecentlyPlayed, getTopTracks} from "@/api/spotify";
 import {
+    getCollaborateSimilarUsersTracks,
     getLDARecommendArtistsByLyrics,
     getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
     getTfidfRecommendByLyrics, getW2VRecommendArtistsByLyrics,
@@ -183,6 +183,7 @@ import {
 import {getLyricsFromGenius} from "@/api/genius";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import PieSlider from "@/components/PieSlider.vue";
+import {getUser} from "@/api/users";
 
 export default {
     components: {
@@ -216,6 +217,7 @@ export default {
             recommendForYou: [],
             artistMayLike: [],
             EveryoneListening: [],
+            user: null
         };
     },
     computed:{
@@ -409,7 +411,9 @@ export default {
         },
         async fetchEveryoneListening() {
             try {
-                const response = await getRandomTrack();
+                const userResponse = await getUser();
+                this.user = userResponse.data.data;
+                const response = await getCollaborateSimilarUsersTracks(this.user._id);
                 if (response.data.status === 200) {
                     this.EveryoneListening = response.data.data;
                 } else {
