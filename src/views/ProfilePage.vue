@@ -53,11 +53,12 @@
                         All
                     </router-link>
                 </div>
-                <div class="horizontal-scroll">
+                <div class="horizontal-scroll" v-if="ratedTracks.length>0">
                     <div class="col-3 col-md-2 mx-2" v-for="track in ratedTracks" :key="track.id">
                         <TrackCard :track="track.item" :rating="track.rate"></TrackCard>
                     </div>
                 </div>
+                <ErrorPlaceholderHorizontal v-else></ErrorPlaceholderHorizontal>
             </div>
         </div>
 
@@ -70,11 +71,12 @@
                         All
                     </router-link>
                 </div>
-                <div class="horizontal-scroll">
+                <div class="horizontal-scroll" v-if="ratedArtists.length>0">
                     <div class="col-3 col-md-2 mx-2" v-for="artist in ratedArtists" :key="artist.id">
                         <ArtistCard :artist="artist.item" :rating="artist.rate"></ArtistCard>
                     </div>
                 </div>
+                <ErrorPlaceholderHorizontal v-else></ErrorPlaceholderHorizontal>
             </div>
         </div>
 
@@ -97,7 +99,7 @@
                             </div>
                         </div>
                         <div v-else>
-                            <EmptyPlaceholder></EmptyPlaceholder>
+                            <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                         </div>
 
                     </div>
@@ -120,7 +122,7 @@
                             </div>
                         </div>
                         <div v-else>
-                            <EmptyPlaceholder></EmptyPlaceholder>
+                            <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                         </div>
                     </div>
                 </div>
@@ -142,7 +144,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <EmptyPlaceholder></EmptyPlaceholder>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                     </div>
 
                 </div>
@@ -172,7 +174,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <EmptyPlaceholder></EmptyPlaceholder>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                     </div>
 
 
@@ -197,7 +199,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <EmptyPlaceholder></EmptyPlaceholder>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                     </div>
                 </div>
             </div>
@@ -212,10 +214,11 @@ import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 // import HeatMap from "@/components/HeatMap.vue";
 import playlistTypes from "@/enum/playlistTypes";
-import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
 import TrackCard from "@/components/TrackCard.vue";
 import {getRatings} from "@/api/ratings";
 import ArtistCard from "@/components/ArtistCard.vue";
+import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
+import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
 
 export default {
     computed: {
@@ -226,7 +229,11 @@ export default {
             return this.user.tags.reduce((total, tag) => total + tag.count, 0);
         }
     },
-    components: {ArtistCard, TrackCard, EmptyPlaceholder, TrackCardHorizontal},
+    components: {
+        ErrorPlaceholderVertical,
+        ErrorPlaceholderHorizontal,
+        ArtistCard, TrackCard,
+        TrackCardHorizontal},
     data() {
         return {
             user: null,

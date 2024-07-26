@@ -88,7 +88,7 @@ import {search} from "@/api/search";
 import ArtistCard from "@/components/ArtistCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
 import {searchSpotifyArtists, searchSpotifyTracks} from "@/api/spotify";
-import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
+import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
 
 export default {
     components: {EmptyPlaceholder, AlertComponents, ArtistCard, TrackCard},

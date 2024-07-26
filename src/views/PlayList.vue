@@ -17,7 +17,7 @@
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
                     <div class="col-4 col-md-2" v-for="track in tracks" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
+                        <TrackCard :track="track.item" :rating="track.rate"></TrackCard>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
                     <div class="col-4 col-md-2 " v-for="artist in artists" :key="artist.id">
-                        <ArtistCard :artist="artist"></ArtistCard>
+                        <ArtistCard :artist="artist.item" :rating="artist.rate"></ArtistCard>
                     </div>
                 </div>
             </div>
@@ -107,9 +107,10 @@ export default {
                 const response = await getRatings();
                 let ratings = response.data.data
                 if (this.title === playlistTypes.RATED_TRACKS){
-                    this.tracks = ratings.ratedTracks.map(rating => rating.item);
+
+                    this.tracks = ratings.ratedTracks;
                 }else if(this.title === playlistTypes.RATED_ARTISTS){
-                    this.artists = ratings.ratedArtists.map(rating => rating.item);
+                    this.artists = ratings.ratedArtists;
                 }
 
             } catch (error) {

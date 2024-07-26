@@ -123,7 +123,11 @@
                         <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                     </div>
                 </div>
-                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                    v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
+                    title="Please make sure you have connected to third party and have valid data">
+                </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
@@ -136,7 +140,11 @@
                         <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                     </div>
                 </div>
-                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                    v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
+                    title="Please make sure you have connected to third party and have valid data">
+                </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
@@ -149,7 +157,11 @@
                         <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
                     </div>
                 </div>
-                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                    v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
+                    title="Please make sure you have connected to third party and have valid data">
+                </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
@@ -162,7 +174,11 @@
                         <TrackCard :track="track.track"></TrackCard>
                     </div>
                 </div>
-                <LoadingSpinner title="We are finding the music that suits you best..." v-else></LoadingSpinner>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                                v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
+                                title="Please make sure you have connected to third party and have valid data">
+                </ErrorPlaceholderHorizontal>
             </div>
         </div>
     </div>
@@ -184,9 +200,11 @@ import {getLyricsFromGenius} from "@/api/genius";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import PieSlider from "@/components/PieSlider.vue";
 import {getUser} from "@/api/users";
+import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 
 export default {
     components: {
+        ErrorPlaceholderHorizontal,
         PieSlider,
         LoadingSpinner,
         ArtistCard,

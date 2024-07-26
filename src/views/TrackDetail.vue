@@ -214,7 +214,7 @@ import AlertComponents from "@/components/AlertComponents.vue";
 import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
-import EmptyPlaceholder from "@/components/EmptyPlaceholder.vue";
+import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
 import {
     getLDARecommendArtistsByLyrics, getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
     getTfidfRecommendByLyrics, getW2VRecommendArtistsByLyrics, getW2VRecommendByLyrics,
