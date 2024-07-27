@@ -101,7 +101,6 @@ export default {
             }
 
         },
-
         async fetchRatings() {
             try {
                 const response = await getRatings();
@@ -117,7 +116,6 @@ export default {
                 console.error('Failed to fetch user:', error);
             }
         },
-
         async fetchTracksByTag(tag) {
             try {
                 const response = await getTracksByTag(tag);
@@ -126,7 +124,6 @@ export default {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-
         async fetchTagById(tag) {
             try {
                 const response = await getTagById(tag);
@@ -135,8 +132,6 @@ export default {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-
-
         async fetchSavedTracks() {
             try {
                 const response = await getSavedTracks();
@@ -145,7 +140,6 @@ export default {
                 console.error('Failed to fetch recently played tracks:', error);
             }
         },
-
         async fetchRecentlyPlay() {
             try {
                 const response = await getRecentlyPlayed();

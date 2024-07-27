@@ -128,6 +128,10 @@
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
                     title="Please make sure you have connected to third party and have valid data">
                 </ErrorPlaceholderHorizontal>
+                <ErrorPlaceholderHorizontal
+                    v-else
+                    title="No Content Founded">
+                </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
@@ -144,6 +148,10 @@
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
                     title="Please make sure you have connected to third party and have valid data">
+                </ErrorPlaceholderHorizontal>
+                <ErrorPlaceholderHorizontal
+                    v-else
+                    title="No Content Founded">
                 </ErrorPlaceholderHorizontal>
             </div>
 
@@ -162,6 +170,10 @@
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
                     title="Please make sure you have connected to third party and have valid data">
                 </ErrorPlaceholderHorizontal>
+                <ErrorPlaceholderHorizontal
+                    v-else
+                    title="No Content Founded">
+                </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
@@ -176,8 +188,8 @@
                 </div>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
-                                v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
-                                title="Please make sure you have connected to third party and have valid data">
+                    v-else
+                    title="No Content Founded">
                 </ErrorPlaceholderHorizontal>
             </div>
         </div>
@@ -305,7 +317,7 @@ export default {
             const isRecentlyPlayed = this.isRecentlyPlayed
             const isTopTracks = this.isTopTracks
 
-            if (!isRecentlyPlayed && !isTopTracks){
+            if (!isRecentlyPlayed && !isTopTracks){ //判断是否选择recentlyPlayed和TopTracks输入类型
                 this.resetRecommended()
             }else{
                 const selectedRecentlyPlayedAmount = isRecentlyPlayed? this.selectedRecentlyPlayedAmount : 0
@@ -316,17 +328,18 @@ export default {
                 const slicedTopTracks =  this.topTracks.slice(0,selectedTopTracksAmount)
                 const combinedTracks = [...slicedRecentlyPlayed, ...slicedTopTracks];
 
-                await this.fetchLyricFromGenius(combinedTracks)
+                if (combinedTracks.length > 0){
+                    await this.fetchLyricFromGenius(combinedTracks)
 
-                if (this.lyricsForRecommend.length>0){
-                    await this.fetchAlsoListen(this.lyricsForRecommend[0])
-                    await this.fetchRecommendedForYou(this.lyricsForRecommend)
-                    await this.fetchArtistMayLike(this.lyricsForRecommend)
-                    await this.fetchEveryoneListening()
+                    if (this.lyricsForRecommend.length>0){
+                        await this.fetchAlsoListen(this.lyricsForRecommend[0])
+                        await this.fetchRecommendedForYou(this.lyricsForRecommend)
+                        await this.fetchArtistMayLike(this.lyricsForRecommend)
+                    }
                 }
             }
 
-
+            await this.fetchEveryoneListening()
             this.isRecommending = false
         },
         async fetchRecentlyPlay() {

@@ -213,7 +213,7 @@ import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
-import {addRating, getRating, itemTypes} from "@/api/ratings";
+import {addRating, deleteRating, getRating, itemTypes} from "@/api/ratings";
 import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
 import {
     getLDARecommendArtistsByLyrics, getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
@@ -324,17 +324,25 @@ export default {
             let response = null
             switch (itemType) {
                 case itemTypes.TRACK:
-                    response = await addRating(this.trackId, itemType, rating)
+                    if (rating === this.trackRating){
+                        response = await deleteRating(this.trackId, itemType)
+                    }else {
+                        response = await addRating(this.trackId, itemType, rating)
+                    }
                     if (response.status === 200) {
-                        this.trackRating = response.data.rate
+                        this.trackRating = rating === this.trackRating?  0 : response.data.rate
                     } else {
                         alert("Rate Track Failed")
                     }
                     break
                 case itemTypes.ARTIST:
-                    response = await addRating(this.track.artist._id, itemType, rating)
+                    if (rating === this.artistRating){
+                        response = await deleteRating(this.track.artist._id, itemType)
+                    }else {
+                        response = await addRating(this.trackId, itemType, rating)
+                    }
                     if (response.status === 200) {
-                        this.artistRating = response.data.rate
+                        this.artistRating = rating === this.artistRating? 0 : response.data.rate
                     } else {
                         alert("Rate Artist Failed")
                     }

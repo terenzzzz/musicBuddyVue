@@ -9,6 +9,16 @@ export const itemTypes = {
     ARTIST
 };
 
+export const deleteRating = (item, itemType) => request({
+    url: `/app/deleteRating`,
+    method: 'post',
+    data: {
+        item: item,
+        itemType: itemType
+    }
+});
+
+
 export const addRating = async (item, itemType, rate) => {
     const formData = new FormData();
     formData.append('item', item);

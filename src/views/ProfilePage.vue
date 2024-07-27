@@ -131,22 +131,23 @@
             <!--                        Top Tracks-->
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="most-listened card rounded-5 p-3 my-2 h-100 shadow">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Top Tracks</h5>
-                        <router-link v-if="topTracks.length>0" :to="{ name: 'Playlist',
-                            params: { type:playlistTypes.playlistTypeToString(playlistTypes.TOP_TRACKS) } }">
-                            All
-                        </router-link>
-                    </div>
-                    <div v-if="topTracks.length>0">
-                        <div v-for="track in topTracks.slice(0, 5)" :key="track.id">
-                            <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="red-bottom">Top Tracks</h5>
+                            <router-link v-if="topTracks.length>0" :to="{ name: 'Playlist',
+                                params: { type:playlistTypes.playlistTypeToString(playlistTypes.TOP_TRACKS) } }">
+                                All
+                            </router-link>
+                        </div>
+                        <div v-if="topTracks.length>0">
+                            <div v-for="track in topTracks.slice(0, 5)" :key="track.id">
+                                <TrackCardHorizontal :track="track"></TrackCardHorizontal>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                         </div>
                     </div>
-                    <div v-else>
-                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
-                    </div>
-
                 </div>
             </div>
 
