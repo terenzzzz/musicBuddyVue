@@ -339,7 +339,7 @@ export default {
                     if (rating === this.artistRating){
                         response = await deleteRating(this.track.artist._id, itemType)
                     }else {
-                        response = await addRating(this.trackId, itemType, rating)
+                        response = await addRating(this.track.artist._id, itemType, rating)
                     }
                     if (response.status === 200) {
                         this.artistRating = rating === this.artistRating? 0 : response.data.rate

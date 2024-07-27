@@ -99,18 +99,18 @@
 
         </div>
         <div class="container-lg">
-            <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center float-end"
-                    data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
-                <i class="bi bi-gear-fill fs-4"></i>
-                <span class="fw-bold mx-2">{{ selectedRecommendationText }}</span>
-                <div class="spinner-border text-primary spinner-border-sm" role="status" v-show="isRecommending">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </button>
+            <div class="row d-flex justify-content-end my-2">
+                <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center fit-content"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
+                    <i class="bi bi-gear-fill fs-4"></i>
+                    <span class="fw-bold mx-2">{{ selectedRecommendationText }}</span>
+                    <div class="spinner-border text-primary spinner-border-sm" role="status" v-show="isRecommending">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+            </div>
 
-
-
-            <div class="mt-5">
+            <div>
                 <div class="my-3 mx-auto fit-content text-center">
                     <h3 class="text-primary">If you like「
                         <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>

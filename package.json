@@ -26,8 +26,10 @@
     "natural": "^7.0.6",
     "particles.js": "^2.0.0",
     "request": "^2.88.2",
+    "swiper": "^5.4.5",
     "vant": "^2.12.54",
     "vue": "^2.6.14",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-router": "^3.6.5",
     "vue-waterfall-plugin": "^3.3.1",
     "vue-waterfall-plugin-next": "^2.4.3"

@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js' //引用bootstrap的js
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 
+
 Vue.config.productionTip = false
 
 const script = document.createElement('script');

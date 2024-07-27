@@ -15,6 +15,7 @@ import axios from "axios";
 import ArtistDetail from "@/views/ArtistDetail.vue";
 import PlayList from "@/views/PlayList.vue";
 import {API_URL} from "@/utils/connection";
+import TuneSwipe from "@/views/TuneSwipe.vue";
 
 // 规则数组
 const routes = [
@@ -33,6 +34,10 @@ const routes = [
     {
         path: "/tags",
         component: TagsPage,
+    },
+    {
+        path: "/tuneswipe",
+        component: TuneSwipe,
     },
     {
         path: "/profile",
