@@ -9,13 +9,19 @@ export default {
     props: {
         uri: {
             type: String,
-            required: true
+            required: true,
+            default: ""
+        },
+        autoPlay:{
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
     data() {
         return {
             IFrameAPI: null,
-            EmbedController: null
+            EmbedController: null,
         };
     },
     watch: {
@@ -49,30 +55,32 @@ export default {
 
                 const options = {
                     width: '100%',
-                    height: '160',
+                    height: '100',
                     uri: this.uri
                 };
                 const callback = (EmbedController) => {
                     this.EmbedController = EmbedController;
-                    document.querySelectorAll('.episode').forEach(
-                        episode => {
-                            episode.addEventListener('click', () => {
-                                EmbedController.loadUri(episode.dataset.spotifyId);
-                            });
-                        }
-                    );
                 };
                 this.IFrameAPI.createController(element, options, callback);
             });
         },
         fetchTrackById() {
-            if (this.EmbedController) {
-                this.EmbedController.loadUri(this.uri);
-            } else {
+            if (!this.EmbedController) {
                 // If EmbedController is not yet available, create the controller again
                 this.createController();
             }
-        }
+            this.EmbedController.loadUri(this.uri);
+            if (this.autoPlay){
+                this.play()
+            }
+        },
+        play() {
+            if (this.EmbedController) {
+                this.EmbedController.play();
+                this.playing = true;
+            }
+        },
+
     }
 };
 </script>

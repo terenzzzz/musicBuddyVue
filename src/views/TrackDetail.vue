@@ -25,7 +25,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <button class="btn btn-dark my-2" @click="openWindow(spotifyTrackUrl)">
+                                    <button class="btn btn-outline-success my-2" @click="openWindow(spotifyTrackUrl)">
                                         <i class="fa-brands fa-spotify mx-2"></i>Open In Spotify
                                     </button>
                                 </div>
@@ -87,12 +87,12 @@
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <router-link :to="`/artist/${track.artist._id}`" class="me-2 ">
-                                        <button class="btn btn-primary d-inline-flex align-items-center h-100">
+                                        <button class="btn btn-outline-primary d-inline-flex align-items-center h-100">
                                             <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid ratio-1x1 me-2" style="width: 30px; height: 30px;">
                                             <span>More In MusicBuddy</span>
                                         </button>
                                     </router-link>
-                                    <button class="btn btn-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyArtistUrl)">
+                                    <button class="btn btn-outline-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyArtistUrl)">
                                         <i class="fa-brands fa-spotify me-2"></i>
                                         <span>More In Spotify</span>
                                     </button>

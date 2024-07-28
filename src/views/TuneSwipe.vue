@@ -1,11 +1,10 @@
 <template>
-    <div class="row">
-        <swiper class="swiper d-flex justify-content-center align-items-center"
+    <div class="row w-100 m-0">
+        <swiper class="swiper"
                 :options="swiperOption"
                 ref="mySwiper"
                 @slideChange="onSlideChange">
-            <swiper-slide v-for="track in randomTracks" :key="track.id"
-                          class=" d-flex align-items-center justify-content-center">
+            <swiper-slide v-for="track in randomTracks" :key="track.id" class="mt-5">
                 <div class="container container-padding">
                     <div class="card shadow p-3 h-100 w-100" :style="backgroundStyle(track.cover)">
                         <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-2">
@@ -33,24 +32,30 @@
         </swiper>
 
 
-        <div class="row d-flex justify-content-center align-items-center" v-if="randomTracks.length > 0">
-            <div class="card col-6 mx-auto d-flex align-items-center rounded-5 p-2">
-                <RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK" class="fs-4"></RateBtn>
-                <div class="row mt-2">
-                    <div class="col-12">
+        <div class="row w-100 mt-2 p-0 m-0" v-if="randomTracks.length > 0">
+            <div class="card col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6
+            mx-auto d-flex align-items-center rounded-5 p-2"
+                 style="height: fit-content">
+                <div class="row w-100">
+                    <div class="col-4"><RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK" class="fs-4"></RateBtn></div>
+                    <div class="col-8  d-flex justify-content-end">
                         <router-link :to="`/track/${currentTrack._id}`" class="me-2 ">
-                            <button class="btn btn-primary d-inline-flex align-items-center h-100">
+                            <button class="btn btn-outline-primary d-inline-flex align-items-center h-100">
                                 <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid ratio-1x1 me-2" style="width: 30px; height: 30px;">
                                 <span>More In MusicBuddy</span>
                             </button>
                         </router-link>
-                        <button class="btn btn-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyArtistUrl)">
+                        <button class="btn btn-outline-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyTrackUrl)">
                             <i class="fa-brands fa-spotify me-2"></i>
                             <span>More In Spotify</span>
                         </button>
                     </div>
+
                 </div>
 
+                <div class="row w-100 mt-2">
+                    <SpotifyFrame v-if="spotifyUri" :uri="spotifyUri" :auto-play="false" ref="spotifyFrame" class="spotify"></SpotifyFrame>
+                </div>
             </div>
 
         </div>
@@ -65,6 +70,8 @@ import { getRandomTrack } from "@/api/tracks";
 import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import { addRating, deleteRating, getRating, itemTypes } from "@/api/ratings";
+import SpotifyFrame from "@/components/SpotifyFrame.vue";
+import {searchSpotifyTracks} from "@/api/spotify";
 
 export default {
     computed: {
@@ -76,9 +83,16 @@ export default {
         },
         currentTrack(){
             return this.randomTracks[this.currentIndex]
+        },
+        spotifyFrame(){
+            return this.$refs.spotifyFrame
+        },
+        isPlaying(){
+            return this.$refs.spotifyFrame.isPlaying()
         }
     },
     components: {
+        SpotifyFrame,
         RateBtn,
         Swiper,
         SwiperSlide,
@@ -98,11 +112,29 @@ export default {
             },
             randomTracks: [],
             trackRating: 0,
-            currentIndex: 0
+            currentIndex: 0,
+            spotifyUri: "",
+            spotifyTrackUrl: ""
         };
     },
 
     methods: {
+        async searchSpotify() {
+            let keyword = `${this.currentTrack.name} ${this.currentTrack.artist.name}`
+            // 访问本地数据库时,查询spotify获取播放资源
+            try {
+                const response = await searchSpotifyTracks(keyword);
+                if (response.status === 200) {
+                    let firstTrack = response.data[0]
+                    this.spotifyUri = firstTrack.uri;
+                    this.spotifyTrackUrl = firstTrack.external_urls
+                } else {
+                    console.error('Error search Spotify else:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error search Spotify:', err.message);
+            }
+        },
         openWindow: function(url) {
             window.open(url, '_blank');
         },
@@ -110,6 +142,8 @@ export default {
             this.currentIndex = this.swiper.realIndex;
             console.log(this.currentIndex)
             await this.fetchRating()
+            await this.searchSpotify()
+            this.spotifyFrame.play();
         },
         async updateRate(itemType, rating) {
             let response = null;
@@ -156,7 +190,9 @@ export default {
     },
     async created() {
         await this.fetchRandomTracks();
-        await this.fetchRating();
+        await this.fetchRating()
+        await this.searchSpotify()
+        this.spotifyFrame.play();
     }
 };
 </script>
@@ -169,7 +205,7 @@ export default {
 @media (min-width: 768px) {
     .container-padding {
         padding-inline: 50px;
-        aspect-ratio: 1/0.8;
+        aspect-ratio: 1/0.7;
     }
 }
 
