@@ -10,11 +10,11 @@
             <div class="offcanvas-body p-3">
                 <div class="d-flex justify-content-between align-items-center my-2">
                     <label for="dropdownMenuButton" class="my-2 fw-bold">Current Mode:</label>
-                    <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false" :class="isRecommending?'disabled':''">
+                    <button ref="dropdownButton" class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false" :class="{ disabled: isRecommending }">
                         {{ selectedRecommendationText }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" :class="isRecommending? 'd-none' : ''">
                         <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('weighted')">Weighted</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('keywords')">Keywords</a></li>
                         <li><a class="dropdown-item" href="#" @click.prevent="selectRecommendation('semantics')">Semantics</a></li>
@@ -22,6 +22,7 @@
                     </ul>
                 </div>
 
+                <h4 class="red-bottom mt-2">Adjust Input Data</h4>
                 <div class="d-flex justify-content-between align-items-center my-2">
                     <label for="recentlyPlayedRadio" class="my-2 fw-bold">Recommend by Recently Played:</label>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="recentlyPlayedRadio">

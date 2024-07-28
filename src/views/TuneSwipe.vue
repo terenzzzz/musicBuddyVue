@@ -37,17 +37,17 @@
             mx-auto d-flex align-items-center rounded-5 p-2"
                  style="height: fit-content">
                 <div class="row w-100">
-                    <div class="col-4"><RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK" class="fs-4"></RateBtn></div>
-                    <div class="col-8  d-flex justify-content-end">
+                    <div class="col-6 col-md-4"><RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK" class="fs-4"></RateBtn></div>
+                    <div class="col-6 col-md-8 d-flex justify-content-end">
                         <router-link :to="`/track/${currentTrack._id}`" class="me-2 ">
                             <button class="btn btn-outline-primary d-inline-flex align-items-center h-100">
-                                <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid ratio-1x1 me-2" style="width: 30px; height: 30px;">
-                                <span>More In MusicBuddy</span>
+                                <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid ratio-1x1 " style="width: 30px; height: 30px;">
+                                <span class="d-none d-md-block ms-2">More In MusicBuddy</span>
                             </button>
                         </router-link>
                         <button class="btn btn-outline-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyTrackUrl)">
-                            <i class="fa-brands fa-spotify me-2"></i>
-                            <span>More In Spotify</span>
+                            <i class="fa-brands fa-spotify"></i>
+                            <span class="d-none d-md-block ms-2">More In Spotify</span>
                         </button>
                     </div>
 
@@ -204,21 +204,21 @@ export default {
 
 @media (min-width: 768px) {
     .container-padding {
-        padding-inline: 50px;
+        padding-inline: 100px;
         aspect-ratio: 1/0.7;
     }
 }
 
 @media (min-width: 992px) {
     .container-padding {
-        padding-inline: 150px;
+        padding-inline: 200px;
         aspect-ratio: 1/0.5;
     }
 }
 
 @media (min-width: 1400px) {
     .container-padding {
-        padding-inline: 250px;
+        padding-inline: 300px;
         aspect-ratio: 1/0.4;
     }
 }
