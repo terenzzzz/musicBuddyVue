@@ -14,7 +14,7 @@
                     <router-link to="/dashboard" class="nav-home mx-2">Dashboard</router-link>
                     <router-link to="/search" class="nav-search mx-2">Search</router-link>
                     <router-link to="/tags" class="nav-tags mx-2">Tags</router-link>
-                    <router-link to="/tuneswipe" class="nav-tags mx-2">TuneSwipe</router-link>
+                    <router-link to="/tuneswipe" class="nav-tuneswipe mx-2">TuneSwipe</router-link>
                     <router-link to="/profile" class="nav-profile mx-2">Profile</router-link>
                     <router-link to="/login" class="nav-login mx-2" v-if="!isLoggedIn">Log In</router-link>
                     <a href="#" class="nav-logout mx-2" v-if="isLoggedIn" @click.prevent="logout">Log Out</a>
@@ -46,11 +46,13 @@ export default {
                 document.querySelector('.nav-search').style.display = 'none';
                 document.querySelector('.nav-tags').style.display = 'none';
                 document.querySelector('.nav-profile').style.display = 'none';
+                document.querySelector('.nav-tuneswipe').style.display = 'none';
             }else {
                 document.querySelector('.nav-home').style.display = 'block';
                 document.querySelector('.nav-search').style.display = 'block';
                 document.querySelector('.nav-tags').style.display = 'block';
                 document.querySelector('.nav-profile').style.display = 'block';
+                document.querySelector('.nav-tuneswipe').style.display = 'block';
             }
         },
         logout() {

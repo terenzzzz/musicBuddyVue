@@ -1,23 +1,23 @@
 <template>
-
         <swiper class="swiper d-flex justify-content-center align-items-center" :options="swiperOption">
-            <swiper-slide v-for="track in randomTracks" :key="track.id">
-                <div class="card shadow rounded-bottom-0 p-3">
-                    <div class="row" >
-                        <div class="col-6 col-md-3 col-xl-2 m-auto">
-                            <img :src="track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid cover">
-                        </div>
-                        <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
-                            <div>
-                                <strong class="fs-2">{{ track.name }}</strong>
-                                <p class="fs-5">{{ track.artist.name }}</p>
-                            </div>
-                            <div class="row d-flex flex-row" v-if="track.tags">
-                                <div class="col-auto" v-for="tag in track.tags" :key="tag.id" >
-                                    <TagButton :tag="tag.tag"></TagButton>
+            <swiper-slide v-for="track in randomTracks" :key="track.id"
+                          class=" d-flex align-items-center justify-content-center">
+                <div class="container container-padding">
+                    <div class="card shadow p-3 h-100 w-100" :style="backgroundStyle(track.cover)">
+                        <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-2">
+                            <div class="row">
+                                <div class="col-12 d-flex flex-column justify-content-center">
+                                    <div>
+                                        <strong class="fs-2">{{ track.name }}</strong>
+                                        <p class="fs-5">{{ track.artist.name }}</p>
+                                    </div>
+                                    <div class="row d-flex flex-row" v-if="track.tags">
+                                        <div class="col-auto" v-for="tag in track.tags" :key="tag.id">
+                                            <TagButton :tag="tag.tag"></TagButton>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -28,8 +28,6 @@
             <div class="swiper-button-prev" slot="button-prev"></div>
             <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
-
-
 </template>
 
 <script>
@@ -60,6 +58,14 @@ export default {
         }
     },
     methods:{
+        backgroundStyle(cover) {
+            return {
+                backgroundImage: `url(${cover})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover', // Ensures the background image covers the entire area
+                backgroundPosition: 'center' // Centers the background image
+            };
+        },
         async fetchRandomTracks(){
             try {
                 const response = await getRandomTrack();
@@ -76,24 +82,29 @@ export default {
 </script>
 
 <style scoped>
-.swiper {
-    width: 100%; /* 或者指定具体的宽度，如 600px */
-    height: 100%; /* 或者指定具体的高度，如 400px */
-    overflow: visible; /* 确保内容不被裁剪 */
+.container {
+    aspect-ratio: 1/1;
 }
 
-.swiper-slide {
-    display: flex;
-    align-items: center; /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    overflow: visible; /* 确保内容不被裁剪 */
+@media (min-width: 768px) {
+    .container-padding {
+        padding-inline: 50px;
+        aspect-ratio: 1/0.8;
+    }
 }
 
-.card {
-    max-width: 100%; /* 确保卡片不超出滑块 */
-    box-sizing: border-box; /* 包含边框和内边距 */
+@media (min-width: 992px) {
+    .container-padding {
+        padding-inline: 150px;
+        aspect-ratio: 1/0.5;
+    }
 }
-.cover {
-    transform: translateY(-50%);
+
+@media (min-width: 1400px) {
+    .container-padding {
+
+        padding-inline: 250px;
+        aspect-ratio: 1/0.4;
+    }
 }
 </style>
