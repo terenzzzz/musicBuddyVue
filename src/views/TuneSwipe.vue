@@ -4,26 +4,28 @@
                 :options="swiperOption"
                 ref="mySwiper"
                 @slideChange="onSlideChange">
-            <swiper-slide v-for="track in randomTracks" :key="track.id" class="mt-5">
-                <div class="container container-padding">
-                    <div class="card shadow p-3 h-100 w-100" :style="backgroundStyle(track.cover)">
-                        <div class="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-50 text-white p-2">
-                            <div class="row">
-                                <div class="col-12 d-flex flex-column justify-content-center">
-                                    <div>
-                                        <strong class="fs-2">{{ track.name }}</strong>
-                                        <p class="fs-5">{{ track.artist.name }}</p>
-                                    </div>
-                                    <div class="row d-flex flex-row" v-if="track.tags">
-                                        <div class="col-auto" v-for="tag in track.tags" :key="tag.id">
-                                            <TagButton :tag="tag.tag"></TagButton>
-                                        </div>
-                                    </div>
+            <swiper-slide v-for="track in randomTracks" :key="track.id" class="mt-5 container-padding">
+                <div class="card shadow rounded-bottom-0 p-3 position-relative">
+                    <div class="row g-0">
+                        <div class="col-6 col-md-6 col-xl-4 col-xxl-3 m-auto">
+                            <VinylRecord :cover="currentTrack.cover" :isSpin="isPlaying"></VinylRecord>
+                        </div>
+                        <div class="col-12 d-flex flex-column justify-content-center">
+                            <div>
+                                <strong class="fs-2 ">{{ track.name }}</strong>
+                                <p class="fs-5 ">{{ track.artist.name }}</p>
+                            </div>
+                            <div class="row d-flex flex-row" v-if="track.tags">
+                                <div class="col-auto" v-for="tag in track.tags" :key="tag.id" >
+                                    <TagButton :tag="tag.tag"></TagButton>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
             </swiper-slide>
 
             <div class="swiper-pagination" slot="pagination"></div>
@@ -54,10 +56,10 @@
                 </div>
 
                 <div class="row w-100 mt-2">
-                    <SpotifyFrame v-if="spotifyUri" :uri="spotifyUri" :auto-play="false" ref="spotifyFrame" class="spotify"></SpotifyFrame>
+                    <SpotifyFrame v-if="spotifyUri" :uri="spotifyUri" :auto-play="false"
+                                  ref="spotifyFrame" class="spotify" @playStateChanged="onPlayStateChanged"></SpotifyFrame>
                 </div>
             </div>
-
         </div>
 
     </div>
@@ -72,6 +74,7 @@ import RateBtn from "@/components/RateBtn.vue";
 import { addRating, deleteRating, getRating, itemTypes } from "@/api/ratings";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {searchSpotifyTracks} from "@/api/spotify";
+import VinylRecord from "@/components/VinylRecord.vue";
 
 export default {
     computed: {
@@ -87,11 +90,9 @@ export default {
         spotifyFrame(){
             return this.$refs.spotifyFrame
         },
-        isPlaying(){
-            return this.$refs.spotifyFrame.isPlaying()
-        }
     },
     components: {
+        VinylRecord,
         SpotifyFrame,
         RateBtn,
         Swiper,
@@ -114,11 +115,16 @@ export default {
             trackRating: 0,
             currentIndex: 0,
             spotifyUri: "",
-            spotifyTrackUrl: ""
+            spotifyTrackUrl: "",
+            isPlaying: false
         };
     },
 
     methods: {
+        onPlayStateChanged(state) {
+            this.isPlaying = state;
+            console.log(this.isPlaying)
+        },
         async searchSpotify() {
             let keyword = `${this.currentTrack.name} ${this.currentTrack.artist.name}`
             // 访问本地数据库时,查询spotify获取播放资源
@@ -198,28 +204,28 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    aspect-ratio: 1/1;
+
+.container-padding {
+    padding-inline: 50px;
 }
 
 @media (min-width: 768px) {
     .container-padding {
         padding-inline: 100px;
-        aspect-ratio: 1/0.7;
     }
 }
 
 @media (min-width: 992px) {
     .container-padding {
         padding-inline: 200px;
-        aspect-ratio: 1/0.5;
     }
 }
 
 @media (min-width: 1400px) {
     .container-padding {
         padding-inline: 300px;
-        aspect-ratio: 1/0.4;
     }
 }
+
+
 </style>

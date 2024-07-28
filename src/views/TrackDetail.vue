@@ -2,7 +2,7 @@
     <div class="TrackDetail container-lg" >
         <AlertComponents :title="isValidMongoId(this.trackId) ? 'The Metadata is Provided by MusicBuddy' : 'The Metadata is Provided by Spotify'"></AlertComponents>
         <div v-if="track">
-            <div class="mt-5 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
+            <div class="mt-2 px-1 px-md-3 px-lg-5"><SpotifyFrame v-if="spotifyUri" :uri="spotifyUri"></SpotifyFrame></div>
             <div class="px-1 px-md-3 px-lg-5">
                 <!--        Track Basic Info-->
                 <div class="card track-detail-container shadow rounded-bottom-0 p-3" :style="containerStyle">
@@ -10,10 +10,10 @@
                         <RateBtn :rating="trackRating" :on-rate="updateRate" :item-type="itemTypes.TRACK"></RateBtn>
                     </div>
                     <div class="row" >
-                        <div class="col-6 col-md-3 col-xl-2 m-auto">
-                            <img :src="this.track.cover || 'https://placehold.co/600x600?text=No+Cover'" class="img-fluid">
+                        <div class="col-6 col-sm-5 col-md-4 col-xl-3 m-auto">
+                            <VinylRecord :cover="track.cover"></VinylRecord>
                         </div>
-                        <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
+                        <div class="col-12 col-md-8 col-xl-9 d-flex flex-column justify-content-center">
                             <div>
                                 <strong class="fs-2 text-white">{{ track.name }}</strong>
                                 <p class="fs-5 text-white">{{ track.artist.name }}</p>
@@ -168,7 +168,6 @@
                     <div v-if="recommendedTracks.length>0">
                         <div>
                             <h3 class="red-bottom d-inline me-2">Recommended Tracks for「{{track.name}}」</h3>
-                            <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
                         </div>
                         <div class="row mt-2">
                             <div class="col-4 col-md-2" v-for="track in recommendedTracks" :key="track.id">
@@ -184,7 +183,6 @@
                 <div class="my-3">
                     <div>
                         <h3 class="red-bottom d-inline me-2">Recommended Artists for「{{track.artist.name}}」</h3>
-                        <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
                     </div>
                     <div v-if="recommendedArtists.length > 0" class="mt-2">
                         <div class="horizontal-scroll">
@@ -196,8 +194,11 @@
                 </div>
             </div>
         </div>
+        <div v-else-if="isLoadingSpotify">
+            <LoadingSpinner title="We are collecting data for you."></LoadingSpinner>
+        </div>
         <div v-else>
-            <empty-placeholder></empty-placeholder>
+            <ErrorPlaceholderVertical title="No Data Founded"></ErrorPlaceholderVertical>
         </div>
     </div>
 </template>
@@ -214,7 +215,7 @@ import AlertComponents from "@/components/AlertComponents.vue";
 import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, deleteRating, getRating, itemTypes} from "@/api/ratings";
-import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
+
 import {
     getLDARecommendArtistsByLyrics, getLDARecommendByLyrics, getTfidfRecommendArtistsByLyrics,
     getTfidfRecommendByLyrics, getW2VRecommendArtistsByLyrics, getW2VRecommendByLyrics,
@@ -222,9 +223,16 @@ import {
 } from "@/api/recommend";
 import Chart from 'chart.js'
 import PieSlider from "@/components/PieSlider.vue";
+import VinylRecord from "@/components/VinylRecord.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
 
 export default {
-    components: {PieSlider, EmptyPlaceholder, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
+    components: {
+        ErrorPlaceholderVertical,
+        LoadingSpinner,
+        VinylRecord,
+        PieSlider, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
     data() {
         return {
             showPieSlider: true,
@@ -249,6 +257,8 @@ export default {
 
             trackRating: 0,
             artistRating: 0,
+
+            isLoadingSpotify: false
         };
     },
     async created() {
@@ -371,6 +381,7 @@ export default {
             }
         },
         async fetchSpotifyMetadata() {
+            this.isLoadingSpotify = true
             try {
                 const response = await getSpotifyTrackById(this.trackId);
                 if (response.status === 200) {
@@ -388,6 +399,7 @@ export default {
             } catch (err) {
                 console.error('Error search Spotify Metadata:', err.message);
             }
+            this.isLoadingSpotify = false
         },
         async searchSpotify(keyword) {
             // 访问本地数据库时,查询spotify获取播放资源

@@ -22,6 +22,7 @@ export default {
         return {
             IFrameAPI: null,
             EmbedController: null,
+            isPlaying: false
         };
     },
     watch: {
@@ -32,6 +33,7 @@ export default {
     mounted() {
         this.initializeSpotifyAPI();
     },
+    expose: ['play', 'pause', 'togglePlay', 'getPlayState'],
     methods: {
         initializeSpotifyAPI() {
             if (window.onSpotifyIframeApiReady) {
@@ -60,6 +62,15 @@ export default {
                 };
                 const callback = (EmbedController) => {
                     this.EmbedController = EmbedController;
+
+                    // 添加事件监听
+                    EmbedController.addListener('playback_update', e => {
+                        const newPlayingState = e.data.isPaused === false;
+                        if (this.isPlaying !== newPlayingState) { // 只关心播放/暂停状态的变化，而不需要每秒更新
+                            this.isPlaying = newPlayingState;
+                            this.$emit('playStateChanged', this.isPlaying);
+                        }
+                    });
                 };
                 this.IFrameAPI.createController(element, options, callback);
             });
@@ -77,9 +88,27 @@ export default {
         play() {
             if (this.EmbedController) {
                 this.EmbedController.play();
-                this.playing = true;
+                this.isPlaying = true;
+                this.$emit('playStateChanged', this.isPlaying);
             }
         },
+        pause() {
+            if (this.EmbedController) {
+                this.EmbedController.pause();
+                this.isPlaying = false;
+                this.$emit('playStateChanged', this.isPlaying);
+            }
+        },
+        togglePlay() {
+            if (this.isPlaying) {
+                this.pause();
+            } else {
+                this.play();
+            }
+        },
+        getPlayState() {
+            return this.isPlaying;
+        }
 
     }
 };
