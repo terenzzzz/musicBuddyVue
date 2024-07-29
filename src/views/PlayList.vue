@@ -17,7 +17,7 @@
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
                     <div class="col-4 col-md-2" v-for="track in tracks" :key="track.id">
-                        <TrackCard :track="track.item" :rating="track.rate"></TrackCard>
+                        <TrackCard :track="track.item? track.item : track" :rating="track.rate"></TrackCard>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
                     <div class="col-4 col-md-2 " v-for="artist in artists" :key="artist.id">
-                        <ArtistCard :artist="artist.item" :rating="artist.rate"></ArtistCard>
+                        <ArtistCard :artist="artist.item? artist.item : artist" :rating="artist.rate"></ArtistCard>
                     </div>
                 </div>
             </div>
@@ -99,7 +99,7 @@ export default {
                     await this.fetchTracksByTag(this.title)
                     await this.fetchTagById(this.title)
             }
-
+            console.log(this.artists)
         },
         async fetchRatings() {
             try {
