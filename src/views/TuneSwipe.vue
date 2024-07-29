@@ -4,13 +4,18 @@
                 :options="swiperOption"
                 ref="mySwiper"
                 @slideChange="onSlideChange">
-            <swiper-slide v-for="track in randomTracks" :key="track.id" class="mt-5 container-padding">
-                <div class="card shadow rounded-bottom-0 p-3 position-relative">
-                    <div class="row g-0">
+            <swiper-slide v-for="(track, index) in randomTracks" :key="track.id" class="mt-5 container-padding">
+                <div class="card shadow rounded-bottom-0 position-relative">
+                    <div class="row">
+                        <div class="col">
+                            <i class="fa-solid fa-circle-info fs-4 float-end mt-3 me-3" @click="handleDetail"></i>
+                        </div>
+                    </div>
+                    <div class="row g-0" v-show="!isShowDetail">
                         <div class="col-6 col-md-6 col-xl-4 col-xxl-3 m-auto">
                             <VinylRecord :cover="currentTrack.cover" :isSpin="isPlaying"></VinylRecord>
                         </div>
-                        <div class="col-12 d-flex flex-column justify-content-center">
+                        <div class="col-12 d-flex flex-column justify-content-center bg-dark bg-opacity-50 p-3 text-white">
                             <div>
                                 <strong class="fs-2 ">{{ track.name }}</strong>
                                 <p class="fs-5 ">{{ track.artist.name }}</p>
@@ -22,9 +27,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row p-3" v-show="isShowDetail">
+                        <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
+                        <div class="col-12 col-lg-6">
+                            <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
+                                <strong>Keyword:</strong>
+                                <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
+                                    <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-
-
 
             </swiper-slide>
 
@@ -68,13 +83,14 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
-import { getRandomTrack } from "@/api/tracks";
+import {getLyricTopWordsByLyric, getRandomTrack, getTrackTopicByLyric} from "@/api/tracks";
 import TagButton from "@/components/TagButton.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import { addRating, deleteRating, getRating, itemTypes } from "@/api/ratings";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {searchSpotifyTracks} from "@/api/spotify";
 import VinylRecord from "@/components/VinylRecord.vue";
+import Chart from "chart.js";
 
 export default {
     computed: {
@@ -90,6 +106,11 @@ export default {
         spotifyFrame(){
             return this.$refs.spotifyFrame
         },
+        radarChart(){
+            const canvas = this.$refs.radarChart;
+            console.log('Canvas element:', canvas);
+            return this.$refs.radarChart[this.currentIndex]
+        }
     },
     components: {
         VinylRecord,
@@ -116,14 +137,84 @@ export default {
             currentIndex: 0,
             spotifyUri: "",
             spotifyTrackUrl: "",
-            isPlaying: false
+            isPlaying: false,
+            isShowDetail: false,
+            chartLabels: [],
+            lyricTopWords: [],
+            chartData:[]
         };
     },
 
+
     methods: {
+        async handleDetail() {
+            this.isShowDetail = !this.isShowDetail;
+        },
+        async fetchTrackTopic() {
+            try {
+                const response = await getTrackTopicByLyric(this.currentTrack.lyric);
+                if (response.status === 200) {
+                    const labels = response.data.data.map(topic => topic.top_words.slice(0, 5).join(','));
+                    const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
+                    this.chartLabels = labels
+                    this.chartData = data
+                    this.$nextTick(() => {
+                        this.createChart()
+                    })
+                } else {
+                    this.chartLabels = []
+                    this.chartData = []
+                    console.error('Error fetching Track Topic:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching Track Topic:', err.message);
+            }
+        },
+        async fetchLyricTopWords() {
+            try {
+                const response = await getLyricTopWordsByLyric(this.currentTrack.lyric);
+                if (response.data.status === 200) {
+                    this.lyricTopWords = response.data.data;
+                } else {
+                    console.error('Error fetching lyricTopWords By Id:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching lyricTopWords By Id:', err.message);
+            }
+        },
+        createChart() {
+            if (this.radarChart && typeof this.radarChart.getContext === 'function') {
+                const ctx = this.radarChart.getContext('2d')
+                this.chart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: this.chartLabels,
+                        datasets: [{
+                            label: 'Topic Represent words',
+                            data: this.chartData,
+                            fill: true,
+                            backgroundColor: 'rgba(13, 110, 253, 0.2)',  // #0d6efd with 0.2 opacity
+                            borderColor: 'rgb(13, 110, 253)',            // #0d6efd
+                            pointBackgroundColor: 'rgb(13, 110, 253)',   // #0d6efd
+                            pointBorderColor: '#fff',                    // 保持白色
+                            pointHoverBackgroundColor: '#fff',           // 保持白色
+                            pointHoverBorderColor: 'rgb(11, 94, 215)'    // 稍微深一点的蓝色
+                        }]
+                    },
+                    options: {
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
+                        }
+                    }
+                })
+            }else {
+                console.error('Canvas element or getContext not available');
+            }
+        },
         onPlayStateChanged(state) {
             this.isPlaying = state;
-            console.log(this.isPlaying)
         },
         async searchSpotify() {
             let keyword = `${this.currentTrack.name} ${this.currentTrack.artist.name}`
@@ -146,9 +237,11 @@ export default {
         },
         async onSlideChange() {
             this.currentIndex = this.swiper.realIndex;
-            console.log(this.currentIndex)
+            this.isShowDetail = false;
             await this.fetchRating()
             await this.searchSpotify()
+            await this.fetchTrackTopic()
+            await this.fetchLyricTopWords()
             this.spotifyFrame.play();
         },
         async updateRate(itemType, rating) {
@@ -177,14 +270,6 @@ export default {
                 console.error('Error fetching ratings:', err.message);
             }
         },
-        backgroundStyle(cover) {
-            return {
-                backgroundImage: `url(${cover})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-            };
-        },
         async fetchRandomTracks() {
             try {
                 const response = await getRandomTrack();
@@ -198,6 +283,8 @@ export default {
         await this.fetchRandomTracks();
         await this.fetchRating()
         await this.searchSpotify()
+        await this.fetchTrackTopic()
+        await this.fetchLyricTopWords()
         this.spotifyFrame.play();
     }
 };
