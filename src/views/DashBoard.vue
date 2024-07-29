@@ -99,7 +99,7 @@
             </div>
 
         </div>
-        <div class="container-lg">
+        <div class="container-md">
             <div class="row d-flex justify-content-end my-2">
                 <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center fit-content"
                         data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
@@ -119,11 +119,13 @@
                     <p class="text-muted small">* Recommended by the lyric base on your most recently played </p>
                 </div>
 
-                <div class="horizontal-scroll" v-if="alsoListen.length>0">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">
-                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
-                    </div>
-                </div>
+                <LoopSwiper v-if="alsoListen.length>0" :tracks="alsoListen"></LoopSwiper>
+
+<!--                <div class="horizontal-scroll" v-if="alsoListen.length>0">-->
+<!--                    <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">-->
+<!--                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
@@ -140,11 +142,12 @@
                     <h3 class="text-primary">Recommended for you</h3>
                     <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
-                <div class="horizontal-scroll"  v-if="recommendForYou.length>0">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">
-                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
-                    </div>
-                </div>
+                <LoopSwiper v-if="recommendForYou.length>0" :tracks="recommendForYou"></LoopSwiper>
+<!--                <div class="horizontal-scroll"  v-if="recommendForYou.length>0">-->
+<!--                    <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">-->
+<!--                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
@@ -161,11 +164,12 @@
                     <h3 class="text-primary">Artist May Liked</h3>
                     <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
-                <div class="horizontal-scroll" v-if="artistMayLike.length>0">
-                    <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">
-                        <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
-                    </div>
-                </div>
+                <LoopSwiper v-if="artistMayLike.length>0" :artists="artistMayLike"></LoopSwiper>
+<!--                <div class="horizontal-scroll" v-if="artistMayLike.length>0">-->
+<!--                    <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">-->
+<!--                        <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
@@ -182,11 +186,12 @@
                     <h3 class="text-primary">Everyone's listening</h3>
                     <p class="text-muted small">* Recommended by the user similar to you </p>
                 </div>
-                <div class="horizontal-scroll" v-if="EveryoneListening.length>0">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">
-                        <TrackCard :track="track.track"></TrackCard>
-                    </div>
-                </div>
+                <LoopSwiper v-if="EveryoneListening.length>0" :tracks="EveryoneListening"></LoopSwiper>
+<!--                <div class="horizontal-scroll" v-if="EveryoneListening.length>0">-->
+<!--                    <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">-->
+<!--                        <TrackCard :track="track.track"></TrackCard>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else
@@ -198,8 +203,6 @@
 </template>
 
 <script>
-import TrackCard from '@/components/TrackCard.vue';
-import ArtistCard from "@/components/ArtistCard.vue";
 import {getRecentlyPlayed, getTopTracks} from "@/api/spotify";
 import {
     getCollaborateSimilarUsersTracks,
@@ -214,14 +217,14 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import PieSlider from "@/components/PieSlider.vue";
 import {getUser} from "@/api/users";
 import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
+import LoopSwiper from "@/components/LoopSwiper.vue";
 
 export default {
     components: {
+        LoopSwiper,
         ErrorPlaceholderHorizontal,
         PieSlider,
         LoadingSpinner,
-        ArtistCard,
-        TrackCard,
     },
     data() {
         return {
