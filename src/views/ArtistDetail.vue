@@ -119,19 +119,21 @@
                     <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
                 </div>
                 <div v-if="similarArtist.length > 0" class="my-2">
-                    <div class="horizontal-scroll">
-                        <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">
-                            <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
-                        </div>
-                    </div>
+                    <LoopSwiper v-if="similarArtist.length>0" :artists="similarArtist"></LoopSwiper>
+<!--                    <div class="horizontal-scroll">-->
+<!--                        <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">-->
+<!--                            <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
 
                 <div v-if="spotifySimilarArtist.length > 0" class="my-2">
-                    <div class="horizontal-scroll">
-                        <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">
-                            <ArtistCard :artist="artist"></ArtistCard>
-                        </div>
-                    </div>
+                    <LoopSwiper v-if="spotifySimilarArtist.length>0" :artists="spotifySimilarArtist"></LoopSwiper>
+<!--                    <div class="horizontal-scroll">-->
+<!--                        <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">-->
+<!--                            <ArtistCard :artist="artist"></ArtistCard>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -140,7 +142,6 @@
 
 <script>
 import TrackCard from "@/components/TrackCard.vue";
-import ArtistCard from "@/components/ArtistCard.vue";
 import {getArtist} from "@/api/artists";
 import {getLyricTopWordsByLyric, getTracksByArtist, getTrackTopicByLyric} from "@/api/tracks";
 import {getArtistRelatedArtists, getSpotifyArtistById, searchSpotifyArtists} from "@/api/spotify";
@@ -158,9 +159,10 @@ import {
 import PieSlider from "@/components/PieSlider.vue";
 import {getLyricsFromGenius} from "@/api/genius";
 import TagButton from "@/components/TagButton.vue";
+import LoopSwiper from "@/components/LoopSwiper.vue";
 
 export default {
-    components: {TagButton, PieSlider, RateBtn, AlertComponents, ArtistCard, TrackCard},
+    components: {LoopSwiper, TagButton, PieSlider, RateBtn, AlertComponents, TrackCard},
     data() {
         return {
             showPieSlider: true,

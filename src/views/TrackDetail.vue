@@ -185,11 +185,12 @@
                         <h3 class="red-bottom d-inline me-2">Recommended Artists for「{{track.artist.name}}」</h3>
                     </div>
                     <div v-if="recommendedArtists.length > 0" class="mt-2">
-                        <div class="horizontal-scroll">
-                            <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">
-                                <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
-                            </div>
-                        </div>
+                        <LoopSwiper v-if="recommendedArtists.length>0" :artists="recommendedArtists"></LoopSwiper>
+<!--                        <div class="horizontal-scroll">-->
+<!--                            <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">-->
+<!--                                <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -207,7 +208,6 @@
 import {getLyricTopWordsByLyric, getTrackById, getTrackTopicByLyric} from "@/api/tracks";
 import {millisecondsToMMss} from '@/utils/timeConverter';
 import TrackCard from "@/components/TrackCard.vue";
-import ArtistCard from "@/components/ArtistCard.vue";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {getSpotifyTrackById, searchSpotifyTracks} from "@/api/spotify";
 import isValidMongoId from "@/utils/isValidMongoId";
@@ -226,13 +226,15 @@ import PieSlider from "@/components/PieSlider.vue";
 import VinylRecord from "@/components/VinylRecord.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
+import LoopSwiper from "@/components/LoopSwiper.vue";
 
 export default {
     components: {
+        LoopSwiper,
         ErrorPlaceholderVertical,
         LoadingSpinner,
         VinylRecord,
-        PieSlider, TagButton, AlertComponents, SpotifyFrame, ArtistCard, TrackCard, RateBtn},
+        PieSlider, TagButton, AlertComponents, SpotifyFrame, TrackCard, RateBtn},
     data() {
         return {
             showPieSlider: true,
