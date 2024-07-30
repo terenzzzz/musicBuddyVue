@@ -16,7 +16,7 @@
             <div v-if="tracks.length > 0">
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
-                    <div class="col-4 col-md-2" v-for="track in tracks" :key="track.id">
+                    <div class="col-4 col-md-3 col-xl-2" v-for="track in tracks" :key="track.id">
                         <TrackCard :track="track.item? track.item : track" :rating="track.rate"></TrackCard>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
             <div v-if="artists.length > 0">
                 <div class="row">
                     <AlertComponents :title="`The Result Below is Provided by ${dataProvider}`"></AlertComponents>
-                    <div class="col-4 col-md-2 " v-for="artist in artists" :key="artist.id">
+                    <div class="col-4 col-md-3 col-xl-2" v-for="artist in artists" :key="artist.id">
                         <ArtistCard :artist="artist.item? artist.item : artist" :rating="artist.rate"></ArtistCard>
                     </div>
                 </div>
