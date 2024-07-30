@@ -6,16 +6,16 @@
                 @slideChange="onSlideChange">
             <swiper-slide v-for="track in randomTracks" :key="track.id" class="mt-5 container-padding">
                 <div class="card shadow rounded-bottom-0 position-relative">
-                    <div class="row">
-                        <div class="col">
-                            <i class="fa-solid fa-circle-info fs-4 float-end mt-3 me-3" @click="handleDetail"></i>
-                        </div>
-                    </div>
+                    <i class="fa-solid fa-circle-info fs-4  position-absolute"
+                       style="top: 1rem; left: 1rem;"
+                       @click="handleDetail"></i>
                     <div class="row g-0" v-show="!isShowDetail">
-                        <div class="col-6 col-md-6 col-xl-4 col-xxl-3 m-auto">
+
+                        <div class="col-6 col-md-4 col-lg-5 col-xl-4 m-auto">
                             <VinylRecord :cover="currentTrack.cover" :isSpin="isPlaying"></VinylRecord>
                         </div>
-                        <div class="col-12 d-flex flex-column justify-content-center bg-dark bg-opacity-50 p-3 text-white">
+                        <div class="col-12 col-lg-7 col-xl-8
+                            d-flex flex-column justify-content-center bg-dark bg-opacity-50 p-3 text-white">
                             <div>
                                 <strong class="fs-2 ">{{ track.name }}</strong>
                                 <p class="fs-5 ">{{ track.artist.name }}</p>
