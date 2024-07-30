@@ -12,71 +12,43 @@
                      role="group"
                      aria-label="Basic checkbox toggle button group"
                      :class="{ 'no-selection': !hasSelection }">
-                    <input type="checkbox" class="btn-check" id="tracks" value="tracks" v-model="selectedTypes">
+                    <input type="radio" class="btn-check" id="tracks" :value="searchTypes.TRACKS" v-model="selectedType">
                     <label class="btn btn-outline-primary" for="tracks">Tracks</label>
 
-                    <input type="checkbox" class="btn-check" id="artists" value="artists" v-model="selectedTypes">
+                    <input type="radio" class="btn-check" id="artists" :value="searchTypes.ARTISTS" v-model="selectedType">
                     <label class="btn btn-outline-primary" for="artists">Artists</label>
 
-                    <input type="checkbox" class="btn-check" id="lyrics" value="lyrics" v-model="selectedTypes">
+                    <input type="radio" class="btn-check" id="lyrics" :value="searchTypes.LYRICS" v-model="selectedType">
                     <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
                 </div>
             </div>
 
 
-            <div class="p-3 my-2" v-if="selectedTypes.includes('tracks')">
+            <div class="p-3 my-2" >
                 <div class="row" >
-                    <h3>Tracks Result</h3>
-                    <div v-if="trackResult.length > 0" class="row">
+                    <h3>{{ selectedType.toUpperCase() }} RESULT</h3>
+                    <div v-if="searchResult.length > 0" class="row">
                         <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                        <div class="col-6 col-md-3 col-xl-2" v-for="track in trackResult" :key="track.id">
-                            <TrackCard :track="track"></TrackCard>
+                        <div class="col-6 col-md-3 col-xl-2" v-for="item in searchResult" :key="item.id">
+                            <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
+                            <TrackCard :track="item" v-else></TrackCard>
                         </div>
                     </div>
 
-                    <div v-if="spotifyTrackResult.length > 0" class="row">
+                    <div v-if="spotifySearchResult.length > 0" class="row">
                         <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                        <div class="col-6 col-md-3 col-xl-2" v-for="track in spotifyTrackResult" :key="track.id">
-                            <TrackCard :track="track"></TrackCard>
+                        <div class="col-6 col-md-3 col-xl-2" v-for="item in spotifySearchResult" :key="item.id">
+                            <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
+                            <TrackCard :track="item" v-else></TrackCard>
                         </div>
                     </div>
 
                 </div>
-                <div v-if="trackResult.length <= 0 && spotifyTrackResult.length <= 0" class="text-center">
+                <div v-if="searchResult.length <= 0 && spotifySearchResult.length <= 0" class="text-center">
                     <EmptyPlaceholder></EmptyPlaceholder>
                 </div>
             </div>
-
-            <div class="p-3 my-3" v-if="selectedTypes.includes('artists')">
-                <div class="row" >
-                    <h3>Artists Result</h3>
-                    <div v-if="artistResult.length > 0" class="row">
-                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                        <div class="col-6 col-md-3 col-xl-2" v-for="artist in artistResult" :key="artist.id">
-                            <ArtistCard :artist="artist"></ArtistCard>
-                        </div>
-                    </div>
-                    <div v-if="spotifyArtistResult.length > 0" class="row">
-                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                        <div class="col-6 col-md-3 col-xl-2" v-for="artist in spotifyArtistResult" :key="artist.id">
-                            <ArtistCard :artist="artist"></ArtistCard>
-                        </div>
-                    </div>
-                    <p v-if="artistResult.length<=0" class="text-center">No Result For the Search</p>
-                </div>
-            </div>
-
-            <div class="p-3 my-3" v-if="selectedTypes.includes('lyrics')">
-                <div class="row" >
-                    <h3>Lyric Result</h3>
-                    <div class="col-6 col-md-3 col-xl-2" v-for="track in lyricsResult" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
-                    </div>
-                </div>
-            <p v-if="lyricsResult.length<=0" class="text-center">No Result For the Search</p>
-            </div>
         </div>
-
     </div>
 
 </template>
@@ -89,31 +61,27 @@ import ArtistCard from "@/components/ArtistCard.vue";
 import AlertComponents from "@/components/AlertComponents.vue";
 import {searchSpotifyArtists, searchSpotifyTracks} from "@/api/spotify";
 import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
+import searchTypes from "@/enum/searchTypes";
 
 export default {
     components: {EmptyPlaceholder, AlertComponents, ArtistCard, TrackCard},
     data() {
         return {
+            searchTypes: searchTypes,
             keyword: "",
-            selectedTypes: ['tracks'],
+            selectedType: searchTypes.TRACKS,
             hasSelection: true,
-            trackResult: [],
-            spotifyTrackResult: [],
-            artistResult: [],
-            spotifyArtistResult: [],
-            lyricsResult: [],
+
+            searchResult: [],
+            spotifySearchResult: [],
+
         };
     },
-    computed: {
-        atLeastOneSelected() {
-            return this.selectedTypes.length > 0;
-        },
-    },
+
     watch: {
-        selectedTypes(newVal) {
-            this.hasSelection = newVal.length > 0;
-            this.fetchSearchResult()
-            this.fetchSpotifyResult()
+        async selectedType() {
+            console.log(this.selectedType)
+            await this.fetchSearchResult()
         }
     },
     methods: {
@@ -121,7 +89,7 @@ export default {
             try {
                 const response = await getRandomTrack();
                 if (response.data.status === 200) {
-                    this.trackResult = response.data.data;
+                    this.searchResult = response.data.data;
                 } else {
                     console.error('Error fetching tracks:', response.data.message);
                 }
@@ -130,37 +98,52 @@ export default {
             }
         },
         async fetchSearchResult() {
-            if (!this.atLeastOneSelected) {
-                return alert("Please At Least Select One Type");
-            }
             try {
-                const response = await search(this.keyword, this.selectedTypes)
+                const response = await search(this.keyword, this.selectedType);
                 if (response.data.status === 200) {
-                    this.trackResult = response.data.data.tracks;
-                    this.artistResult = response.data.data.artists;
-                    this.lyricsResult = response.data.data.lyrics;
-                    await this.fetchSpotifyResult()
+                    switch (this.selectedType) {
+                        case searchTypes.TRACKS:
+                            this.searchResult = response.data.data.tracks || [];
+                            break;
+                        case searchTypes.ARTISTS:
+                            this.searchResult = response.data.data.artists || [];
+                            break;
+                        case searchTypes.LYRICS:
+                            this.searchResult = response.data.data.lyrics || [];
+                            break;
+                        default:
+                            this.searchResult = [];
+                            console.warn('Unknown search type:', this.selectedType);
+                    }
+                    if (this.selectedType !== searchTypes.LYRICS){
+                        await this.fetchSpotifyResult()
+                    }else {
+                        this.spotifySearchResult = []
+                    }
+
                 } else {
-                    console.error('Error fetching tracks:', response.data.message);
+                    console.error('Error fetching data:', response.data.message);
+                    this.searchResult = [];
                 }
-            } catch (err) {
-                console.error('Error fetching tracks:', err.message);
+            } catch (error) {
+                console.error('Error during search:', error);
+                this.searchResult = [];
             }
         },
         async fetchSpotifyResult() {
             try {
-                if (this.selectedTypes.includes('tracks')){
+                if (this.selectedType === searchTypes.TRACKS){
                     const response = await searchSpotifyTracks(this.keyword)
                     if (response.status === 200) {
-                        this.spotifyTrackResult = response.data
+                        this.spotifySearchResult = response.data
                     } else {
                         console.error('Error search Spotify else:', response.data.message);
                     }
                 }
-                if (this.selectedTypes.includes('artists')){
+                if (this.selectedType  ===  searchTypes.ARTISTS){
                     const response = await searchSpotifyArtists(this.keyword)
                     if (response.status === 200) {
-                        this.spotifyArtistResult = response.data
+                        this.spotifySearchResult = response.data
                     } else {
                         console.error('Error search Spotify else:', response.data.message);
                     }
