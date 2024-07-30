@@ -150,9 +150,6 @@ export default {
                     const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
                     this.chartLabels = labels
                     this.chartData = data
-                    this.$nextTick(() => {
-                        this.createChart()
-                    })
                 } else {
                     this.chartLabels = []
                     this.chartData = []
