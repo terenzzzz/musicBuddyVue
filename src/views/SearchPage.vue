@@ -1,56 +1,51 @@
 <template>
-    <div class="Search container-lg">
+    <div class="Search container">
+        <div class="row d-flex justify-content-center mt-5 card pt-3 rounded-5">
+            <form @submit.prevent="fetchSearchResult" class="col-12 d-flex">
+                <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
+                       placeholder="Search Tracks, Artists, Lyrics..." v-model="keyword">
+                <button class="btn btn-primary rounded-start-0" >Search</button>
+            </form>
+            <div class="btn-group col-8 col-md-4 d-flex my-4 mx-auto"
+                 role="group"
+                 aria-label="Basic checkbox toggle button group"
+                 :class="{ 'no-selection': !hasSelection }">
+                <input type="radio" class="btn-check" id="tracks" :value="searchTypes.TRACKS" v-model="selectedType">
+                <label class="btn btn-outline-primary" for="tracks">Tracks</label>
 
-        <div class="px-2 px-sm-3 px-md-5">
-            <div class="row d-flex justify-content-center mt-5 card pt-3 rounded-5">
-                <form @submit.prevent="fetchSearchResult" class="col-12 d-flex">
-                    <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
-                           placeholder="Search Tracks, Artists, Lyrics..." v-model="keyword">
-                    <button class="btn btn-primary rounded-start-0" >Search</button>
-                </form>
-                <div class="btn-group col-8 col-md-4 d-flex my-4 mx-auto"
-                     role="group"
-                     aria-label="Basic checkbox toggle button group"
-                     :class="{ 'no-selection': !hasSelection }">
-                    <input type="radio" class="btn-check" id="tracks" :value="searchTypes.TRACKS" v-model="selectedType">
-                    <label class="btn btn-outline-primary" for="tracks">Tracks</label>
+                <input type="radio" class="btn-check" id="artists" :value="searchTypes.ARTISTS" v-model="selectedType">
+                <label class="btn btn-outline-primary" for="artists">Artists</label>
 
-                    <input type="radio" class="btn-check" id="artists" :value="searchTypes.ARTISTS" v-model="selectedType">
-                    <label class="btn btn-outline-primary" for="artists">Artists</label>
-
-                    <input type="radio" class="btn-check" id="lyrics" :value="searchTypes.LYRICS" v-model="selectedType">
-                    <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
-                </div>
-            </div>
-
-
-            <div class="p-3 my-2" >
-                <div class="row" >
-                    <h3>{{ selectedType.toUpperCase() }} RESULT</h3>
-                    <div v-if="searchResult.length > 0" class="row">
-                        <AlertComponents :title="'The Result Below is Provided by MusicBuddy'"></AlertComponents>
-                        <div class="col-6 col-md-3 col-xl-2" v-for="item in searchResult" :key="item.id">
-                            <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
-                            <TrackCard :track="item" v-else></TrackCard>
-                        </div>
-                    </div>
-
-                    <div v-if="spotifySearchResult.length > 0" class="row">
-                        <AlertComponents :title="'The Result Below is Provided by Spotify'"></AlertComponents>
-                        <div class="col-6 col-md-3 col-xl-2" v-for="item in spotifySearchResult" :key="item.id">
-                            <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
-                            <TrackCard :track="item" v-else></TrackCard>
-                        </div>
-                    </div>
-
-                </div>
-                <div v-if="searchResult.length <= 0 && spotifySearchResult.length <= 0" class="text-center">
-                    <EmptyPlaceholder></EmptyPlaceholder>
-                </div>
+                <input type="radio" class="btn-check" id="lyrics" :value="searchTypes.LYRICS" v-model="selectedType">
+                <label class="btn btn-outline-primary" for="lyrics">Lyrics</label>
             </div>
         </div>
-    </div>
 
+        <div class="row m-0 p-0" >
+            <div v-if="searchResult.length > 0" class="row m-0 mt-3 p-0">
+                <h3><span class="red-bottom">{{ selectedType.toUpperCase() }} RESULT By MusicBuddy</span></h3>
+                <div class="col-4 col-md-3 col-xl-2 " v-for="item in searchResult" :key="item.id">
+                    <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
+                    <TrackCard :track="item" v-else></TrackCard>
+                </div>
+            </div>
+
+
+            <div v-if="spotifySearchResult.length > 0" class="row m-0 mt-3 p-0">
+                <h3>
+                    <span class="red-bottom">{{ selectedType.toUpperCase() }} RESULT By Spotify</span>
+                </h3>
+                <div class="col-6 col-md-3 col-xl-2" v-for="item in spotifySearchResult" :key="item.id">
+                    <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
+                    <TrackCard :track="item" v-else></TrackCard>
+                </div>
+            </div>
+
+        </div>
+        <div v-if="searchResult.length <= 0 && spotifySearchResult.length <= 0" class="text-center">
+            <EmptyPlaceholder></EmptyPlaceholder>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -58,13 +53,12 @@ import {getRandomTrack} from "@/api/tracks";
 import TrackCard from "@/components/TrackCard.vue";
 import {search} from "@/api/search";
 import ArtistCard from "@/components/ArtistCard.vue";
-import AlertComponents from "@/components/AlertComponents.vue";
 import {searchSpotifyArtists, searchSpotifyTracks} from "@/api/spotify";
 import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
 import searchTypes from "@/enum/searchTypes";
 
 export default {
-    components: {EmptyPlaceholder, AlertComponents, ArtistCard, TrackCard},
+    components: {EmptyPlaceholder, ArtistCard, TrackCard},
     data() {
         return {
             searchTypes: searchTypes,
