@@ -1,11 +1,13 @@
 <template>
-    <div class="Search container">
-        <div class="row d-flex justify-content-center mt-5 card pt-3 rounded-5">
-            <form @submit.prevent="fetchSearchResult" class="col-12 d-flex">
-                <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
-                       placeholder="Search Tracks, Artists, Lyrics..." v-model="keyword">
-                <button class="btn btn-primary rounded-start-0" >Search</button>
-            </form>
+    <div class="Search container-lg">
+        <div class="row mt-5">
+            <div class="row m-0 p-0">
+                <form @submit.prevent="fetchSearchResult" class="col-12 col-sm-10 col-lg-8 d-flex mx-auto">
+                    <input type="search" class="form-control form-control-lg ds-input rounded-end-0" id="search-input"
+                           placeholder="Search Tracks, Artists, Lyrics..." v-model="keyword">
+                    <button class="btn btn-primary rounded-start-0" >Search</button>
+                </form>
+            </div>
             <div class="btn-group col-8 col-md-4 d-flex my-4 mx-auto"
                  role="group"
                  aria-label="Basic checkbox toggle button group"
