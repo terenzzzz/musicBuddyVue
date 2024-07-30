@@ -4,7 +4,7 @@
                 :options="swiperOption"
                 ref="mySwiper"
                 @slideChange="onSlideChange">
-            <swiper-slide v-for="(track, index) in randomTracks" :key="track.id" class="mt-5 container-padding">
+            <swiper-slide v-for="track in randomTracks" :key="track.id" class="mt-5 container-padding">
                 <div class="card shadow rounded-bottom-0 position-relative">
                     <div class="row">
                         <div class="col">
@@ -27,18 +27,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row p-3" v-show="isShowDetail">
-                        <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
-                        <div class="col-12 col-lg-6">
-                            <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
-                                <strong>Keyword:</strong>
-                                <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
-                                    <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <LyricAnalysis :lyric-top-words="lyricTopWords" :chart-data="chartData" :chart-labels="chartLabels"
+                                   labels="Topic Probability Distribution" v-show="isShowDetail" :is-card="false"></LyricAnalysis>
                 </div>
 
             </swiper-slide>
@@ -91,6 +81,7 @@ import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {searchSpotifyTracks} from "@/api/spotify";
 import VinylRecord from "@/components/VinylRecord.vue";
 import Chart from "chart.js";
+import LyricAnalysis from "@/components/LyricAnalysis.vue";
 
 export default {
     computed: {
@@ -113,6 +104,7 @@ export default {
         }
     },
     components: {
+        LyricAnalysis,
         VinylRecord,
         SpotifyFrame,
         RateBtn,

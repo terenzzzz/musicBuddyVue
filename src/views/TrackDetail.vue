@@ -117,20 +117,8 @@
 
 
                 <!--    Lyric Analysis -->
-                <div class="card shadow p-3" >
-                    <div class="row" >
-                        <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
-                        <div class="col-12 col-lg-6">
-                            <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
-                                <strong>Keyword:</strong>
-                                <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
-                                    <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                <LyricAnalysis :lyric-top-words="lyricTopWords" :chart-data="chartData" :chart-labels="chartLabels"
+                               labels="Topic Probability Distribution"></LyricAnalysis>
 
                 <!--Recommandation-->
                 <div class="my-3">
@@ -221,15 +209,16 @@ import {
     getTfidfRecommendByLyrics, getW2VRecommendArtistsByLyrics, getW2VRecommendByLyrics,
     getWeightedRecommendArtistsByLyrics, getWeightedRecommendByLyrics,
 } from "@/api/recommend";
-import Chart from 'chart.js'
 import PieSlider from "@/components/PieSlider.vue";
 import VinylRecord from "@/components/VinylRecord.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
+import LyricAnalysis from "@/components/LyricAnalysis.vue";
 
 export default {
     components: {
+        LyricAnalysis,
         LoopSwiper,
         ErrorPlaceholderVertical,
         LoadingSpinner,
@@ -246,7 +235,6 @@ export default {
             selectedRecommendation: "weighted",
             chartLabels: [],
             chartData: [],
-            chart: null,
             trackId: this.$route.params.id,
             track: null,
             formattedLyrics: [],
@@ -320,9 +308,6 @@ export default {
                     const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
                     this.chartLabels = labels
                     this.chartData = data
-                    this.$nextTick(() => {
-                        this.createChart()
-                    })
                 } else {
                     this.chartLabels = []
                     this.chartData = []
@@ -531,38 +516,7 @@ export default {
         },
         isValidMongoId,
         millisecondsToMMss,
-        createChart() {
-            const ctx = this.$refs.radarChart.getContext('2d')
-            this.chart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: this.chartLabels,
-                    datasets: [{
-                        label: 'Topic Represent words',
-                        data: this.chartData,
-                        fill: true,
-                        backgroundColor: 'rgba(13, 110, 253, 0.2)',  // #0d6efd with 0.2 opacity
-                        borderColor: 'rgb(13, 110, 253)',            // #0d6efd
-                        pointBackgroundColor: 'rgb(13, 110, 253)',   // #0d6efd
-                        pointBorderColor: '#fff',                    // 保持白色
-                        pointHoverBackgroundColor: '#fff',           // 保持白色
-                        pointHoverBorderColor: 'rgb(11, 94, 215)'    // 稍微深一点的蓝色
-                    }]
-                },
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
-                        }
-                    }
-                }
-            })
-        }
-    },
-    beforeDestroy() {
-        if (this.chart) {
-            this.chart.destroy()
-        }
+
     },
     computed: {
         itemTypes() {

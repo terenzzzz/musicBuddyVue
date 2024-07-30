@@ -56,20 +56,8 @@
             </div>
 
             <!--    Lyric Analysis -->
-            <div class="card shadow p-3 my-3" v-if="(chartLabels.length>0 || lyricTopWords.length>0)">
-                <div class="row" >
-                    <div class="col-12 col-lg-6" v-if="chartLabels.length>0"><canvas ref="radarChart"></canvas></div>
-                    <div class="col-12 col-lg-6">
-                        <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
-                            <strong>Keyword:</strong>
-                            <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
-                                <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <LyricAnalysis :lyric-top-words="lyricTopWords" :chart-data="chartData" :chart-labels="chartLabels"
+                           labels="Topic Probability Distribution"></LyricAnalysis>
 
             <!--Tracks-->
             <div class="mt-5">
@@ -116,7 +104,6 @@
             <div class="mt-5">
                 <div>
                     <h3 class="red-bottom d-inline me-2">Similar Artists</h3>
-                    <span class="badge text-bg-primary fs-6 fst-italic">{{ recommendedModeText }}</span>
                 </div>
                 <div v-if="similarArtist.length > 0" class="my-2">
                     <LoopSwiper v-if="similarArtist.length>0" :artists="similarArtist"></LoopSwiper>
@@ -149,7 +136,6 @@ import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, getRating, itemTypes} from "@/api/ratings";
-import Chart from "chart.js";
 import {
     getLDARecommendArtistsByArtist, getLDARecommendArtistsByLyrics,
     getTfidfRecommendArtistsByArtist, getTfidfRecommendArtistsByLyrics,
@@ -160,9 +146,10 @@ import PieSlider from "@/components/PieSlider.vue";
 import {getLyricsFromGenius} from "@/api/genius";
 import TagButton from "@/components/TagButton.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
+import LyricAnalysis from "@/components/LyricAnalysis.vue";
 
 export default {
-    components: {LoopSwiper, TagButton, PieSlider, RateBtn, AlertComponents, TrackCard},
+    components: {LyricAnalysis, LoopSwiper, TagButton, PieSlider, RateBtn, AlertComponents, TrackCard},
     data() {
         return {
             showPieSlider: true,
@@ -423,9 +410,6 @@ export default {
                     const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
                     this.chartLabels = labels
                     this.chartData = data
-                    this.$nextTick(() => {
-                        this.createChart()
-                    })
                 } else {
                     this.chartLabels = []
                     this.chartData = []
@@ -435,33 +419,7 @@ export default {
                 console.error('Error fetching Track Topic:', err.message);
             }
         },
-        createChart() {
-            const ctx = this.$refs.radarChart.getContext('2d')
-            this.chart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: this.chartLabels,
-                    datasets: [{
-                        label: 'Topic Represent words',
-                        data: this.chartData,
-                        fill: true,
-                        backgroundColor: 'rgba(13, 110, 253, 0.2)',  // #0d6efd with 0.2 opacity
-                        borderColor: 'rgb(13, 110, 253)',            // #0d6efd
-                        pointBackgroundColor: 'rgb(13, 110, 253)',   // #0d6efd
-                        pointBorderColor: '#fff',                    // 保持白色
-                        pointHoverBackgroundColor: '#fff',           // 保持白色
-                        pointHoverBorderColor: 'rgb(11, 94, 215)'    // 稍微深一点的蓝色
-                    }]
-                },
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
-                        }
-                    }
-                }
-            })
-        }
+
     },
 
     computed: {
