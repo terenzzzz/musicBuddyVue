@@ -1,6 +1,6 @@
 <template>
     <div class="DashBoard">
-        <div class="offcanvas offcanvas-start custom-width" tabindex="-1" id="offcanvas">
+        <div class="offcanvas offcanvas-start custom-width" tabindex="-1" id="offcanvas" >
             <div class="offcanvas-header">
                 <h3 class="offcanvas-title d-none d-sm-block red-bottom" id="offcanvas">Recommendation Mode</h3>
                 <button type="button" class="btn-close" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
@@ -23,7 +23,7 @@
                 </div>
 
                 <h4 class="red-bottom mt-2">Adjust Input Data</h4>
-                <div class="d-flex justify-content-between align-items-center my-2">
+                <div class="d-flex justify-content-between align-items-center mt-3">
                     <label for="recentlyPlayedRadio" class="my-2 fw-bold">Recommend by Recently Played:</label>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="recentlyPlayedRadio">
                         <input type="radio" class="btn-check" name="recentlyPlayedRadio" id="yesRecentlyPlayed"
@@ -53,10 +53,9 @@
                         @change="startRecommendation"
                         :disabled="isRecommending"
                     />
-                    <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center my-2">
+                <div class="d-flex justify-content-between align-items-center mt-3">
                     <label for="topTracksRadio" class="my-2 fw-bold">Recommend by Top Tracks:</label>
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group" id="topTracksRadio">
                         <input type="radio" class="btn-check" name="topTracksRadio" id="yesTopTracks"
