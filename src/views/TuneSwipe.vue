@@ -28,7 +28,8 @@
                         </div>
                     </div>
                     <LyricAnalysis :lyric-top-words="lyricTopWords" :chart-data="chartData" :chart-labels="chartLabels"
-                                   labels="Topic Probability Distribution" v-show="isShowDetail" :is-card="false"></LyricAnalysis>
+                                   :chart-label-explain="chartLabelsExplain"  labels="Topic Probability Distribution"
+                                   v-show="isShowDetail" :is-card="false"></LyricAnalysis>
                 </div>
 
             </swiper-slide>
@@ -133,7 +134,8 @@ export default {
             isShowDetail: false,
             chartLabels: [],
             lyricTopWords: [],
-            chartData:[]
+            chartData:[],
+            chartLabelsExplain:[]
         };
     },
 
@@ -146,10 +148,12 @@ export default {
             try {
                 const response = await getTrackTopicByLyric(this.currentTrack.lyric);
                 if (response.status === 200) {
-                    const labels = response.data.data.map(topic => topic.top_words.slice(0, 5).join(','));
+                    const labels = response.data.data.map(topic => topic.name);
+                    const labelExplain =  response.data.data.map(topic => topic.top_words.slice(0,5).join("; "));
                     const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
                     this.chartLabels = labels
                     this.chartData = data
+                    this.chartLabelsExplain =labelExplain
                 } else {
                     this.chartLabels = []
                     this.chartData = []

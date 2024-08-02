@@ -117,7 +117,7 @@
 
 
                 <!--    Lyric Analysis -->
-                <LyricAnalysis :lyric-top-words="lyricTopWords" :chart-data="chartData" :chart-labels="chartLabels"
+                <LyricAnalysis :lyric-top-words="lyricTopWords" :chart-data="chartData" :chart-labels="chartLabels" :chart-label-explain="chartLabelsExplain"
                                labels="Topic Probability Distribution"></LyricAnalysis>
 
                 <!--Recommandation-->
@@ -235,6 +235,7 @@ export default {
             selectedRecommendation: "weighted",
             chartLabels: [],
             chartData: [],
+            chartLabelsExplain:[],
             trackId: this.$route.params.id,
             track: null,
             formattedLyrics: [],
@@ -304,10 +305,12 @@ export default {
             try {
                 const response = await getTrackTopicByLyric(this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric);
                 if (response.status === 200) {
-                    const labels = response.data.data.map(topic => topic.top_words.slice(0, 5).join(','));
+                    const labels = response.data.data.map(topic => topic.name);
+                    const labelExplain =  response.data.data.map(topic => topic.top_words.slice(0,5).join("; "));
                     const data = response.data.data.map(topic => Number((topic.probability * 100).toFixed(2)));
                     this.chartLabels = labels
                     this.chartData = data
+                    this.chartLabelsExplain =labelExplain
                 } else {
                     this.chartLabels = []
                     this.chartData = []

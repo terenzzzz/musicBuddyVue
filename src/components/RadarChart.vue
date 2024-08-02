@@ -23,6 +23,11 @@ export default {
             type: Number,
             required: false,
             default: 5
+        },
+        chartLabelExplain: {
+            type: Array,
+            required: false,
+            default: () => []
         }
     },
     data() {
@@ -47,7 +52,7 @@ export default {
             this.chart = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: this.chartLabels.slice(0,this.dataSize),
+                    labels: this.chartLabels.slice(0,this.dataSize), // 标签
                     datasets: [{
                         label: this.labels,
                         data: this.chartData.slice(0,this.dataSize),
@@ -61,6 +66,19 @@ export default {
                     }]
                 },
                 options: {
+                    tooltips: {
+                        callbacks: {
+                            label: (tooltipItem, data) => {
+                                const label = data.labels[tooltipItem.index];
+                                const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+                                // 获取当前标签的解释，如果没有则使用默认值
+                                const explanation = this.chartLabelExplain[tooltipItem.index] || 'No explanation available';
+
+                                return `${label}: ${value} - ${explanation}`;
+                            }
+                        }
+                    },
                     elements: {
                         line: {
                             borderWidth: 3
