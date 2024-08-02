@@ -1,26 +1,10 @@
 // 导入 axios配置
 import request from "@/utils/request"
-import requestModelling from "@/utils/requestModelling"
-
-
-
-
-export const getTrackTopic = (track) => requestModelling({
-    url: `/getTrackTopic`,
-    method: 'get',
-    params: {track: track}
-})
 
 export const getTrackTopicByLyric = (lyric) => request({
     url: `/app/getTrackTopicByLyric`,
     method: 'post',
     data: { lyric: lyric }
-})
-
-export const getLyricTopWords = (track) => request({
-    url: `/app/getLyricTopWords`,
-    method: 'get',
-    params: {track: track}
 })
 
 export const getLyricTopWordsByLyric = (lyric) => request({
