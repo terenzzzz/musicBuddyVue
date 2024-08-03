@@ -99,7 +99,7 @@
 
         </div>
         <div class="container-md">
-            <div class="row d-flex justify-content-end my-2">
+            <div class="row d-flex justify-content-end my-2 align-items-center">
                 <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center fit-content"
                         data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
                     <i class="bi bi-gear-fill fs-4"></i>
@@ -107,6 +107,7 @@
                     <div class="spinner-border text-primary spinner-border-sm" role="status" v-show="isRecommending">
                         <span class="visually-hidden">Loading...</span>
                     </div>
+                    <ProgressCircle v-show="!isRecommending" :currentCount="validLyricCount" :totalCount="lyricsForRecommend.length"></ProgressCircle>
                 </button>
             </div>
 
@@ -217,13 +218,16 @@ import PieSlider from "@/components/PieSlider.vue";
 import {getUser} from "@/api/users";
 import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
+import ProgressCircle from "@/components/ProgressCircle.vue";
 
 export default {
     components: {
+        ProgressCircle,
         LoopSwiper,
         ErrorPlaceholderHorizontal,
         PieSlider,
         LoadingSpinner,
+
     },
     data() {
         return {
@@ -241,6 +245,8 @@ export default {
             selectedTopTracksAmount: 3,
 
             lyricsForRecommend:[],
+            validLyricCount: 0,
+
 
             isRecommending: true,
 
@@ -252,6 +258,11 @@ export default {
             EveryoneListening: [],
             user: null
         };
+    },
+    watch:{
+        lyricsForRecommend(){
+            this.validLyricCount = this.lyricsForRecommend.filter(lyric => lyric.trim() !== "").length
+        }
     },
     computed:{
         calculatedWeighting() {
@@ -282,7 +293,8 @@ export default {
                 topics: 'Topics'
             }
             return options[this.selectedRecommendation] || 'Select Option'
-        }
+        },
+
     },
     methods: {
         // =============================================
