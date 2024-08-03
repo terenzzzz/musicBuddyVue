@@ -344,7 +344,10 @@ export default {
                 const combinedTracks = [...slicedRecentlyPlayed, ...slicedTopTracks];
 
                 if (combinedTracks.length > 0){
-                    await this.fetchLyricFromGenius(combinedTracks)
+                    if (combinedTracks.length !== this.lyricsForRecommend.length){
+                        await this.fetchLyricFromGenius(combinedTracks)
+                    }
+
 
                     if (this.lyricsForRecommend.length>0){
                         await this.fetchAlsoListen(this.lyricsForRecommend[0])
