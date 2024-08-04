@@ -5,15 +5,15 @@
 
         <canvas ref="LineChart"></canvas>
         <!-- Modal for displaying the chart -->
-        <div class="modal fade" id="LineChartModel" tabindex="-1" aria-labelledby="LineChartModel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
+        <div class="modal fade" id="LineChartModel" tabindex="-1" aria-labelledby="LineChartModel" >
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content p-2">
                     <i class="fa-solid fa-x p-4" data-bs-dismiss="modal" aria-label="Close"></i>
                     <h3 class="text-center">{{title}}</h3>
                     <div class="modal-body">
-                        <!-- Canvas for Chart -->
                         <canvas ref="modalChart"></canvas>
                     </div>
+                    <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@ export default {
                         this.modalChart.destroy(); // Destroy any previous instance of the chart
                     }
 
-                    this.modalChart = new Chart(ctx, new Chart(ctx, this.generateChart()));
+                    this.modalChart = new Chart(ctx, this.generateChart());
                 } else {
                     console.error('Modal canvas context is not available.');
                 }
@@ -103,7 +103,8 @@ export default {
         },
 
         generateChart(amount) {
-            const numLabels = Math.min(amount, this.labels.length);
+            const numLabels = Number.isInteger(amount) ? Math.min(amount, this.labels.length) : this.labels.length;
+
 
             // Slice the labels and data arrays to get the last `numLabels` items
             const labelsToUse = this.labels.slice(-numLabels);
@@ -136,14 +137,15 @@ export default {
                             ticks: {
                                 callback: function(value) {
                                     // 假设 value 是 'YYYY-MM-DD' 格式的字符串
-                                    if (amount>3){
+                                    if (numLabels<5){
                                         const date = new Date(value);
                                         const month = date.getMonth() + 1; // 月份从 0 开始
                                         const day = date.getDate();
                                         return `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                                    }else if (numLabels>=5 && numLabels<10){
+                                        return value
                                     }
-                                    return value
-
+                                    return ""
                                 }
                             }
                         }],

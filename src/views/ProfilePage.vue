@@ -210,8 +210,9 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="red-bottom">Playing Time</h5>
                     </div>
-                        <LineChart class="my-auto"
-                            :labels="timeStateLabels" :data="timeStateData" title="Playing Time Statistic"></LineChart>
+                    <LineChart class="my-auto"
+                        :labels="timeStateLabels" :data="timeStateData" title="Playing Time Statistic"></LineChart>
+                    <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
         </div>
