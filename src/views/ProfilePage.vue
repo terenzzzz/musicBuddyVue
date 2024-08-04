@@ -1,11 +1,15 @@
 <template>
-    <div class="profile container-lg">
+    <div class="profile container-lg" id="profile">
         <div v-if="user" class="row my-3 px-3 px-md-5">
-            <div class="card shadow rounded-5 mt-5 rounded-bottom-0 p-4 " >
+            <div class="card shadow rounded-5 mt-2 rounded-bottom-0 p-4 " >
                 <div class="d-flex justify-content-end my-2">
                     <button :class="['mb-2', 'btn', isSpotifyConnected ? 'btn-success text-white' : 'btn-outline-secondary']" @click="loginWithSpotify">
                         <i class="fa-brands fa-spotify"></i> {{ isSpotifyConnected ? 'Connected to Spotify' : 'Connect to Spotify' }}
                     </button>
+                    <button class="mb-2 ms-2 btn btn-secondary" @click="exportReport">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+
                 </div>
                 <div class="row">
                     <div class="col-4 col-md-3 col-xl-2 m-auto ">
@@ -60,7 +64,6 @@
             </div>
         </div>
 
-
         <div class="row g-3 px-3 px-md-5 mt-1" v-if="ratedTracks.length>0">
             <div class="card p-3 rounded-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -76,7 +79,6 @@
                 </div>
             </div>
         </div>
-
 
         <!--                    Recently Played-->
         <div class="row g-3 my-2 px-3 px-md-5">
@@ -228,6 +230,7 @@ import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
 import LineChart from "@/components/LineChart.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
+import html2canvas from "html2canvas";
 
 export default {
     computed: {
@@ -269,6 +272,25 @@ export default {
     },
 
     methods: {
+        async exportReport() {
+            await this.waitForImages();
+            const element = document.getElementById('profile');
+            const canvas = await html2canvas(element, {
+                allowTaint: true,
+                useCORS: true,
+                logging: true,
+            });
+            const imgData = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.href = imgData;
+            link.download = `${this.user.name}.png`;
+            link.click();
+        },
+        waitForImages() {
+            const images = document.querySelectorAll('#profile img');
+            return Promise.all(Array.from(images).filter(img => !img.complete)
+                .map(img => new Promise(resolve => { img.onload = img.onerror = resolve; })));
+        },
         getProgressWidth(count) {
             return (count / this.maxCount) * 100;
         },

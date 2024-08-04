@@ -143,7 +143,7 @@ export default {
         async fetchRecentlyPlay() {
             try {
                 const response = await getRecentlyPlayed();
-                this.tracks = response.data;
+                this.tracks = response.data.tracks;
                 console.log(this.tracks)
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
