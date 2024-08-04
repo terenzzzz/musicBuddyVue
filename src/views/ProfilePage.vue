@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="row px-3 px-md-5" v-if="ratedTracks.length>0">
+        <div class="px-3 px-md-5" v-if="ratedTracks.length>0">
             <div class="card p-3 rounded-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="red-bottom">Rated Track</h5>
@@ -53,14 +53,13 @@
                         All
                     </router-link>
                 </div>
-                <div class="horizontal-scroll" v-if="ratedTracks.length>0">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in ratedTracks" :key="track.id">
-                        <TrackCard :track="track.item" :rating="track.rate"></TrackCard>
-                    </div>
+                <div>
+                    <LoopSwiper v-if="ratedTracks.length>0" :tracks="ratedTracks"></LoopSwiper>
+                    <ErrorPlaceholderHorizontal v-else></ErrorPlaceholderHorizontal>
                 </div>
-                <ErrorPlaceholderHorizontal v-else></ErrorPlaceholderHorizontal>
             </div>
         </div>
+
 
         <div class="row g-3 px-3 px-md-5 mt-1" v-if="ratedTracks.length>0">
             <div class="card p-3 rounded-5">
@@ -71,12 +70,10 @@
                         All
                     </router-link>
                 </div>
-                <div class="horizontal-scroll" v-if="ratedArtists.length>0">
-                    <div class="col-3 col-md-2 mx-2" v-for="artist in ratedArtists" :key="artist.id">
-                        <ArtistCard :artist="artist.item" :rating="artist.rate"></ArtistCard>
-                    </div>
+                <div>
+                    <LoopSwiper v-if="ratedArtists.length>0" :artists="ratedArtists"></LoopSwiper>
+                    <ErrorPlaceholderHorizontal v-else></ErrorPlaceholderHorizontal>
                 </div>
-                <ErrorPlaceholderHorizontal v-else></ErrorPlaceholderHorizontal>
             </div>
         </div>
 
@@ -226,12 +223,11 @@ import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 // import HeatMap from "@/components/HeatMap.vue";
 import playlistTypes from "@/enum/playlistTypes";
-import TrackCard from "@/components/TrackCard.vue";
 import {getRatings} from "@/api/ratings";
-import ArtistCard from "@/components/ArtistCard.vue";
 import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
 import LineChart from "@/components/LineChart.vue";
+import LoopSwiper from "@/components/LoopSwiper.vue";
 
 export default {
     computed: {
@@ -243,9 +239,9 @@ export default {
         }
     },
     components: {
+        LoopSwiper,
         ErrorPlaceholderVertical,
         ErrorPlaceholderHorizontal,
-        ArtistCard, TrackCard,
         TrackCardHorizontal, LineChart
     },
     data() {
@@ -299,6 +295,8 @@ export default {
                 const response = await getRatings(); // 传递适当的参数
                 this.ratedTracks = response.data.data.ratedTracks.reverse();
                 this.ratedArtists = response.data.data.ratedArtists.reverse();
+                console.log(this.ratedTracks)
+                console.log(this.ratedArtists)
             } catch (error) {
                 console.error('Failed to fetch user:', error);
             }

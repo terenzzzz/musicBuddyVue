@@ -2,13 +2,13 @@
     <swiper class="swiper pb-4" :options="swiperOption">
         <template v-if="tracks && tracks.length > 0">
             <swiper-slide v-for="track in tracks" :key="track.id">
-                <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                <TrackCard :track="track.track? track.track : track.item" :similarity="track.similarity" :rating="track.rate"></TrackCard>
             </swiper-slide>
         </template>
 
         <template v-else-if="artists && artists.length > 0">
             <swiper-slide v-for="artist in artists" :key="artist.id">
-                <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>
+                <ArtistCard :artist="artist.artist? artist.artist : artist.item" :similarity="artist.similarity" :rating="artist.rate"></ArtistCard>
             </swiper-slide>
         </template>
 
