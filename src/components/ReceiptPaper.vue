@@ -24,12 +24,13 @@
         </div>
         <hr>
 
-        <div class="row my-2" v-for="(item, index) in tracks" :key="index">
+        <div class="row my-2 w-100 g-0" v-for="(item, index) in tracks" :key="index">
             <div class="col-2 col-md-2">{{ index + 1 }}</div>
-            <div class="col-7 col-md8">
+            <div class="col-7 col-md-8">
                 {{ item.name }} - {{ item.artist.name }}
             </div>
-            <div class="col-3 col-md-2">{{ millisecondsToMMss(item.duration) }}</div>
+<!--            <div class="col-3 col-md-2 text-end">{{ millisecondsToMMss(item.duration) }}</div>-->
+            <div class="col-3 col-md-2 text-center">{{ convertISOToDateTime(item.played_at) }}</div>
         </div>
 
         <hr>
@@ -44,14 +45,14 @@
         <div class="row">
             <div class="col-md-12">
                 <p>CARD #: **** **** **** 2024</p>
-                <p>AUTH CODE: {{ user._id }}</p>
-                <p>CARDHOLDER: {{ user.name }}</p>
+                <p>AUTH CODE: {{ user?._id }}</p>
+                <p>CARDHOLDER: {{ user?.name }}</p>
             </div>
         </div>
         <div class="row mt-5">
             <div class="col-md-12 text-center">
                 <p>THANK YOU FOR VISITING!</p>
-                <p>MUSICBUDDY.com</p>
+                <p>MUSICBUDDY.fun</p>
             </div>
         </div>
     </div>
@@ -59,7 +60,12 @@
 </template>
 
 <script>
-import {getCurrentFormattedDate, millisecondsToHHmmss, millisecondsToMMss} from "@/utils/timeConverter";
+import {
+    convertISOToDateTime,
+    getCurrentFormattedDate,
+    millisecondsToHHmmss,
+    millisecondsToMMss
+} from "@/utils/timeConverter";
 import html2canvas from "html2canvas";
 import {getUser} from "@/api/users";
 
@@ -85,6 +91,7 @@ export default {
         this.fetchUser()
     },
     methods: {
+        convertISOToDateTime,
         millisecondsToMMss,
         getCurrentFormattedDate,
         millisecondsToHHmmss,

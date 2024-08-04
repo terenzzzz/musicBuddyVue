@@ -204,6 +204,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="red-bottom">Playing Time</h5>
+                    </div>
+                        <LineChart class="my-auto"
+                            :labels="timeStateLabels" :data="timeStateData" title="Playing Time Statistic"></LineChart>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -220,6 +230,7 @@ import {getRatings} from "@/api/ratings";
 import ArtistCard from "@/components/ArtistCard.vue";
 import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
+import LineChart from "@/components/LineChart.vue";
 
 export default {
     computed: {
@@ -234,7 +245,8 @@ export default {
         ErrorPlaceholderVertical,
         ErrorPlaceholderHorizontal,
         ArtistCard, TrackCard,
-        TrackCardHorizontal},
+        TrackCardHorizontal, LineChart
+    },
     data() {
         return {
             user: null,
@@ -245,7 +257,10 @@ export default {
             savedTracks: [],
             topArtists: [],
             topTags: [],
-            isSpotifyConnected: false
+            isSpotifyConnected: false,
+
+            timeStateLabels: [],
+            timeStateData: []
         };
     },
     created() {
@@ -299,8 +314,10 @@ export default {
         },
         async fetchRecentlyPlay() {
             try {
-                const response = await getRecentlyPlayed();
-                this.recentlyPlay = response.data;
+                const response = await getRecentlyPlayed("true");
+                this.recentlyPlay = response.data.tracks;
+                this.timeStateLabels = response.data.labels;
+                this.timeStateData = response.data.data;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

@@ -7,10 +7,12 @@ export const refreshToken = params => requestSpotify({
     params
 });
 
-export const getRecentlyPlayed = params => requestSpotify({
+export const getRecentlyPlayed = (isStateTime) => requestSpotify({
     url: `/api/getRecentlyPlayed`,
     method: 'get',
-    params
+    params:{
+        isStateTime: isStateTime==="true" || isStateTime === "false"? isStateTime : ""
+    }
 });
 
 export const getSavedTracks = params => requestSpotify({

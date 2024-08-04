@@ -34,7 +34,7 @@
 
 <!--        ReceiptModel-->
         <div class="modal fade" id="receiptModel" tabindex="-1" aria-labelledby="receiptModel" aria-hidden="true"  v-if="showReceiptButton">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <i class="fa-solid fa-x p-4" data-bs-dismiss="modal" aria-label="Close"></i>
                     <ReceiptPaper :tracks="tracks" :title="title"></ReceiptPaper>
@@ -144,6 +144,7 @@ export default {
             try {
                 const response = await getRecentlyPlayed();
                 this.tracks = response.data;
+                console.log(this.tracks)
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

@@ -48,3 +48,31 @@ export function getCurrentFormattedDate() {
 
     return `${dayOfWeek}, ${month} ${date}, ${year}`;
 }
+
+export function convertISOToDate(isoString) {
+    // 将 ISO 8601 格式的字符串转换为 Date 对象
+    const date = new Date(isoString);
+
+    // 获取年、月、日
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // 月份从0开始，因此需要+1
+    const day = String(date.getUTCDate()).padStart(2, '0');
+
+    // 格式化为 "年-月-日"
+    return `${year}-${month}-${day}`;
+}
+
+export function convertISOToDateTime(isoString) {
+    // 将 ISO 8601 格式的字符串转换为 Date 对象
+    const date = new Date(isoString);
+
+    // 获取年、月、日、小时、分钟
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // 月份从0开始，因此需要+1
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+    // 格式化为 "年-月-日\n小时:分钟"
+    return `${year}-${month}-${day}\n${hours}:${minutes}`;
+}
