@@ -105,27 +105,27 @@
                 </div>
             </div>
 <!--            Saved Tracks-->
-            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="red-bottom">Saved Tracks</h5>
-                            <router-link v-if="savedTracks.length>0" :to="{ name: 'Playlist',
-                            params: { type:playlistTypes.playlistTypeToString(playlistTypes.SAVED_TRACKS) } }">
-                                All
-                            </router-link>
-                        </div>
-                        <div v-if="savedTracks.length>0">
-                            <div v-for="track in savedTracks.slice(0, 5)" :key="track.id">
-                                <TrackCardHorizontal :track="track"></TrackCardHorizontal>
-                            </div>
-                        </div>
-                        <div v-else>
-                            <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="col-12 col-sm-12 col-md-6 col-lg-4">-->
+<!--                <div class="playing-history card rounded-5 p-3 my-2 h-100 shadow">-->
+<!--                    <div>-->
+<!--                        <div class="d-flex justify-content-between align-items-center mb-3">-->
+<!--                            <h5 class="red-bottom">Saved Tracks</h5>-->
+<!--                            <router-link v-if="savedTracks.length>0" :to="{ name: 'Playlist',-->
+<!--                            params: { type:playlistTypes.playlistTypeToString(playlistTypes.SAVED_TRACKS) } }">-->
+<!--                                All-->
+<!--                            </router-link>-->
+<!--                        </div>-->
+<!--                        <div v-if="savedTracks.length>0">-->
+<!--                            <div v-for="track in savedTracks.slice(0, 5)" :key="track.id">-->
+<!--                                <TrackCardHorizontal :track="track"></TrackCardHorizontal>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div v-else>-->
+<!--                            <ErrorPlaceholderVertical></ErrorPlaceholderVertical>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!--                        Top Tracks-->
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
@@ -188,7 +188,7 @@
                         <a href="#" class="text-white">All</a>
                     </div>
                     <div v-if="user && topTags.length>0">
-                        <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 6)" :key="tag.id">
+                        <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 5)" :key="tag.id">
                             <span class="tag-label">{{ tag.tag.name }}</span>
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar" style="background-color: #0d6efd"
@@ -218,12 +218,14 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Playing Time</h5>
+                        <h5 class="red-bottom">Most Listened Year</h5>
                     </div>
-                    <BarChart :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Most Listened Year" :data-size="yearStateLabels.length"/>
+                    <BarChart class="my-auto"
+                        :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Most Listened Year" :data-size="yearStateLabels.length"/>
                     <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -266,7 +268,7 @@ export default {
             topTracks: [],
             ratedTracks: [],
             ratedArtists: [],
-            savedTracks: [],
+            // savedTracks: [],
             topArtists: [],
             topTags: [],
             isSpotifyConnected: false,
@@ -340,7 +342,7 @@ export default {
             // Check if Spotify is connected and token is valid
             if (this.isSpotifyConnected && localStorage.getItem('spotify_access_token')) {
                 await this.fetchRecentlyPlay();
-                await this.fetchSavedTracks();
+                // await this.fetchSavedTracks();
                 await this.fetchTopTracks();
                 await this.fetchTopArtists();
             }
