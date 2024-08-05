@@ -135,7 +135,7 @@ import {getArtistRelatedArtists, getSpotifyArtistById, searchSpotifyArtists} fro
 import isValidMongoId from "@/utils/isValidMongoId";
 import AlertComponents from "@/components/AlertComponents.vue";
 import RateBtn from "@/components/RateBtn.vue";
-import {addRating, getRating, itemTypes} from "@/api/ratings";
+import {addRating, deleteRating, getRating, itemTypes} from "@/api/ratings";
 import {
     getLDARecommendArtistsByArtist, getLDARecommendArtistsByLyrics,
     getTfidfRecommendArtistsByArtist, getTfidfRecommendArtistsByLyrics,
@@ -260,7 +260,12 @@ export default {
             }
         },
         async updateRate(itemType,rating) {
-            const response = await addRating(this.artistId, itemType, rating)
+            let response = null
+            if (rating === this.artistRating){
+                response = await deleteRating(this.artistId, itemType)
+            }else {
+                response = await addRating(this.artistId, itemType, rating)
+            }
             if (response.status === 200) {
                 this.artistRating = response.data.rate
             } else {

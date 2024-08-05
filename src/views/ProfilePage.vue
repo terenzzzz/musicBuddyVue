@@ -92,7 +92,7 @@
                                 All
                             </router-link>
                         </div>
-                        <div v-if="recentlyPlay.length>0">
+                        <div v-if="recentlyPlay.length>0" class="my-auto">
                             <div v-for="track in recentlyPlay.slice(0, 5)" :key="track.id">
                                 <TrackCardHorizontal :track="track"></TrackCardHorizontal>
                             </div>
@@ -138,7 +138,7 @@
                                 All
                             </router-link>
                         </div>
-                        <div v-if="topTracks.length>0">
+                        <div v-if="topTracks.length>0" class="my-auto">
                             <div v-for="track in topTracks.slice(0, 5)" :key="track.id">
                                 <TrackCardHorizontal :track="track"></TrackCardHorizontal>
                             </div>
@@ -160,9 +160,9 @@
                             All
                         </router-link>
                     </div>
-                    <div v-if="topArtists.length>0">
+                    <div v-if="topArtists.length>0" class="my-auto">
                         <div class="row">
-                            <div class="col-4 my-2" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
+                            <div class="col-4" v-for="(artist, index) in topArtists.slice(0, 6)" :key="artist.id">
                                 <router-link :to="`/artist/${artist._id}`" >
                                     <div class="text-center">
                                         <img v-if="artist.avatar" :src="artist.avatar" class="img-fluid rounded-circle object-fit-cover" style="aspect-ratio: 1">
@@ -207,10 +207,10 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Playing Time</h5>
+                        <h5 class="red-bottom">Listened Time Distribution</h5>
                     </div>
                     <LineChart class="my-auto"
-                        :labels="timeStateLabels" :data="timeStateData" title="Playing Time Statistic"></LineChart>
+                        :labels="timeStateLabels" :data="timeStateData" title="Listened Time Distribution"></LineChart>
                     <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
@@ -218,10 +218,10 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Most Listened Year</h5>
+                        <h5 class="red-bottom">Tracks Year Distribution</h5>
                     </div>
                     <BarChart class="my-auto"
-                        :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Most Listened Year" :data-size="yearStateLabels.length"/>
+                        :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Tracks Year Distribution" :data-size="yearStateLabels.length"/>
                     <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
