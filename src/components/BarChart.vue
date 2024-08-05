@@ -20,7 +20,6 @@
 
 
 <script>
-import { Modal } from 'bootstrap';
 import Chart from 'chart.js'; // 导入 Chart.js 库
 
 
@@ -89,7 +88,7 @@ export default {
         openModal() {
             const modalElement = document.getElementById('barChartModel');
             if (modalElement) {
-                const modal = new Modal(modalElement); // 创建模态框实例
+                const modal = new window.bootstrap.Modal(modalElement); // 创建模态框实例
                 modal.show(); // 显示模态框
             }
         },

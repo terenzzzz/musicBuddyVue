@@ -207,7 +207,7 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Listened Time Distribution</h5>
+                        <h5 class="red-bottom">Listened Time</h5>
                     </div>
                     <LineChart class="my-auto"
                         :labels="timeStateLabels" :data="timeStateData" title="Listened Time Distribution"></LineChart>
@@ -218,7 +218,7 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Tracks Year Distribution</h5>
+                        <h5 class="red-bottom">Tracks Year</h5>
                     </div>
                     <BarChart class="my-auto"
                         :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Tracks Year Distribution" :data-size="yearStateLabels.length"/>
@@ -240,10 +240,13 @@ import playlistTypes from "@/enum/playlistTypes";
 import {getRatings} from "@/api/ratings";
 import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
-import LineChart from "@/components/LineChart.vue";
+
 import LoopSwiper from "@/components/LoopSwiper.vue";
 import html2canvas from "html2canvas";
+import LineChart from "@/components/LineChart.vue";
 import BarChart from "@/components/BarChart.vue";
+
+
 
 export default {
     computed: {
@@ -256,10 +259,10 @@ export default {
     },
     components: {
         BarChart,
-        LoopSwiper,
+        LoopSwiper,LineChart,
         ErrorPlaceholderVertical,
         ErrorPlaceholderHorizontal,
-        TrackCardHorizontal, LineChart
+        TrackCardHorizontal
     },
     data() {
         return {

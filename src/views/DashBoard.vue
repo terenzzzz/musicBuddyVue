@@ -101,7 +101,7 @@
         <div class="container-md">
             <div class="row d-flex justify-content-end my-2 align-items-center">
                 <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center fit-content"
-                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending?'disabled':''">
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending ? 'disabled' : ''">
                     <i class="bi bi-gear-fill fs-4"></i>
                     <span class="fw-bold mx-2">{{ selectedRecommendationText }}</span>
                     <div class="spinner-border text-primary spinner-border-sm" role="status" v-show="isRecommending">
