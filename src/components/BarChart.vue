@@ -20,7 +20,7 @@
 
 
 <script>
-import Chart from 'chart.js'; // 导入 Chart.js 库
+import Chart from 'chart.js/auto';
 
 
 
@@ -132,22 +132,21 @@ export default {
             },
                 options: { // options 应放在 data 的同级，而不是 data 内部
                     responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                        xAxes: [{
-                            gridLines: {
-                                display: false // 隐藏 x 轴网格线
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false // Hide x-axis grid lines
                             },
                             ticks: {
-                                autoSkip: false // 如果需要显示所有标签
+                                autoSkip: false // Show all ticks
                             }
-                        }],
-                            yAxes: [{
-
-                            gridLines: {
-                                display: true // 隐藏 y 轴网格线
+                        },
+                        y: {
+                            grid: {
+                                display: true // Show y-axis grid lines
                             }
-                        }]
+                        }
                     }
                 }
             }

@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
-import { Chart } from 'chart.js';
+
+import Chart from 'chart.js/auto';
 
 
 export default {
@@ -75,7 +75,7 @@ export default {
         openModal() {
             const modalElement = document.getElementById('LineChartModel');
             if (modalElement) {
-                const modal = new Modal(modalElement); // 创建模态框实例
+                const modal = new window.bootstrap.Modal(modalElement); // 创建模态框实例
                 modal.show(); // 显示模态框
             }
         },
@@ -111,22 +111,15 @@ export default {
             }
         },
 
-        generateChart(amount) {
-            const numLabels = Number.isInteger(amount) ? Math.min(amount, this.labels.length) : this.labels.length;
-
-
-            // Slice the labels and data arrays to get the last `numLabels` items
-            const labelsToUse = this.labels.slice(-numLabels);
-            const dataToUse = this.data.slice(-numLabels);
-
+        generateChart() {
             return {
                 type: 'line',
                 data: {
-                    labels: labelsToUse,
+                    labels: this.labels,
                     datasets: [
                         {
                             label: this.title,
-                            data: dataToUse,
+                            data: this.data,
                             borderColor: 'rgb(13, 110, 253)',
                             backgroundColor: 'rgba(13, 110, 253, 0.2)',
                             borderWidth: 1,
@@ -140,37 +133,41 @@ export default {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     scales: {
-                        xAxes: [{
-                            gridLines: {
+                        x: {
+                            grid: {
                                 display: false // 隐藏 x 轴网格线
                             },
                             ticks: {
-                                callback: function(value) {
-                                    // 假设 value 是 'YYYY-MM-DD' 格式的字符串
-                                    if (numLabels<5){
-                                        const date = new Date(value);
-                                        const month = date.getMonth() + 1; // 月份从 0 开始
-                                        const day = date.getDate();
-                                        return `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                                    }else if (numLabels>=5 && numLabels<10){
-                                        return value
+                                callback: function(value, index, values) {
+                                    const date = new Date(this.getLabelForValue(value));
+                                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                                    const day = date.getDate().toString().padStart(2, '0');
+                                    const year = date.getFullYear();
+
+                                    // 获取轴的宽度
+                                    const axisWidth = this.width;
+
+                                    // 估算可用空间
+                                    const availableWidth = axisWidth / values.length;
+
+                                    // 如果有足够空间，显示年份
+                                    if (availableWidth > 70) { // 你可以调整这个阈值
+                                        return `${year}-${month}-${day}`;
+                                    } else {
+                                        return `${month}-${day}`;
                                     }
-                                    return ""
                                 }
                             }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             };
         },
-
         updateChart() {
             if (this.chart) {
                 this.chart.data.labels = this.labels;

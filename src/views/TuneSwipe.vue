@@ -81,7 +81,7 @@ import { addRating, deleteRating, getRating, itemTypes } from "@/api/ratings";
 import SpotifyFrame from "@/components/SpotifyFrame.vue";
 import {searchSpotifyTracks} from "@/api/spotify";
 import VinylRecord from "@/components/VinylRecord.vue";
-import Chart from "chart.js";
+import Chart from 'chart.js/auto';
 import LyricAnalysis from "@/components/LyricAnalysis.vue";
 
 export default {

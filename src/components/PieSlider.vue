@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import Chart from 'chart.js';
+import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-Chart.plugins.unregister(ChartDataLabels);
-Chart.plugins.register(ChartDataLabels);
+// 注册插件
+Chart.register(ChartDataLabels);
 
 export default {
     props: {
@@ -64,22 +64,22 @@ export default {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        enabled: false
-                    },
                     plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        },
                         datalabels: {
                             color: '#fff',
                             font: {
                                 weight: 'bold',
                                 size: 14
                             },
-                            formatter: (value, ctx) => {
-                                const label = ctx.chart.data.labels[ctx.dataIndex];
-                                const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                            formatter: (value, context) => {
+                                const label = context.chart.data.labels[context.dataIndex];
+                                const sum = context.dataset.data.reduce((a, b) => a + b, 0);
                                 const percentage = ((value / sum) * 100).toFixed(0) + '%';
                                 return `${label}\n${percentage}`;
                             }
