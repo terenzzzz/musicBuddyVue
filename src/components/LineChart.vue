@@ -1,9 +1,9 @@
 <template>
     <div class="LineChart">
-        <p type="button" class="position-absolute" data-bs-toggle="modal"
-                data-bs-target="#LineChartModel" style="top: 15px; right: 15px;">Zoom</p>
+<!--        <p type="button" class="position-absolute" data-bs-toggle="modal"-->
+<!--                data-bs-target="#LineChartModel" style="top: 15px; right: 15px;">Zoom</p>-->
 
-        <canvas ref="LineChart"></canvas>
+        <canvas ref="LineChart" @click="openModal"></canvas>
         <!-- Modal for displaying the chart -->
         <div class="modal fade" id="LineChartModel" tabindex="-1" aria-labelledby="LineChartModel" >
             <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -21,7 +21,9 @@
 </template>
 
 <script>
+import { Modal } from 'bootstrap';
 import { Chart } from 'chart.js';
+
 
 export default {
     data() {
@@ -70,6 +72,13 @@ export default {
         }
     },
     methods: {
+        openModal() {
+            const modalElement = document.getElementById('LineChartModel');
+            if (modalElement) {
+                const modal = new Modal(modalElement); // 创建模态框实例
+                modal.show(); // 显示模态框
+            }
+        },
         initChart() {
             const canvas = this.$refs.LineChart;
             if (canvas) {
@@ -134,6 +143,9 @@ export default {
                     maintainAspectRatio: true,
                     scales: {
                         xAxes: [{
+                            gridLines: {
+                                display: false // 隐藏 x 轴网格线
+                            },
                             ticks: {
                                 callback: function(value) {
                                     // 假设 value 是 'YYYY-MM-DD' 格式的字符串

@@ -214,6 +214,16 @@
                     <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="red-bottom">Playing Time</h5>
+                    </div>
+                    <BarChart :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Most Listened Year" :data-size="yearStateLabels.length"/>
+                    <small class="text-muted ">* Only 50 recently played are processed</small>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -231,6 +241,7 @@ import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue"
 import LineChart from "@/components/LineChart.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
 import html2canvas from "html2canvas";
+import BarChart from "@/components/BarChart.vue";
 
 export default {
     computed: {
@@ -242,6 +253,7 @@ export default {
         }
     },
     components: {
+        BarChart,
         LoopSwiper,
         ErrorPlaceholderVertical,
         ErrorPlaceholderHorizontal,
@@ -260,7 +272,9 @@ export default {
             isSpotifyConnected: false,
 
             timeStateLabels: [],
-            timeStateData: []
+            timeStateData: [],
+            yearStateLabels: [],
+            yearStateData: [],
         };
     },
     created() {
@@ -317,8 +331,6 @@ export default {
                 const response = await getRatings(); // 传递适当的参数
                 this.ratedTracks = response.data.data.ratedTracks.reverse();
                 this.ratedArtists = response.data.data.ratedArtists.reverse();
-                console.log(this.ratedTracks)
-                console.log(this.ratedArtists)
             } catch (error) {
                 console.error('Failed to fetch user:', error);
             }
@@ -335,10 +347,13 @@ export default {
         },
         async fetchRecentlyPlay() {
             try {
-                const response = await getRecentlyPlayed("true");
+                const response = await getRecentlyPlayed("true", "true");
                 this.recentlyPlay = response.data.tracks;
                 this.timeStateLabels = response.data.labels;
                 this.timeStateData = response.data.data;
+
+                this.yearStateLabels = response.data.yearLabels;
+                this.yearStateData = response.data.yearData;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

@@ -73,9 +73,9 @@ export default {
                                 const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
 
                                 // 获取当前标签的解释，如果没有则使用默认值
-                                const explanation = this.chartLabelExplain[tooltipItem.index] || 'No explanation available';
+                                const explanation = `${- this.chartLabelExplain[tooltipItem.index] || ''}`;
 
-                                return `${label}: ${value} - ${explanation}`;
+                                return `${label}: ${value} ${explanation}`;
                             }
                         }
                     },
