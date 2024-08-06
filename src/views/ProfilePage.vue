@@ -184,34 +184,21 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Top Tags</h5>
-                        <a href="#" class="text-white">All</a>
+                        <h5 class="red-bottom">Listening calendar</h5>
                     </div>
-                    <div v-if="user && topTags.length>0">
-                        <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 5)" :key="tag.id">
-                            <span class="tag-label">{{ tag.tag.name }}</span>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="background-color: #0d6efd"
-                                     :style="{ width: `${getProgressWidth(tag.count)}% ` }"
-                                     :aria-valuenow="getProgressWidth(tag.count)" aria-valuemin="0" aria-valuemax="100">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-else>
-                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
-                    </div>
+                    <LineChart class="my-auto"
+                        :labels="dateStatLabels" :data="dateStatData" title="Listening calendar"
+                               note="* Stat by 50 recently played"></LineChart>
+                    <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Listening calendar</h5>
+                        <h5 class="red-bottom">Listening clock</h5>
                     </div>
-                    <LineChart class="my-auto"
-                        :labels="dateStatLabels" :data="dateStatData" title="Listening calendar"
-                               note="* Stat by 50 recently played"></LineChart>
+                    <PieChart class="my-auto" :data="timeStatData" :labels="timeStatLabels"></PieChart>
                     <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
@@ -229,6 +216,30 @@
             </div>
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="red-bottom">Top Tags</h5>
+                        <a href="#" class="text-white">All</a>
+                    </div>
+                    <div v-if="user && topTags.length>0">
+                        <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 7)" :key="tag.id">
+                            <span class="tag-label">{{ tag.tag.name }}</span>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="background-color: #0d6efd"
+                                     :style="{ width: `${getProgressWidth(tag.count)}% ` }"
+                                     :aria-valuenow="getProgressWidth(tag.count)" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                        <small class="text-muted ">* Stat by rated tracks</small>
+                    </div>
+                    <div v-else>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="card rounded-5 p-3 my-2 h-100 shadow">
                     <div v-if="wordCloudData.length > 0">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -241,26 +252,19 @@
                 </div>
             </div>
 
+
+
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="red-bottom">Listening clock</h5>
+                    <div v-if="topicStatData.data">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="red-bottom">Top Topic</h5>
+                        </div>
+                        <RadarChart class="my-auto" :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
+                        <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
-                    <PieChart class="my-auto" :data="timeStatData" :labels="timeStatLabels"></PieChart>
-                    <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
-
-<!--            <div class="col-12 col-sm-12 col-md-6 col-lg-4">-->
-<!--                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">-->
-<!--                    <div class="d-flex justify-content-between align-items-center mb-3">-->
-<!--                        <h5 class="red-bottom">Music by year</h5>-->
-<!--                    </div>-->
-<!--                    <BarChart class="my-auto"-->
-<!--                              :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Music by year" :data-size="yearStateLabels.length"/>-->
-<!--                    <small class="text-muted ">* Only 50 recently played are processed</small>-->
-<!--                </div>-->
-<!--            </div>-->
 
         </div>
     </div>
@@ -283,6 +287,7 @@ import LineChart from "@/components/LineChart.vue";
 import BarChart from "@/components/BarChart.vue";
 import WordCloud from "@/components/WordCloud.vue";
 import PieChart from "@/components/PieChart.vue";
+import RadarChart from "@/components/RadarChart.vue";
 
 
 
@@ -296,6 +301,7 @@ export default {
         }
     },
     components: {
+        RadarChart,
         PieChart,
         WordCloud,
         BarChart,
@@ -323,7 +329,8 @@ export default {
             timeStatLabels: [],
             timeStatData: [],
 
-            wordCloudData: []
+            wordCloudData: [],
+            topicStatData: {}
         };
     },
     created() {
@@ -377,11 +384,11 @@ export default {
 
         async fetchRatings() {
             try {
-                const response = await getRatings("true"); // 传递适当的参数
+                const response = await getRatings("true", "true"); // 传递适当的参数
                 this.ratedTracks = response.data.ratedTracks.reverse();
                 this.ratedArtists = response.data.ratedArtists.reverse();
                 this.wordCloudData = response.data.keywordStatArray
-                console.log(this.wordCloudData)
+                this.topicStatData = response.data.topicArray
             } catch (error) {
                 console.error('Failed to fetch user:', error);
             }

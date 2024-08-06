@@ -45,10 +45,11 @@ export const getRating = (item, itemType) => request({
     params: {item, itemType}
 })
 
-export const getRatings = (isStatWords) => request({
+export const getRatings = (isStatWords, isStatTopic) => request({
     url: `/app/getRatings`,
     method: 'get',
     params:{
         isStatWords: isStatWords==="true" || isStatWords === "false"? isStatWords : "",
+        isStatTopic: isStatTopic==="true" || isStatTopic === "false"? isStatTopic : "",
     }
 })

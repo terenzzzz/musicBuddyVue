@@ -10,8 +10,6 @@
             :margin="{top: 0, right: 0, bottom: 0, left: 0 }"
             :showTooltip="false"
             :wordClick="wordClickHandler"
-            :width="wordcloudWidth"
-            :height="wordcloudWidth"
         ></wordcloud>
 
 
@@ -46,7 +44,6 @@ export default {
         wordClickHandler() {
 
         },
-
     },
 };
 </script>

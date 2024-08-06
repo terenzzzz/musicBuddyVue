@@ -1,5 +1,5 @@
 <template>
-    <canvas ref="radarChart"></canvas>
+    <canvas ref="radarChart" class="w-100"></canvas>
 </template>
 
 <script>
@@ -66,6 +66,18 @@ export default {
                     }]
                 },
                 options: {
+                    scales: {
+                        r: {
+                            ticks: {
+                                display: false
+                            },
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            display: false // 这会隐藏所有数据标签
+                        }
+                    },
                     tooltips: {
                         callbacks: {
                             label: (tooltipItem, data) => {
@@ -82,7 +94,8 @@ export default {
                     elements: {
                         line: {
                             borderWidth: 3
-                        }
+                        },
+
                     }
                 }
             });
