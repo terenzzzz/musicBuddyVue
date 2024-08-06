@@ -210,7 +210,7 @@
                         <h5 class="red-bottom">Listening calendar</h5>
                     </div>
                     <LineChart class="my-auto"
-                        :labels="timeStateLabels" :data="timeStateData" title="Listening calendar"
+                        :labels="dateStatLabels" :data="dateStatData" title="Listening calendar"
                                note="* Stat by 50 recently played"></LineChart>
                     <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
@@ -222,8 +222,8 @@
                         <h5 class="red-bottom">Music by year</h5>
                     </div>
                     <BarChart class="my-auto"
-                        :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Music by year"
-                              :data-size="yearStateLabels.length" note="* Stat by 50 recently played"/>
+                        :chart-data="yearStatData" :chart-labels="yearStatLabels" labels="Music by year"
+                              :data-size="yearStatLabels.length" note="* Stat by 50 recently played"/>
                     <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
@@ -241,16 +241,16 @@
                 </div>
             </div>
 
-<!--            <div class="col-12 col-sm-12 col-md-6 col-lg-4">-->
-<!--                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">-->
-<!--                    <div class="d-flex justify-content-between align-items-center mb-3">-->
-<!--                        <h5 class="red-bottom">Music by year</h5>-->
-<!--                    </div>-->
-<!--                    <BarChart class="my-auto"-->
-<!--                              :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Music by year" :data-size="yearStateLabels.length"/>-->
-<!--                    <small class="text-muted ">* Only 50 recently played are processed</small>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="red-bottom">Listening clock</h5>
+                    </div>
+                    <BarChart class="my-auto"
+                              :chart-data="yearStatData" :chart-labels="yearStatLabels" labels="Music by year" :data-size="yearStatLabels.length"/>
+                    <small class="text-muted ">* Only 50 recently played are processed</small>
+                </div>
+            </div>
 
 <!--            <div class="col-12 col-sm-12 col-md-6 col-lg-4">-->
 <!--                <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">-->
@@ -315,10 +315,10 @@ export default {
             topTags: [],
             isSpotifyConnected: false,
 
-            timeStateLabels: [],
-            timeStateData: [],
-            yearStateLabels: [],
-            yearStateData: [],
+            dateStatLabels: [],
+            dateStatData: [],
+            yearStatLabels: [],
+            yearStatData: [],
 
             wordCloudData: []
         };
@@ -397,11 +397,11 @@ export default {
             try {
                 const response = await getRecentlyPlayed("true", "true");
                 this.recentlyPlay = response.data.tracks;
-                this.timeStateLabels = response.data.labels;
-                this.timeStateData = response.data.data;
+                this.dateStatLabels = response.data.dateLabels;
+                this.dateStatData = response.data.dateData;
 
-                this.yearStateLabels = response.data.yearLabels;
-                this.yearStateData = response.data.yearData;
+                this.yearStatLabels = response.data.yearLabels;
+                this.yearStatData = response.data.yearData;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }
