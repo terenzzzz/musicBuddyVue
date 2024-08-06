@@ -80,6 +80,7 @@
             </div>
         </div>
 
+
         <!--                    Recently Played-->
         <div class="row g-3 my-2 px-3 px-md-5">
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
@@ -183,43 +184,44 @@
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
                         <h5 class="red-bottom">Listening calendar</h5>
+                        <small class="text-muted ">* Stat by 50 recently played</small>
                     </div>
                     <LineChart class="my-auto"
                         :labels="dateStatLabels" :data="dateStatData" title="Listening calendar"
                                note="* Stat by 50 recently played"></LineChart>
-                    <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
                         <h5 class="red-bottom">Listening clock</h5>
+                        <small class="text-muted ">* Stat by 50 recently played</small>
                     </div>
                     <PieChart class="my-auto" :data="timeStatData" :labels="timeStatLabels"></PieChart>
-                    <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
                         <h5 class="red-bottom">Music by year</h5>
+                        <small class="text-muted ">* Stat by 50 recently played</small>
                     </div>
                     <BarChart class="my-auto"
                         :chart-data="yearStatData" :chart-labels="yearStatLabels" labels="Music by year"
                               :data-size="yearStatLabels.length" note="* Stat by 50 recently played"/>
-                    <small class="text-muted ">* Stat by 50 recently played</small>
+
                 </div>
             </div>
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
                         <h5 class="red-bottom">Top Tags</h5>
-                        <a href="#" class="text-white">All</a>
+                        <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
                     <div v-if="user && topTags.length>0">
                         <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 7)" :key="tag.id">
@@ -231,7 +233,6 @@
                                 </div>
                             </div>
                         </div>
-                        <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
                     <div v-else>
                         <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
@@ -242,27 +243,26 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="card rounded-5 p-3 my-2 h-100 shadow">
                     <div v-if="wordCloudData.length > 0">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
                             <h5 class="red-bottom">WordCloud</h5>
+                            <small class="text-muted ">* Stat by rated tracks</small>
                         </div>
                         <WordCloud :words="wordCloudData" class="m-auto"/>
-                        <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
 
                 </div>
             </div>
 
-
-
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
                     <div v-if="topicStatData.data">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
                             <h5 class="red-bottom">Top Topic</h5>
+                            <small class="text-muted ">* Stat by rated tracks</small>
                         </div>
                         <RadarChart class="my-auto" :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
-                        <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
+
                 </div>
             </div>
 
@@ -308,7 +308,7 @@ export default {
         LoopSwiper,LineChart,
         ErrorPlaceholderVertical,
         ErrorPlaceholderHorizontal,
-        TrackCardHorizontal
+        TrackCardHorizontal,
     },
     data() {
         return {
