@@ -234,7 +234,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="red-bottom">WordCloud</h5>
                         </div>
-                        <WordCloud :words="wordCloudData" />
+                        <WordCloud :words="wordCloudData" class="m-auto"/>
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
 
@@ -246,8 +246,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="red-bottom">Listening clock</h5>
                     </div>
-                    <BarChart class="my-auto"
-                              :chart-data="yearStatData" :chart-labels="yearStatLabels" labels="Music by year" :data-size="yearStatLabels.length"/>
+                    <PieChart class="my-auto" :data="timeStatData" :labels="timeStatLabels"></PieChart>
                     <small class="text-muted ">* Only 50 recently played are processed</small>
                 </div>
             </div>
@@ -283,6 +282,7 @@ import html2canvas from "html2canvas";
 import LineChart from "@/components/LineChart.vue";
 import BarChart from "@/components/BarChart.vue";
 import WordCloud from "@/components/WordCloud.vue";
+import PieChart from "@/components/PieChart.vue";
 
 
 
@@ -296,6 +296,7 @@ export default {
         }
     },
     components: {
+        PieChart,
         WordCloud,
         BarChart,
         LoopSwiper,LineChart,
@@ -319,6 +320,8 @@ export default {
             dateStatData: [],
             yearStatLabels: [],
             yearStatData: [],
+            timeStatLabels: [],
+            timeStatData: [],
 
             wordCloudData: []
         };
@@ -395,13 +398,16 @@ export default {
         },
         async fetchRecentlyPlay() {
             try {
-                const response = await getRecentlyPlayed("true", "true");
+                const response = await getRecentlyPlayed("true", "true", "true");
                 this.recentlyPlay = response.data.tracks;
                 this.dateStatLabels = response.data.dateLabels;
                 this.dateStatData = response.data.dateData;
 
                 this.yearStatLabels = response.data.yearLabels;
                 this.yearStatData = response.data.yearData;
+
+                this.timeStatLabels = response.data.timeLabels;
+                this.timeStatData = response.data.timeData;
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
             }

@@ -10,6 +10,8 @@
             :margin="{top: 0, right: 0, bottom: 0, left: 0 }"
             :showTooltip="false"
             :wordClick="wordClickHandler"
+            :width="wordcloudWidth"
+            :height="wordcloudWidth"
         ></wordcloud>
 
 
@@ -37,7 +39,7 @@ export default {
         return {
             colors: ['#0d6efccc', '#0d6efc99', '#0d6efc66', '#0d6efc33'],
             rotate: {from: -60, to: 60, numOfOrientation: 5},
-
+            wordcloudWidth: '100%',
         };
     },
     methods: {
@@ -48,3 +50,4 @@ export default {
     },
 };
 </script>
+
