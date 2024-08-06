@@ -35,7 +35,7 @@ export default {
     },
     data() {
         return {
-            colors: ['#0d6efd', '#0d6efdd9', '#0d6efdbf', '#0d6efda1'],
+            colors: ['#0d6efccc', '#0d6efc99', '#0d6efc66', '#0d6efc33'],
             rotate: {from: -60, to: 60, numOfOrientation: 5},
 
         };

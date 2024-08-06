@@ -210,8 +210,9 @@
                         <h5 class="red-bottom">Listening calendar</h5>
                     </div>
                     <LineChart class="my-auto"
-                        :labels="timeStateLabels" :data="timeStateData" title="Listening calendar"></LineChart>
-                    <small class="text-muted ">* Only 50 recently played are processed</small>
+                        :labels="timeStateLabels" :data="timeStateData" title="Listening calendar"
+                               note="* Stat by 50 recently played"></LineChart>
+                    <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
 
@@ -221,8 +222,9 @@
                         <h5 class="red-bottom">Music by year</h5>
                     </div>
                     <BarChart class="my-auto"
-                        :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Music by year" :data-size="yearStateLabels.length"/>
-                    <small class="text-muted ">* Only 50 recently played are processed</small>
+                        :chart-data="yearStateData" :chart-labels="yearStateLabels" labels="Music by year"
+                              :data-size="yearStateLabels.length" note="* Stat by 50 recently played"/>
+                    <small class="text-muted ">* Stat by 50 recently played</small>
                 </div>
             </div>
 
@@ -233,7 +235,7 @@
                             <h5 class="red-bottom">WordCloud</h5>
                         </div>
                         <WordCloud :words="wordCloudData" />
-                        <small class="text-muted ">* Only 50 recently played are processed</small>
+                        <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
 
                 </div>

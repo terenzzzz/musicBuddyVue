@@ -10,7 +10,7 @@
                     <div class="modal-body">
                         <canvas ref="modalChart"></canvas>
                     </div>
-                    <small class="text-muted ">* Only 50 recently played are processed</small>
+                    <small class="text-muted" v-if="note">{{ note }}</small>
                 </div>
             </div>
         </div>
@@ -38,6 +38,11 @@ export default {
         chartData: {
             type: Array,
             required: true
+        },
+        note: {
+            type: String,
+            required: false,
+            default: ""
         }
     },
     data() {
