@@ -262,7 +262,7 @@
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
                     <div v-if="wordCloudData.length>0" class="my-auto">
-                        <WordCloud :words="wordCloudData" class="m-auto"/>
+                        <WordCloud :words="wordCloudData"/>
                     </div>
                     <div v-else>
                         <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
@@ -278,7 +278,7 @@
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
                     <div v-if="topicStatData?.data?.length>0" class="my-auto">
-                        <RadarChart class="my-auto" :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
+                        <RadarChart :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
                     </div>
                     <div v-else>
                         <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
