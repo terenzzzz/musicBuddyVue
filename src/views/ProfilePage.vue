@@ -188,9 +188,14 @@
                         <h5 class="red-bottom">Listening calendar</h5>
                         <small class="text-muted ">* Stat by 50 recently played</small>
                     </div>
-                    <LineChart class="my-auto"
-                        :labels="dateStatLabels" :data="dateStatData" title="Listening calendar"
-                               note="* Stat by 50 recently played"></LineChart>
+                    <div v-if="dateStatData.length>0" class="my-auto">
+                        <LineChart class="my-auto"
+                            :labels="dateStatLabels" :data="dateStatData" title="Listening calendar"
+                                   note="* Stat by 50 recently played"></LineChart>
+                    </div>
+                    <div v-else>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
+                    </div>
                 </div>
             </div>
 
@@ -200,7 +205,12 @@
                         <h5 class="red-bottom">Listening clock</h5>
                         <small class="text-muted ">* Stat by 50 recently played</small>
                     </div>
-                    <PieChart class="my-auto" :data="timeStatData" :labels="timeStatLabels"></PieChart>
+                    <div v-if="timeStatData.length>0" class="my-auto">
+                        <PieChart :data="timeStatData" :labels="timeStatLabels"></PieChart>
+                    </div>
+                    <div v-else>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
+                    </div>
                 </div>
             </div>
 
@@ -210,9 +220,14 @@
                         <h5 class="red-bottom">Music by year</h5>
                         <small class="text-muted ">* Stat by 50 recently played</small>
                     </div>
-                    <BarChart class="my-auto"
-                        :chart-data="yearStatData" :chart-labels="yearStatLabels" labels="Music by year"
-                              :data-size="yearStatLabels.length" note="* Stat by 50 recently played"/>
+                    <div v-if="yearStatData.length>0" class="my-auto">
+                        <BarChart
+                            :chart-data="yearStatData" :chart-labels="yearStatLabels" labels="Music by year"
+                                  :data-size="yearStatLabels.length" note="* Stat by 50 recently played"/>
+                    </div>
+                    <div v-else>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
+                    </div>
 
                 </div>
             </div>
@@ -223,7 +238,7 @@
                         <h5 class="red-bottom">Top Tags</h5>
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
-                    <div v-if="user && topTags.length>0">
+                    <div v-if="user && topTags?.length>0">
                         <div class="mb-2 position-relative" v-for="tag in topTags.slice(0, 7)" :key="tag.id">
                             <span class="tag-label">{{ tag.tag.name }}</span>
                             <div class="progress">
@@ -242,25 +257,31 @@
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="card rounded-5 p-3 my-2 h-100 shadow">
-                    <div v-if="wordCloudData.length > 0">
-                        <div>
-                            <h5 class="red-bottom">WordCloud</h5>
-                            <small class="text-muted ">* Stat by rated tracks</small>
-                        </div>
+                    <div>
+                        <h5 class="red-bottom">WordCloud</h5>
+                        <small class="text-muted ">* Stat by rated tracks</small>
+                    </div>
+                    <div v-if="wordCloudData.length>0" class="my-auto">
                         <WordCloud :words="wordCloudData" class="m-auto"/>
                     </div>
-
+                    <div v-else>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
+                    </div>
                 </div>
             </div>
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-                    <div v-if="topicStatData.data">
-                        <div>
-                            <h5 class="red-bottom">Top Topic</h5>
-                            <small class="text-muted ">* Stat by rated tracks</small>
-                        </div>
+
+                    <div>
+                        <h5 class="red-bottom">Top Topic</h5>
+                        <small class="text-muted ">* Stat by rated tracks</small>
+                    </div>
+                    <div v-if="topicStatData?.data?.length>0" class="my-auto">
                         <RadarChart class="my-auto" :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
+                    </div>
+                    <div v-else>
+                        <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
                     </div>
 
                 </div>

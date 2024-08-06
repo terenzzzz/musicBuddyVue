@@ -1,5 +1,5 @@
 <template>
-    <canvas ref="radarChart" class="w-100"></canvas>
+    <canvas ref="radarChart" ></canvas>
 </template>
 
 <script>
