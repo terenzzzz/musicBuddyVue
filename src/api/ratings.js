@@ -45,8 +45,10 @@ export const getRating = (item, itemType) => request({
     params: {item, itemType}
 })
 
-export const getRatings = params => request({
+export const getRatings = (isStatWords) => request({
     url: `/app/getRatings`,
     method: 'get',
-    params
+    params:{
+        isStatWords: isStatWords==="true" || isStatWords === "false"? isStatWords : "",
+    }
 })
