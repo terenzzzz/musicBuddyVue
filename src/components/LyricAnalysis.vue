@@ -2,7 +2,7 @@
     <div class="p-3 my-3" :class="isCard? 'card shadow':''" v-if="(chartLabels.length>0 || lyricTopWords.length>0)">
         <div class="row" >
             <div class="col-12 col-xl-6" v-if="chartLabels.length>0">
-                <RadarChart :chart-data="chartData" :chart-labels="chartLabels" :chart-label-explain="chartLabelExplain" labels="Topic Probability Distribution"></RadarChart>
+                <RadarChart class="mx-auto" :chart-data="chartData" :chart-labels="chartLabels" :chart-label-explain="chartLabelExplain" labels="Topic Probability Distribution"></RadarChart>
             </div>
             <div class="col-12 col-xl-6">
                 <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
