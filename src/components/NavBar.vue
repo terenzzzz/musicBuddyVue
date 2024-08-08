@@ -17,6 +17,7 @@
                     <router-link to="/tuneswipe" class="nav-tuneswipe mx-2">TuneSwipe</router-link>
                     <router-link to="/profile" class="nav-profile mx-2">Profile</router-link>
                     <router-link to="/login" class="nav-login mx-2" v-if="!isLoggedIn">Log In</router-link>
+                    <router-link to="/signup" class="nav-signup mx-2" v-if="!isLoggedIn">Sign Up</router-link>
                     <a href="#" class="nav-logout mx-2" v-if="isLoggedIn" @click.prevent="logout">Log Out</a>
                 </div>
             </div>

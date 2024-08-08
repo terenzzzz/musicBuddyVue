@@ -34,22 +34,21 @@
             </div>
         </div>
         <div class="container-lg">
+
             <div class="row m-0 p-0 w-100" >
-                <div class="d-flex flex-column">
-                    <div class="row m-0 p-0 w-100 mt-2">
-                        <div class="col">
-                            <i class="fa-solid fa-gear fs-4 float-end mt-3 me-3"
-                               data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
-                            </i>
+                <div class="d-flex flex-column mt-3">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <h3 class="m-0 p-0">Selected Tags:</h3>
+                            <button class="btn btn-sm ms-2 btn-outline-primary" @click="clearSelected">Clear</button>
                         </div>
+
+                        <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center fit-content"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+                            <i class="bi bi-gear-fill fs-4"></i>
+                            <span class="fw-bold mx-2">Setting</span>
+                        </button>
                     </div>
-
-                    <div class="d-flex h-100">
-                        <h3>Selected Tags:</h3>
-                        <button class="btn  ms-2 btn-outline-primary" @click="clearSelected">Clear</button>
-                    </div>
-
-
                     <div class="d-flex flex-wrap">
                         <span v-for="tag in selectedTags" :key="tag.id"
                               class="badge fs-6 text-bg-secondary m-1">
@@ -99,6 +98,7 @@ import {getTracksByTags} from "@/api/tracks";
 import {getArtistsByTags} from "@/api/artists";
 import searchTypes from "@/enum/searchTypes";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
+
 
 export default {
     components: {ErrorPlaceholderVertical, ArtistCard, TrackCard},

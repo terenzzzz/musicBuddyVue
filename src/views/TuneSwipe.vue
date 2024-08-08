@@ -239,8 +239,8 @@ export default {
         await this.fetchRandomTracks();
         await this.fetchRating()
         await this.searchSpotify()
-        await this.fetchTrackTopic()
-        await this.fetchLyricTopWords()
+        // await this.fetchTrackTopic()
+        // await this.fetchLyricTopWords()
         this.spotifyFrame.play();
     }
 };

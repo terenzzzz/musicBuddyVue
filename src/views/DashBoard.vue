@@ -49,7 +49,7 @@
                         class="custom-range"
                         v-model.number="selectedRecentlyPlayedAmount"
                         min="1"
-                        max="30"
+                        :max="Math.min(recentlyPlay.length, 5)"
                         @change="startRecommendation"
                         :disabled="isRecommending"
                     />
@@ -82,7 +82,7 @@
                         class="custom-range"
                         v-model.number="selectedTopTracksAmount"
                         min="1"
-                        max="30"
+                        :max="Math.min(topTracks.length, 5)"
                         @change="startRecommendation"
                     />
                     <p class="text-muted small">* The larger the number of selections, the longer the processing time</p>
@@ -120,12 +120,6 @@
                 </div>
 
                 <LoopSwiper v-if="alsoListen.length>0" :tracks="alsoListen"></LoopSwiper>
-
-<!--                <div class="horizontal-scroll" v-if="alsoListen.length>0">-->
-<!--                    <div class="col-3 col-md-2 mx-2" v-for="track in alsoListen" :key="track.id">-->
-<!--                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
@@ -143,11 +137,6 @@
                     <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
                 <LoopSwiper v-if="recommendForYou.length>0" :tracks="recommendForYou"></LoopSwiper>
-<!--                <div class="horizontal-scroll"  v-if="recommendForYou.length>0">-->
-<!--                    <div class="col-3 col-md-2 mx-2" v-for="track in recommendForYou" :key="track.id">-->
-<!--                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
@@ -161,15 +150,10 @@
 
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
-                    <h3 class="text-primary">Artist May Liked</h3>
+                    <h3 class="text-primary">Artists you may like</h3>
                     <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
                 </div>
                 <LoopSwiper v-if="artistMayLike.length>0" :artists="artistMayLike"></LoopSwiper>
-<!--                <div class="horizontal-scroll" v-if="artistMayLike.length>0">-->
-<!--                    <div class="col-3 col-md-2 mx-2" v-for="artist in artistMayLike" :key="artist.id">-->
-<!--                        <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else-if="recentlyPlay.length ===0 && topTracks.length===0"
@@ -183,15 +167,10 @@
 
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
-                    <h3 class="text-primary">Everyone's listening</h3>
+                    <h3 class="text-primary">User similar to you also listening</h3>
                     <p class="text-muted small">* Recommended by the user similar to you </p>
                 </div>
                 <LoopSwiper v-if="EveryoneListening.length>0" :tracks="EveryoneListening"></LoopSwiper>
-<!--                <div class="horizontal-scroll" v-if="EveryoneListening.length>0">-->
-<!--                    <div class="col-3 col-md-2 mx-2" v-for="track in EveryoneListening" :key="track.id">-->
-<!--                        <TrackCard :track="track.track"></TrackCard>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else
@@ -262,7 +241,7 @@ export default {
     watch:{
         lyricsForRecommend(){
             this.validLyricCount = this.lyricsForRecommend.filter(lyric => lyric.trim() !== "").length
-        }
+        },
     },
     computed:{
         calculatedWeighting() {
@@ -318,9 +297,6 @@ export default {
             this.modelWeighting = updatedModels;
             await this.startRecommendation()
         },
-
-
-        // ==== NEEDED ======
         async getSpotifyData(){
             await this.fetchRecentlyPlay()
             await this.fetchTopTracks()
@@ -337,7 +313,6 @@ export default {
             }else{
                 const selectedRecentlyPlayedAmount = isRecentlyPlayed? this.selectedRecentlyPlayedAmount : 0
                 const selectedTopTracksAmount = isTopTracks? this.selectedTopTracksAmount : 0
-
 
                 const slicedRecentlyPlayed =  this.recentlyPlay.slice(0,selectedRecentlyPlayedAmount)
                 const slicedTopTracks =  this.topTracks.slice(0,selectedTopTracksAmount)
@@ -364,16 +339,20 @@ export default {
             try {
                 const response = await getRecentlyPlayed();
                 this.recentlyPlay = response.data.tracks;
+                this.selectedRecentlyPlayedAmount = Math.min(this.recentlyPlay.length,3)
             } catch (error) {
                 console.error('Failed to fetch recently played tracks:', error);
+                this.selectedRecentlyPlayedAmount = 0
             }
         },
         async fetchTopTracks() {
             try {
                 const response = await getTopTracks();
                 this.topTracks = response.data;
+                this.selectedTopTracksAmount = Math.min(this.topTracks.length,3)
             } catch (error) {
-                console.error('Failed to fetch recently played tracks:', error);
+                console.error('Failed to fetch top tracks:', error);
+                this.selectedTopTracksAmount = 0
             }
         },
         async fetchLyricFromGenius(tracks) {

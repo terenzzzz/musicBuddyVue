@@ -25,26 +25,26 @@
 
         <div class="row m-0 p-0" >
             <div v-if="searchResult.length > 0" class="row m-0 mt-3 p-0">
-                <h3><span class="red-bottom">{{ selectedType.toUpperCase() }} RESULT By MusicBuddy</span></h3>
-                <div class="col-4 col-md-3 col-xl-2 " v-for="item in searchResult" :key="item.id">
+                <h3><span class="red-bottom">{{ selectedType.toUpperCase() }} From MusicBuddy</span></h3>
+                <LoadingSpinner title="Searching, please wait ..." v-if="isSearching"></LoadingSpinner>
+                <div v-else class="col-4 col-md-3 col-xl-2 " v-for="item in searchResult" :key="item.id">
                     <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
                     <TrackCard :track="item" v-else></TrackCard>
                 </div>
             </div>
 
 
-            <div v-if="spotifySearchResult.length > 0" class="row m-0 mt-3 p-0">
-                <h3>
-                    <span class="red-bottom">{{ selectedType.toUpperCase() }} RESULT By Spotify</span>
-                </h3>
-                <div class="col-6 col-md-3 col-xl-2" v-for="item in spotifySearchResult" :key="item.id">
+            <div v-if="spotifySearchResult.length > 0 && selectedType !== searchTypes.LYRICS" class="row m-0 mt-3 p-0">
+                <h3><span class="red-bottom">{{ selectedType.toUpperCase() }} From Spotify</span></h3>
+                <LoadingSpinner title="Searching, please wait ..." v-if="isSearchingSpotify"></LoadingSpinner>
+                <div v-else class="col-6 col-md-3 col-xl-2" v-for="item in spotifySearchResult" :key="item.id">
                     <ArtistCard :artist="item" v-if="selectedType === searchTypes.ARTISTS"></ArtistCard>
                     <TrackCard :track="item" v-else></TrackCard>
                 </div>
             </div>
 
         </div>
-        <div v-if="searchResult.length <= 0 && spotifySearchResult.length <= 0" class="text-center">
+        <div v-if="searchResult.length <= 0 && spotifySearchResult.length <= 0 && !isSearching" class="text-center">
             <EmptyPlaceholder></EmptyPlaceholder>
         </div>
     </div>
@@ -58,9 +58,10 @@ import ArtistCard from "@/components/ArtistCard.vue";
 import {searchSpotifyArtists, searchSpotifyTracks} from "@/api/spotify";
 import EmptyPlaceholder from "@/components/ErrorPlaceholderVertical.vue";
 import searchTypes from "@/enum/searchTypes";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 export default {
-    components: {EmptyPlaceholder, ArtistCard, TrackCard},
+    components: {LoadingSpinner, EmptyPlaceholder, ArtistCard, TrackCard},
     data() {
         return {
             searchTypes: searchTypes,
@@ -70,6 +71,9 @@ export default {
 
             searchResult: [],
             spotifySearchResult: [],
+
+            isSearching: false,
+            isSearchingSpotify: false
 
         };
     },
@@ -94,6 +98,7 @@ export default {
             }
         },
         async fetchSearchResult() {
+            this.isSearching = true
             try {
                 const response = await search(this.keyword, this.selectedType);
                 if (response.data.status === 200) {
@@ -112,7 +117,9 @@ export default {
                             console.warn('Unknown search type:', this.selectedType);
                     }
                     if (this.selectedType !== searchTypes.LYRICS){
+                        this.isSearchingSpotify = true
                         await this.fetchSpotifyResult()
+                        this.isSearchingSpotify = false
                     }else {
                         this.spotifySearchResult = []
                     }
@@ -125,6 +132,7 @@ export default {
                 console.error('Error during search:', error);
                 this.searchResult = [];
             }
+            this.isSearching = false
         },
         async fetchSpotifyResult() {
             try {
