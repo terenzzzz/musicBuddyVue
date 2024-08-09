@@ -258,7 +258,7 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="card rounded-5 p-3 my-2 h-100 shadow">
                     <div>
-                        <h5 class="red-bottom">WordCloud</h5>
+                        <h5 class="red-bottom">Key Words</h5>
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
                     <div v-if="wordCloudData.length>0" class="my-auto">
