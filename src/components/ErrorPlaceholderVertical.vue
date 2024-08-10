@@ -18,7 +18,7 @@ export default {
         title: {
             type: String,
             required: false,
-            default: "No Data Founded"
+            default: "No Data Found"
         },
         icon: {
             type: String,

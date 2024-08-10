@@ -116,7 +116,7 @@
                     <h3 class="text-primary">If you like「
                         <span v-if="recentlyPlay.length > 0 && recentlyPlay[0].name">{{ recentlyPlay[0].name }}</span>
                         」, you may also like </h3>
-                    <p class="text-muted small">* Recommended by the lyric base on your most recently played </p>
+                    <p class="text-muted small">* Recommendations based on the lyric of your most recently played song </p>
                 </div>
 
                 <LoopSwiper v-if="alsoListen.length>0" :tracks="alsoListen"></LoopSwiper>
@@ -127,14 +127,14 @@
                 </ErrorPlaceholderHorizontal>
                 <ErrorPlaceholderHorizontal
                     v-else
-                    title="No Content Founded">
+                    title="No Content Found">
                 </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
-                    <h3 class="text-primary">Recommended for you</h3>
-                    <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
+                    <h3 class="text-primary">Recommended songs for you</h3>
+                    <p class="text-muted small">* Recommendations based on the lyrics of your recently played songs and top songs you set</p>
                 </div>
                 <LoopSwiper v-if="recommendForYou.length>0" :tracks="recommendForYou"></LoopSwiper>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
@@ -144,14 +144,14 @@
                 </ErrorPlaceholderHorizontal>
                 <ErrorPlaceholderHorizontal
                     v-else
-                    title="No Content Founded">
+                    title="No Content Found">
                 </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
                     <h3 class="text-primary">Artists you may like</h3>
-                    <p class="text-muted small">* Recommended by the lyrics base on your recently played </p>
+                    <p class="text-muted small">* Recommendations based on the lyrics of your recently played songs and top songs you set</p>
                 </div>
                 <LoopSwiper v-if="artistMayLike.length>0" :artists="artistMayLike"></LoopSwiper>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
@@ -161,20 +161,20 @@
                 </ErrorPlaceholderHorizontal>
                 <ErrorPlaceholderHorizontal
                     v-else
-                    title="No Content Founded">
+                    title="No Content Found">
                 </ErrorPlaceholderHorizontal>
             </div>
 
             <div class="mt-5">
                 <div class="my-3 mx-auto fit-content text-center">
-                    <h3 class="text-primary">User similar to you also listening</h3>
-                    <p class="text-muted small">* Recommended by the user similar to you </p>
+                    <h3 class="text-primary">Users similar to you also listen</h3>
+                    <p class="text-muted small">* Recommendations based on users similar to you </p>
                 </div>
                 <LoopSwiper v-if="EveryoneListening.length>0" :tracks="EveryoneListening"></LoopSwiper>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
                 <ErrorPlaceholderHorizontal
                     v-else
-                    title="No Content Founded">
+                    title="No Content Found">
                 </ErrorPlaceholderHorizontal>
             </div>
         </div>

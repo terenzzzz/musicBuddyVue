@@ -6,7 +6,7 @@
             </div>
             <div class="col-12 col-xl-6">
                 <div class="row d-flex flex-row align-items-center" v-if="lyricTopWords.length>0">
-                    <strong>Keyword:</strong>
+                    <strong>Most common keywords in the lyrics:</strong>
                     <div class="col-auto" v-for="word in lyricTopWords" :key="word.id" >
                         <button class="rounded-3 btn btn-secondary my-1">{{ word.word }}</button>
                     </div>

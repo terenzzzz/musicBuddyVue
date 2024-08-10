@@ -22,8 +22,7 @@
                                                 <div class="col-6" id="avatarPreview">
                                                     <img v-if="avatar" :src="avatarPreview" alt="Avatar Preview" class="img-thumbnail">
                                                 </div>
-                                                <input class="form-control" type="file" id="avatar" name="avatar" accept="image/*" @change="handleFileChange"
-                                                required>
+                                                <input class="form-control" type="file" id="avatar" name="avatar" accept="image/*" @change="handleFileChange">
                                             </div>
 
                                             <div class="row mb-2">

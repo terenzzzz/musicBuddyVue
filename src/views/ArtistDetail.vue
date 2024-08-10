@@ -49,7 +49,7 @@
             <div class="card shadow rounded-top-0 p-2" v-if="artist.summary">
                 <div class="row py-3">
                     <div class="col-12">
-                        <strong>Introducation: </strong>
+                        <strong>Introduction: </strong>
                         {{ artist.summary }}
                     </div>
                 </div>

@@ -13,7 +13,7 @@
                 </div>
                 <div class="row">
                     <div class="col-4 col-md-3 col-xl-2 m-auto ">
-                        <div class="ratio ratio-1x1"><img :src="getAvatarUrl(user.avatar)" class="rounded-circle img-fluid object-fit-cover" ></div>
+                        <div class="ratio ratio-1x1"><img :src="user.avatar === ''? `https://ui-avatars.com/api/?name=${user.name}` : getAvatarUrl(user.avatar)" class="rounded-circle img-fluid object-fit-cover" ></div>
                     </div>
                     <div class="col-12 col-md-8 col-xl-10 d-flex flex-column justify-content-center">
                         <div class="mb-2">
