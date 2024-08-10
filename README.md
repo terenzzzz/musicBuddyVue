@@ -1,4 +1,8 @@
-# terenz_web
+# MusicBuddy Website
+
+![Landing](https://github.com/user-attachments/assets/193f848b-e6d3-425a-8e1c-1fb02deb5121)
+
+
 
 ## Project setup
 ```
