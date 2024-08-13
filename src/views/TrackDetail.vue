@@ -104,7 +104,7 @@
 
                 <!--    Lyric-->
 
-                <div class="card shadow p-5 my-2" >
+                <div class="card shadow p-5 my-2" v-if="false">
                     <h3 class="text-center">Lyric</h3>
                     <div v-if="formattedLyrics.length>0" >
                         <div v-for="(line, index) in formattedLyrics" :key="index" class="text-center">

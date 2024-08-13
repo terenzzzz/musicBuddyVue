@@ -98,7 +98,7 @@
             </div>
 
         </div>
-        <div class="container-md">
+        <div class="container-md mt-3">
             <div class="row d-flex justify-content-end my-2 align-items-center">
                 <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center fit-content"
                         data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" :class="isRecommending ? 'disabled' : ''">

@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-md nav-bg shadow sticky-top bg-white p-0">
+    <nav class="navbar navbar-expand-lg nav-bg shadow sticky-top bg-white p-0">
         <div class="container-fluid px-5">
             <router-link class="navbar-brand fs-3 fw-bold primary text-decoration-none d-flex align-items-center" to="/">
                 <img src="@/assets/images/musicBuddyVueLogo.png" style="width: 60px">
@@ -9,8 +9,8 @@
                     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto fw-medium">
+            <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto fw-medium py-3">
                     <router-link to="/dashboard" class="nav-home mx-2">Dashboard</router-link>
                     <router-link to="/search" class="nav-search mx-2">Search</router-link>
                     <router-link to="/tags" class="nav-tags mx-2">Tags</router-link>
