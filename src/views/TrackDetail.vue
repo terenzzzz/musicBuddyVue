@@ -153,33 +153,33 @@
                     </div>
 
 
-                    <div v-if="recommendedTracks.length>0">
+                    <div class="my-3">
                         <div>
                             <h3 class="red-bottom d-inline me-2">Recommended Tracks for「{{track.name}}」</h3>
                         </div>
-                        <div class="row mt-2">
+                        <div class="row mt-2" v-if="recommendedTracks.length>0">
                             <div class="col-4 col-md-2" v-for="track in recommendedTracks" :key="track.id">
                                 <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
                             </div>
                         </div>
+                        <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommendingTrack"></LoadingSpinner>
+                        <ErrorPlaceholderHorizontal
+                            v-else
+                            title="No Content Found">
+                        </ErrorPlaceholderHorizontal>
                     </div>
-                    <ErrorPlaceholderHorizontal
-                        v-else
-                        title="No Content Found">
-                    </ErrorPlaceholderHorizontal>
-                </div>
 
-                <div class="my-3">
-                    <div>
-                        <h3 class="red-bottom d-inline me-2">Recommended Artists for「{{track.artist.name}}」</h3>
-                    </div>
-                    <div v-if="recommendedArtists.length > 0" class="mt-2">
-                        <LoopSwiper v-if="recommendedArtists.length>0" :artists="recommendedArtists"></LoopSwiper>
-<!--                        <div class="horizontal-scroll">-->
-<!--                            <div class="col-3 col-md-2 mx-2" v-for="artist in recommendedArtists" :key="artist.id">-->
-<!--                                <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                    <div class="my-3">
+                        <div>
+                            <h3 class="red-bottom d-inline me-2">Recommended Artists for「{{track.artist.name}}」</h3>
+                        </div>
+                        <LoopSwiper v-if="recommendedArtists.length>0" :artists="recommendedArtists" class="mt-2"></LoopSwiper>
+                        <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommendingArtist"></LoadingSpinner>
+                        <ErrorPlaceholderHorizontal
+                            v-else
+                            title="No Content Found">
+                        </ErrorPlaceholderHorizontal>
+
                     </div>
                 </div>
             </div>
@@ -252,7 +252,9 @@ export default {
             trackRating: 0,
             artistRating: 0,
 
-            isLoadingSpotify: false
+            isLoadingSpotify: false,
+            isRecommendingArtist: true,
+            isRecommendingTrack: true,
         };
     },
     async created() {
@@ -441,6 +443,7 @@ export default {
             }
         },
         async fetchRecommendedArtists() {
+            this.isRecommendingArtist = true
             try {
                 const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
                 let response = {}
@@ -466,8 +469,10 @@ export default {
             } catch (err) {
                 console.error('Error fetching Recommended Artists:', err.message);
             }
+            this.isRecommendingArtist = false
         },
         async fetchRecommendedTracks() {
+            this.isRecommendingTrack = true
             try {
                 const lyric = this.track.lyric.lyric?this.track.lyric.lyric:this.track.lyric
                 let response = {}
@@ -494,6 +499,7 @@ export default {
             } catch (err) {
                 console.error('Error fetching Recommended Tracks:', err.message);
             }
+            this.isRecommendingTrack = false
         },
         formatLyrics(lyrics) {
             // 如果传入的 lyrics 对象有 lyric 属性，使用该属性，否则使用传入的 lyrics

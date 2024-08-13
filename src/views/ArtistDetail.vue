@@ -103,7 +103,7 @@
 
             <div class="mt-5">
                 <div>
-                    <h3 class="red-bottom d-inline me-2">Similar Artists</h3>
+                    <h3 class="red-bottom d-inline me-2">Recommended Artists</h3>
                 </div>
                 <LoopSwiper v-if="similarArtist.length>0" :artists="similarArtist" class="mt-2"></LoopSwiper>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
@@ -115,7 +115,7 @@
 
             <div class="mt-5" v-if="!isValidMongoId(artistId)">
                 <div>
-                    <h3 class="red-bottom d-inline me-2">Similar Artists from Spotify</h3>
+                    <h3 class="red-bottom d-inline me-2">Recommended Artists from Spotify</h3>
                 </div>
                 <LoopSwiper v-if="spotifySimilarArtist.length>0" :artists="spotifySimilarArtist" class="mt-2"></LoopSwiper>
                 <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommendingSpotify"></LoadingSpinner>
@@ -127,7 +127,7 @@
 
             <div >
                 <div>
-                    <h3 class="red-bottom d-inline me-2">Similar Tracks</h3>
+                    <h3 class="red-bottom d-inline me-2">Recommended Tracks</h3>
                 </div>
                 <div class="row mt-2" v-if="similarTracks.length>0">
                     <div class="col-4 col-md-2" v-for="track in similarTracks" :key="track.id">
