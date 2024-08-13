@@ -265,11 +265,22 @@ export default {
                 if (artistResponse.status === 200) {
                     this.similarArtist = artistResponse.data.data;
                 }
+
+                const trackResponse = await getWeightedRecommendByLyrics(this.allTracksLyrics,this.calculatedWeighting[0],
+                this.calculatedWeighting[1], this.calculatedWeighting[2])
+                if (trackResponse.status === 200) {
+                    this.similarTracks = trackResponse.data.data;
+                }
             }else{
                 const artistResponse = await getWeightedRecommendArtistsByLyrics(this.lyricsForTracks,this.calculatedWeighting[0],
                     this.calculatedWeighting[1], this.calculatedWeighting[2])
                 if (artistResponse.status === 200) {
                     this.similarArtist = artistResponse.data.data;
+                }
+                const trackResponse = await getWeightedRecommendByLyrics(this.lyricsForTracks,this.calculatedWeighting[0],
+                    this.calculatedWeighting[1], this.calculatedWeighting[2])
+                if (trackResponse.status === 200) {
+                    this.similarTracks = trackResponse.data.data;
                 }
             }
 

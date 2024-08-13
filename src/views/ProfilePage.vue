@@ -22,7 +22,7 @@
                         </div>
                         <div class="row d-flex flex-row" v-if="user">
                             <div class="col-auto" v-for="tag in (topTags.length>0? topTags : user.tags).slice(0,10)" :key="tag.id">
-                                <button class="rounded-3 btn btn-secondary my-1">{{ tag.tag.name }}</button>
+                                <tag-button :tag="tag.tag"></tag-button>
                             </div>
                         </div>
                     </div>
@@ -309,6 +309,7 @@ import BarChart from "@/components/BarChart.vue";
 import WordCloud from "@/components/WordCloud.vue";
 import PieChart from "@/components/PieChart.vue";
 import RadarChart from "@/components/RadarChart.vue";
+import TagButton from "@/components/TagButton.vue";
 
 
 
@@ -322,6 +323,7 @@ export default {
         }
     },
     components: {
+        TagButton,
         RadarChart,
         PieChart,
         WordCloud,
@@ -389,6 +391,7 @@ export default {
             try {
                 const response = await getUser();
                 this.user = response.data.data;
+                console.log(this.user)
             } catch (error) {
                 console.error('Failed to fetch user:', error);
             }
