@@ -163,9 +163,10 @@
                             </div>
                         </div>
                     </div>
-                    <div v-else>
-                        <p>No recommendations available.</p>
-                    </div>
+                    <ErrorPlaceholderHorizontal
+                        v-else
+                        title="No Content Found">
+                    </ErrorPlaceholderHorizontal>
                 </div>
 
                 <div class="my-3">
@@ -215,9 +216,11 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import ErrorPlaceholderVertical from "@/components/ErrorPlaceholderVertical.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
 import LyricAnalysis from "@/components/LyricAnalysis.vue";
+import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 
 export default {
     components: {
+        ErrorPlaceholderHorizontal,
         LyricAnalysis,
         LoopSwiper,
         ErrorPlaceholderVertical,

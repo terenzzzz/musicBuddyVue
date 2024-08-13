@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{ name: 'Playlist',
+    <router-link :to="{ name: 'playlist',
                             params: { type:tag._id } }">
         <button class="rounded-3 btn btn-secondary my-1">{{ tag.name }}</button>
     </router-link>

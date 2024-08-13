@@ -100,29 +100,48 @@
                 </transition>
             </div>
 
-            <!--Recommandation-->
+
             <div class="mt-5">
                 <div>
                     <h3 class="red-bottom d-inline me-2">Similar Artists</h3>
                 </div>
-                <div v-if="similarArtist.length > 0" class="my-2">
-                    <LoopSwiper v-if="similarArtist.length>0" :artists="similarArtist"></LoopSwiper>
-<!--                    <div class="horizontal-scroll">-->
-<!--                        <div class="col-3 col-md-2 mx-2" v-for="artist in similarArtist" :key="artist.id">-->
-<!--                            <ArtistCard :artist="artist.artist" :similarity="artist.similarity"></ArtistCard>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
-
-                <div v-if="spotifySimilarArtist.length > 0" class="my-2">
-                    <LoopSwiper v-if="spotifySimilarArtist.length>0" :artists="spotifySimilarArtist"></LoopSwiper>
-<!--                    <div class="horizontal-scroll">-->
-<!--                        <div class="col-3 col-md-2 mx-2" v-for="artist in spotifySimilarArtist" :key="artist.id">-->
-<!--                            <ArtistCard :artist="artist"></ArtistCard>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
+                <LoopSwiper v-if="similarArtist.length>0" :artists="similarArtist" class="mt-2"></LoopSwiper>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommending"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                    v-else
+                    title="No Content Found">
+                </ErrorPlaceholderHorizontal>
             </div>
+
+            <div class="mt-5" v-if="!isValidMongoId(artistId)">
+                <div>
+                    <h3 class="red-bottom d-inline me-2">Similar Artists from Spotify</h3>
+                </div>
+                <LoopSwiper v-if="spotifySimilarArtist.length>0" :artists="spotifySimilarArtist" class="mt-2"></LoopSwiper>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommendingSpotify"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                    v-else
+                    title="No Content Found">
+                </ErrorPlaceholderHorizontal>
+            </div>
+
+            <div >
+                <div>
+                    <h3 class="red-bottom d-inline me-2">Similar Tracks</h3>
+                </div>
+                <div class="row mt-2" v-if="similarTracks.length>0">
+                    <div class="col-4 col-md-2" v-for="track in similarTracks" :key="track.id">
+                        <TrackCard :track="track.track" :similarity="track.similarity"></TrackCard>
+                    </div>
+                </div>
+                <LoadingSpinner title="We are finding the music that suits you best..." v-else-if="isRecommendingTrack"></LoadingSpinner>
+                <ErrorPlaceholderHorizontal
+                    v-else
+                    title="No Content Found">
+                </ErrorPlaceholderHorizontal>
+            </div>
+
+
         </div>
     </div>
 </template>
@@ -137,19 +156,23 @@ import AlertComponents from "@/components/AlertComponents.vue";
 import RateBtn from "@/components/RateBtn.vue";
 import {addRating, deleteRating, getRating, itemTypes} from "@/api/ratings";
 import {
-    getLDARecommendArtistsByArtist, getLDARecommendArtistsByLyrics,
-    getTfidfRecommendArtistsByArtist, getTfidfRecommendArtistsByLyrics,
-    getW2VRecommendArtistsByArtist, getW2VRecommendArtistsByLyrics,
-    getWeightedRecommendArtistsByArtist, getWeightedRecommendArtistsByLyrics
+    getLDARecommendArtistsByArtist, getLDARecommendArtistsByLyrics, getLDARecommendByLyrics,
+    getTfidfRecommendArtistsByArtist, getTfidfRecommendArtistsByLyrics, getTfidfRecommendByLyrics,
+    getW2VRecommendArtistsByArtist, getW2VRecommendArtistsByLyrics, getW2VRecommendByLyrics,
+    getWeightedRecommendArtistsByArtist, getWeightedRecommendArtistsByLyrics, getWeightedRecommendByLyrics
 } from "@/api/recommend";
 import PieSlider from "@/components/PieSlider.vue";
 import {getLyricsFromGenius} from "@/api/genius";
 import TagButton from "@/components/TagButton.vue";
 import LoopSwiper from "@/components/LoopSwiper.vue";
 import LyricAnalysis from "@/components/LyricAnalysis.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import ErrorPlaceholderHorizontal from "@/components/ErrorPlaceholderHorizontal.vue";
 
 export default {
-    components: {LyricAnalysis, LoopSwiper, TagButton, PieSlider, RateBtn, AlertComponents, TrackCard},
+    components: {
+        ErrorPlaceholderHorizontal,
+        LoadingSpinner, LyricAnalysis, LoopSwiper, TagButton, PieSlider, RateBtn, AlertComponents, TrackCard},
     data() {
         return {
             showPieSlider: true,
@@ -166,39 +189,60 @@ export default {
             spotifyArtistUrl: "",
             artistRating: 0,
             spotifySimilarArtist:[],
-            lyricsForTracks:[],
+            lyricsForTracks:[], // Tracks Lyrics for Spotify
 
-            allTracksLyrics:[],
+            similarTracks: [],
+
+            allTracksLyrics:[], // Artist Tracks Lyrics for database
             lyricTopWords: [],
             chartLabels: [],
             chartData: [],
-            chartLabelsExplain:[]
+            chartLabelsExplain:[],
+
+            isRecommending: true,
+            isRecommendingSpotify: true,
+            isRecommendingTrack: true
         };
     },
-    created() {
-        if (isValidMongoId(this.artistId)){
-            this.fetchArtistById();
-            this.fetchRating()
-        }else{
-            this.fetchSpotifyMetadata();
-            this.fetchSpotifySimilarArtists()
+    async created() {
+        if (isValidMongoId(this.artistId)) {
+            await this.fetchArtistById();
+            await this.fetchRating();
+            await this.fetchTracksByArtist();
+            await this.fetchSimilarArtistsByArtist();
+            await this.fetchSimilarTracksByLyrics(this.allTracksLyrics);
+        } else {
+            await this.fetchSpotifyMetadata();
+            await this.fetchSpotifySimilarArtists();
+            if (this.tracks.length > 0) {
+                await this.fetchLyricFromGenius()
+                await this.fetchSimilarArtistsByLyrics()
+                await this.fetchSimilarTracksByLyrics(this.lyricsForTracks);
+            }
         }
-        this.fetchTracksByArtist();
-        this.fetchSimilarArtistsByArtist();
+
     },
 
     watch: {
-        '$route'(to) {
+        async '$route'(to) {
             this.artistId = to.params.id;
-            if (isValidMongoId(this.artistId)){
-                this.fetchArtistById();
-                this.fetchRating()
-            }else{
-                this.fetchSpotifyMetadata();
-                this.fetchSpotifySimilarArtists()
+            if (isValidMongoId(this.artistId)) {
+                await this.fetchArtistById();
+                await this.fetchRating();
+                await this.fetchTracksByArtist();
+                await this.fetchSimilarArtistsByArtist();
+                await this.fetchSimilarTracksByLyrics(this.allTracksLyrics);
+            } else {
+                await this.fetchSpotifyMetadata();
+                await this.fetchSpotifySimilarArtists();
+                if (this.tracks.length > 0) {
+                    await this.fetchLyricFromGenius()
+                    await this.fetchSimilarArtistsByLyrics()
+                    await this.fetchSimilarTracksByLyrics(this.lyricsForTracks);
+                }
             }
-            this.fetchTracksByArtist();
-            this.fetchSimilarArtistsByArtist();
+
+
         },
         async selectedRecommendation() {
             // 获取当前选中的推荐方法
@@ -232,7 +276,6 @@ export default {
         },
         async fetchLyricFromGenius() {
             let lyrics = [];
-            // Use a for-of loop to correctly iterate over the items in this.recentlyPlay
             for (let track of this.tracks.slice(0,5)) {
                 try {
                     // Assuming track has properties artist and name
@@ -292,11 +335,6 @@ export default {
                 if (response.status === 200) {
                     this.tracks = response.data.tracks;
                     this.artist = response.data.artist;
-                    if (this.tracks.length>0){
-                        await this.fetchLyricFromGenius()
-                        await this.fetchSimilarArtistsByLyrics()
-                    }
-
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
@@ -345,6 +383,7 @@ export default {
             }
         },
         async fetchSimilarArtistsByArtist() {
+            this.isRecommending = true;
             try {
                 let response = {}
                 try {
@@ -369,8 +408,10 @@ export default {
             } catch (err) {
                 console.error('Error fetching Recommended Artists:', err.message);
             }
+            this.isRecommending = false;
         },
         async fetchSimilarArtistsByLyrics() {
+            this.isRecommending = true;
             try {
                 let response = {}
                 try {
@@ -395,8 +436,38 @@ export default {
             } catch (err) {
                 console.error('Error fetching Recommended Artists:', err.message);
             }
+            this.isRecommending = false;
+        },
+        async fetchSimilarTracksByLyrics(lyric) {
+            this.isRecommendingTrack = true;
+            try {
+                let response = {}
+                try {
+                    if (this.selectedRecommendation === "keywords"){
+                        response = await getTfidfRecommendByLyrics(lyric)
+                    }else if (this.selectedRecommendation === "semantics"){
+                        response = await getW2VRecommendByLyrics(lyric)
+                    }else if (this.selectedRecommendation === "topics"){
+                        response = await getLDARecommendByLyrics(lyric)
+                    }else {
+                        response = await getWeightedRecommendByLyrics(lyric,this.calculatedWeighting[0],
+                            this.calculatedWeighting[1], this.calculatedWeighting[2])
+                    }
+                    if (response.data.status === 200) {
+                        this.similarTracks = response.data.data;
+                    } else {
+                        console.error('Error Recommended tracks:', response.data.message);
+                    }
+                } catch (err) {
+                    console.error('Error Recommended tracks:', err.message);
+                }
+            } catch (err) {
+                console.error('Error fetching Recommended Artists:', err.message);
+            }
+            this.isRecommendingTrack = false;
         },
         async fetchSpotifySimilarArtists() {
+            this.isRecommendingSpotify = true
             try {
                 const response = await getArtistRelatedArtists(this.artistId);
                 if (response.status === 200) {
@@ -407,6 +478,7 @@ export default {
             } catch (err) {
                 console.error('Error fetching spotify Recommended Artists:', err.message);
             }
+            this.isRecommendingSpotify = false
         },
         async fetchTrackTopic() {
             try {

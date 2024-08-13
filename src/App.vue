@@ -2,7 +2,16 @@
     <div id="app" >
         <NavBar></NavBar>
 
-        <router-view style="min-height: 80vh;"></router-view>
+        <!-- 缓存需要的多个路由 -->
+        <keep-alive>
+            <router-view
+                v-if="cachedRoutes.includes($route.name)"
+                style="min-height: 100vh;"
+            ></router-view>
+        </keep-alive>
+
+        <!-- 不缓存的路由 -->
+        <router-view v-if="!cachedRoutes.includes($route.name)"></router-view>
 
         <BottomFooter></BottomFooter>
     </div>
@@ -15,16 +24,23 @@ import NavBar from "@/components/NavBar.vue";
 
 
 export default {
-  name: 'App',
-  components: {
-    NavBar,
-    BottomFooter,
-  },
-  mounted() {
+    name: 'App',
+    components: {
+        NavBar,
+        BottomFooter,
+    },
+    mounted() {
     // require('particles.js')
     // // eslint-disable-next-line no-undef
     // particlesJS('particles', particlesJson)
-  }
+    },
+
+    data() {
+        return {
+            // 需要缓存的路由名称列表
+            cachedRoutes: ['dashboard', 'search', 'tags', 'profile']
+        };
+    }
 
 }
 

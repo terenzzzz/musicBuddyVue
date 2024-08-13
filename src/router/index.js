@@ -25,43 +25,52 @@ const routes = [
     },
     {
         path: "/dashboard",
+        name: "dashboard",
         component: DashBoard,
     },
     {
         path: "/search",
+        name: "search",
         component: SearchPage,
     },
     {
         path: "/tags",
+        name: "tags",
         component: TagsPage,
     },
     {
         path: "/tuneswipe",
+        name: "tuneswipe",
         component: TuneSwipe,
     },
     {
         path: "/profile",
+        name: "profile",
         component: ProfilePage,
     },
     {
         path: "/login",
+        name: "login",
         component: LogIn,
     },
     {
         path: "/signup",
+        name: "signup",
         component: SignUp,
     },
     {
         path: '/track/:id',
+        name: "track",
         component: TrackDetail
     },
     {
         path: '/artist/:id',
+        name: "artist",
         component: ArtistDetail
     },
     {
         path: '/playlist/:type',
-        name: 'Playlist',
+        name: 'playlist',
         component: PlayList,
     },
 ]

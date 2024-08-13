@@ -8,14 +8,12 @@
 
         <template v-else-if="artists && artists.length > 0">
             <swiper-slide v-for="artist in artists" :key="artist.id">
-                <ArtistCard :artist="artist.artist? artist.artist : artist.item" :similarity="artist.similarity" :rating="artist.rate"></ArtistCard>
+                <ArtistCard :artist="artist.item || artist.artist || artist"  :similarity="artist.similarity" :rating="artist.rate"></ArtistCard>
             </swiper-slide>
         </template>
 
 
         <div class="swiper-pagination" slot="pagination"></div>
-<!--        <div class="swiper-button-prev" slot="button-prev"></div>-->
-<!--        <div class="swiper-button-next" slot="button-next"></div>-->
     </swiper>
 </template>
 
@@ -24,6 +22,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 import TrackCard from "@/components/TrackCard.vue";
 import ArtistCard from "@/components/ArtistCard.vue";
+import playlistTypes from "@/enum/playlistTypes";
 
 export default {
     components: {
@@ -31,6 +30,11 @@ export default {
         TrackCard,
         Swiper,
         SwiperSlide
+    },
+    computed: {
+        artist() {
+            return playlistTypes
+        },
     },
     props: {
         tracks: {
