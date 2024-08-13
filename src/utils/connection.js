@@ -1,9 +1,9 @@
 
 // Deploy
-// export const API_URL = 'https://musicbuddy.fun:6907'
+export const API_URL = 'https://musicbuddy.fun:6907'
 
 // Development
-export const API_URL = 'http://localhost:6906' // Development
+// export const API_URL = 'http://localhost:6906' // Development
 
 
 

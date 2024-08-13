@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-row justify-content-center align-items-center">
+    <div class="d-flex flex-row justify-content-center align-items-center my-5">
         <div class="spinner-grow text-primary" role="status">
             <span class="sr-only">Loading...</span>
         </div>
