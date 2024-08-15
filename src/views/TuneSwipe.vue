@@ -40,7 +40,7 @@
         </swiper>
 
 
-        <div class="row w-100 mt-2 p-0 m-0" v-if="randomTracks.length > 0">
+        <div class="row w-100 mt-2 p-0 m-0 px-1" v-if="randomTracks.length > 0">
             <div class="card col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6
             mx-auto d-flex align-items-center rounded-5 p-2"
                  style="height: fit-content">
@@ -50,15 +50,15 @@
                         <router-link :to="`/track/${currentTrack._id}`" class="me-2 ">
                             <button class="btn btn-outline-primary d-inline-flex align-items-center h-100">
                                 <img src="@/assets/images/musicBuddyVueLogo.png" class="img-fluid ratio-1x1 " style="width: 30px; height: 30px;">
-                                <span class="d-none d-md-block ms-2">More In MusicBuddy</span>
+                                <span class="d-none d-xl-block ">More In MusicBuddy</span>
                             </button>
                         </router-link>
-                        <button class="btn btn-outline-success d-inline-flex align-items-center h-100" @click="openWindow(spotifyTrackUrl)">
+                        <button class="btn btn-outline-success d-inline-flex align-items-center h-100 me-2" @click="openWindow(spotifyTrackUrl)">
                             <i class="fa-brands fa-spotify"></i>
-                            <span class="d-none d-md-block ms-2">More In Spotify</span>
+                            <span class="d-none d-xl-block ms-1">More In Spotify</span>
                         </button>
+                        <button class="btn btn-secondary"  @click="shuffle()"><i class="fa-solid fa-arrows-rotate"></i></button>
                     </div>
-
                 </div>
 
                 <div class="row w-100 mt-2">
@@ -133,6 +133,13 @@ export default {
 
 
     methods: {
+        async shuffle() {
+            await this.fetchRandomTracks();
+            this.currentIndex = 0
+            this.$refs.mySwiper.$swiper.slideTo(0);
+            await this.fetchRating()
+            await this.searchSpotify()
+        },
         onPlayStateChanged(state) {
             this.isPlaying = state;
         },
