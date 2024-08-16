@@ -306,6 +306,7 @@ export default {
                 if (response.status === 200) {
                     let firstTrack = response.data[0]
                     this.spotifyArtistUrl = firstTrack.external_urls
+                    console.log(this.spotifyArtistUrl)
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
@@ -346,6 +347,7 @@ export default {
                 if (response.status === 200) {
                     this.tracks = response.data.tracks;
                     this.artist = response.data.artist;
+                    this.spotifyArtistUrl = response.data.artist.external_urls
                 } else {
                     console.error('Error search Spotify else:', response.data.message);
                 }
