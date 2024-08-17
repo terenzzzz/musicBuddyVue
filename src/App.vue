@@ -7,11 +7,12 @@
             <router-view
                 v-if="cachedRoutes.includes($route.name)"
                 style="min-height: 100vh;"
+                class="router-view"
             ></router-view>
         </keep-alive>
 
         <!-- 不缓存的路由 -->
-        <router-view v-if="!cachedRoutes.includes($route.name)"></router-view>
+        <router-view v-if="!cachedRoutes.includes($route.name)" class="router-view"></router-view>
 
         <BottomFooter></BottomFooter>
     </div>
@@ -48,11 +49,18 @@ export default {
 </script>
 
 <style>
-#app{
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
+#app {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
     background-color: #f1f4f9;
+    display: flex;
+    flex-direction: column;
+}
+
+#app .router-view {
+    min-height: 100vh;
 }
 
 #app a{

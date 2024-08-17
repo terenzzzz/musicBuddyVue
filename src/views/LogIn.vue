@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="container mt-5 login">
         <div class="card shadow-lg">
             <div class="card-body p-0">
                 <div class="row justify-content-center m-0">
