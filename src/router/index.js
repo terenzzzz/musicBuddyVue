@@ -16,6 +16,8 @@ import ArtistDetail from "@/views/ArtistDetail.vue";
 import PlayList from "@/views/PlayList.vue";
 import {API_URL} from "@/utils/connection";
 import TuneSwipe from "@/views/TuneSwipe.vue";
+import TestPage from "@/views/TestPage.vue";
+import NotFound from "@/views/NotFound.vue";
 
 // 规则数组
 const routes = [
@@ -73,6 +75,16 @@ const routes = [
         name: 'playlist',
         component: PlayList,
     },
+    {
+        path: "/test",
+        name: 'test',
+        component: TestPage,
+    },
+    {
+        path: '*',
+        name: '404',
+        component: NotFound,
+    }
 ]
 
 
@@ -87,15 +99,6 @@ const router = new VueRouter({
             return { x: 0, y: 0 };
         }
     }
-    // scrollBehavior(to, from, savedPosition) {
-    //   if (savedPosition) {
-    //     // 恢复滚动位置
-    //     return savedPosition
-    //   } else {
-    //     // 滚动到页面顶部
-    //     return { selector: 'body', behavior: 'smooth' };
-    //   }
-    // }
 })
 
 router.beforeEach((to, from, next) => {

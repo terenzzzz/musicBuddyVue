@@ -43,6 +43,11 @@ export default {
             type: String,
             required: false,
             default: ""
+        },
+        showLegend:{
+            type: Boolean,
+            required: false,
+            default: true
         }
     },
     data() {
@@ -151,6 +156,11 @@ export default {
                             grid: {
                                 display: true // Show y-axis grid lines
                             }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: this.showLegend // 这里禁用了图例显示
                         }
                     }
                 }
