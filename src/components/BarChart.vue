@@ -140,7 +140,7 @@ export default {
                     }
                 ]
             },
-                options: { // options 应放在 data 的同级，而不是 data 内部
+                options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {

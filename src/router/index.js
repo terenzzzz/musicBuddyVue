@@ -16,7 +16,7 @@ import ArtistDetail from "@/views/ArtistDetail.vue";
 import PlayList from "@/views/PlayList.vue";
 import {API_URL} from "@/utils/connection";
 import TuneSwipe from "@/views/TuneSwipe.vue";
-import TestPage from "@/views/TestPage.vue";
+import UserFeedback from "@/views/UserFeedback.vue";
 import NotFound from "@/views/NotFound.vue";
 
 // 规则数组
@@ -76,9 +76,9 @@ const routes = [
         component: PlayList,
     },
     {
-        path: "/test",
-        name: 'test',
-        component: TestPage,
+        path: "/feedback",
+        name: 'userfeedback',
+        component: UserFeedback,
     },
     {
         path: '*',

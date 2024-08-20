@@ -1,5 +1,9 @@
 <template>
-    <div class="profile container-lg" id="profile">
+    <div class="profile">
+        <div class="alert alert-secondary" role="alert">
+            We value your feedback! Please click <a :href="FEEDBACK_URL()" class="alert-link">this link</a> to fill out a short feedback form.
+        </div>
+        <div class="container-lg" id="profile">
         <div v-if="user" class="row my-3 px-3 px-md-5">
             <div class="card shadow rounded-5 mt-2 rounded-bottom-0 p-4 " >
                 <div class="d-flex justify-content-end my-2">
@@ -289,11 +293,12 @@
 
         </div>
     </div>
+    </div>
 </template>
 
 <script>
 import {getUser, updateSpotifyRefreshToken, updateTags} from '@/api/users';
-import {API_URL, SPOTIFY_AUTH_URL} from "@/utils/connection";
+import {API_URL, FEEDBACK_URL, SPOTIFY_AUTH_URL} from "@/utils/connection";
 import {getRecentlyPlayed, getSavedTracks, getTopArtists, getTopTracks} from "@/api/spotify";
 import TrackCardHorizontal from "@/components/TrackCardHorizontal.vue";
 // import HeatMap from "@/components/HeatMap.vue";
@@ -365,6 +370,9 @@ export default {
     },
 
     methods: {
+        FEEDBACK_URL() {
+            return FEEDBACK_URL
+        },
         async exportReport() {
             await this.waitForImages();
             const element = document.getElementById('profile');
