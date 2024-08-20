@@ -2,7 +2,7 @@
     <swiper class="swiper pb-4" :options="swiperOption">
         <template v-if="tracks && tracks.length > 0">
             <swiper-slide v-for="track in tracks" :key="track.id">
-                <TrackCard :track="track.track? track.track : track.item" :similarity="track.similarity" :rating="track.rate"></TrackCard>
+                <TrackCard :track="track.track || track.item || track" :similarity="track.similarity" :rating="track.rate"></TrackCard>
             </swiper-slide>
         </template>
 

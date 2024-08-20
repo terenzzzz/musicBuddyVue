@@ -276,12 +276,11 @@
 
             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                 <div class="top-tags card rounded-5 p-3 my-2 h-100 shadow">
-
                     <div>
                         <h5 class="red-bottom">Top Topic</h5>
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
-                    <div v-if="topicStatData?.data?.length>0" class="my-auto">
+                    <div v-if="topicStatData?.data?.length>0" class="my-auto mx-auto">
                         <RadarChart :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
                     </div>
                     <div v-else>

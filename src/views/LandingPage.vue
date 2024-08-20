@@ -20,11 +20,7 @@
             <div class="col-12">
                 <h2 class="text-center mt-5 mb-1">Our Music Data</h2>
                 <p class="text-center mb-2">Take a look at some of the tracks on our platform.</p>
-                <div class="horizontal-scroll">
-                    <div class="col-3 col-md-2 mx-2" v-for="track in tracks" :key="track.id">
-                        <TrackCard :track="track"></TrackCard>
-                    </div>
-                </div>
+                <LoopSwiper :tracks="tracks"></LoopSwiper>
             </div>
         </div>
 
@@ -89,12 +85,12 @@
 
 <script>
 import { getRandomTrack } from "@/api/tracks";
-import TrackCard from "@/components/TrackCard.vue";
 import { get2dModel } from "@/api/recommend";
 import * as d3 from "d3";
+import LoopSwiper from "@/components/LoopSwiper.vue";
 
 export default {
-    components: { TrackCard },
+    components: {LoopSwiper },
     data() {
         return {
             tracks: [],
