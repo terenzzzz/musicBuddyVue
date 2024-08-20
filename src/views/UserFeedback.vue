@@ -18,8 +18,8 @@
                     <li>Audio sources are not diverse enough</li>
                 </ul>
                 <ul class="col-6 ps-5">
-                    <li>Metadata is insufficient</li>
-                    <li>Lack of diversification in third-party connections</li>
+                    <li>Metadata and audio source information are not comprehensive enough</li>
+                    <li>Music library size of the system is insufficient</li>
                     <li>Need more filters and sorting options in search and tags functions</li>
                 </ul>
             </div>
@@ -37,13 +37,11 @@
 
             <div class="row mt-3">
                 <ul class="col-6 ps-5">
-                    <li>Recommendation is not efficient</li>
-                    <li>Recommendation is not accurate</li>
+                    <li>Recommendation is not efficient and accurate</li>
                     <li>Insufficiently diversified input data</li>
-                    <li>The recommended music is not diverse enough (consider recommending by genre)</li>
+                    <li>Lack of personalized recommendations (e.g., mood or scene-based or genre)</li>
                 </ul>
                 <ul class="col-6 ps-5">
-                    <li>Lack of personalized recommendations (e.g., mood or scene-based)</li>
                     <li>No feedback mechanism for improving future recommendations</li>
                     <li>Repetitive content in recommendations</li>
                 </ul>
@@ -61,11 +59,10 @@
 
             <div class="row mt-3">
                 <ul class="col-6 ps-5">
-                    <li>Scale of music library is not big enough</li>
-                    <li>Metadata and audio sources are insufficient</li>
+                    <li>Lack of diversification in third-party connections</li>
+                    <li>User experience is not smooth enough</li>
                 </ul>
                 <ul class="col-6 ps-5">
-                    <li>User experience is not smooth enough</li>
                     <li>Need for better user interaction (e.g., track comments, guidance information)</li>
                 </ul>
             </div>

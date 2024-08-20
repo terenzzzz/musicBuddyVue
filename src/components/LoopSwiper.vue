@@ -52,7 +52,7 @@ export default {
                 slidesPerView: 3,
                 spaceBetween: 15,
                 slidesPerGroup: 3,
-                loop: true,
+                loop: false,
                 loopFillGroupWithBlank: true,
                 pagination: {
                     el: '.swiper-pagination',

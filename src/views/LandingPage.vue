@@ -24,17 +24,6 @@
             </div>
         </div>
 
-<!--        <div class="row bg-light pb-3 d-flex justify-content-center px-1 px-sm-3 px-md-5">-->
-<!--            <div class="col-12">-->
-<!--                <h2 class="text-center mt-5 mb-1">Our Model</h2>-->
-<!--                <div v-if="model.embedding && model.words">-->
-<!--                    <svg ref="chart" :width="chartWidth" :height="chartHeight"></svg>-->
-<!--                </div>-->
-<!--                <div v-else>-->
-<!--                    <p>Loading...</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
 
         <div class="row mx-4 mt-5 px-5">
             <h2 class="fw-medium pt-2 w-100">Why Use Our Website?</h2>
