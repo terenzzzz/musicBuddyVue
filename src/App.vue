@@ -39,7 +39,7 @@ export default {
     data() {
         return {
             // 需要缓存的路由名称列表
-            cachedRoutes: ['dashboard', 'search', 'tags', 'tuneswipe', 'profile']
+            cachedRoutes: ['dashboard', 'search', 'tags', 'tuneswipe']
         };
     }
 

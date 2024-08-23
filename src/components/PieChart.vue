@@ -23,7 +23,15 @@ export default {
         },
     },
     mounted() {
-        this.initChart();
+        this.$nextTick(() => {
+            // Initialize the main chart
+            this.initChart();
+        })
+    },
+    data() {
+        return {
+            chartInstance: null // 存储图表实例
+        };
     },
     watch: {
         labels: {

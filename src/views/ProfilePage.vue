@@ -280,8 +280,8 @@
                         <h5 class="red-bottom">Top Topic</h5>
                         <small class="text-muted ">* Stat by rated tracks</small>
                     </div>
-                    <div v-if="topicStatData?.data?.length>0" class="my-auto mx-auto">
-                        <RadarChart :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic"/>
+                    <div v-if="topicStatData?.data?.length>0" class="w-100 h-100">
+                        <RadarChart :chart-labels="topicStatData.label" :chart-data="topicStatData.data" labels="Top Topic" class="mx-auto"/>
                     </div>
                     <div v-else>
                         <ErrorPlaceholderVertical></ErrorPlaceholderVertical>
