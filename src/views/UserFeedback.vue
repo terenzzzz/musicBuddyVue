@@ -12,12 +12,10 @@
                 :show-legend="false"/>
 
             <div class="row mt-3">
-                <ul class="col-6 ps-5">
+                <ul class="ps-5 comment-list">
                     <li>Searching is not efficient</li>
                     <li>Provide more types of reports</li>
                     <li>Audio sources are not diverse enough</li>
-                </ul>
-                <ul class="col-6 ps-5">
                     <li>Metadata and audio source information are not comprehensive enough</li>
                     <li>Music library size of the system is insufficient</li>
                     <li>Need more filters and sorting options in search and tags functions</li>
@@ -36,12 +34,10 @@
                 :show-legend="false"/>
 
             <div class="row mt-3">
-                <ul class="col-6 ps-5">
+                <ul class="ps-5 comment-list">
                     <li>Recommendation is not efficient and accurate</li>
                     <li>Insufficiently diversified input data</li>
                     <li>Lack of personalized recommendations (e.g., mood or scene-based or genre)</li>
-                </ul>
-                <ul class="col-6 ps-5">
                     <li>No feedback mechanism for improving future recommendations</li>
                     <li>Repetitive content in recommendations</li>
                 </ul>
@@ -58,11 +54,9 @@
                 :show-legend="false"/>
 
             <div class="row mt-3">
-                <ul class="col-6 ps-5">
+                <ul class="ps-5 comment-list">
                     <li>Lack of diversification in third-party connections</li>
                     <li>User experience is not smooth enough</li>
-                </ul>
-                <ul class="col-6 ps-5">
                     <li>Need for better user interaction (e.g., track comments, guidance information)</li>
                 </ul>
             </div>
@@ -92,5 +86,16 @@ export default {
 <style scoped>
 ul li {
     list-style-type: square; /* 使用方块作为列表符号 */
+}
+
+.comment-list {
+    column-count: 2; /* 将列表分成两列 */
+    column-gap: 20px; /* 列之间的间距，可以根据需要调整 */
+    padding-left: 0; /* 移除左侧内边距 */
+    list-style: none; /* 去除默认的列表样式 */
+}
+
+.comment-list li {
+    margin-bottom: 10px; /* 每个列表项的下边距，可以根据需要调整 */
 }
 </style>
