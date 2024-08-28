@@ -69,10 +69,10 @@
         </div>
 
         <div class="card w-100 p-3 mt-3 rounded-3">
-            <h4 class="mb-5">Average Score for Three Main Part of the System</h4>
+            <h4 class="mb-5">Average Score for Five Main Part of the System</h4>
             <bar-chart
-                :chart-data="[4.45, 3.68, 4.37]"
-                :chart-labels="['Music Exploration', 'Music Recommendation', 'Overall System']"
+                :chart-data="[4.47, 3.68,4.47,4.44, 4.37]"
+                :chart-labels="['Music Exploration', 'Music Recommendation', 'Metadata Visualization', 'Statistic & Report', 'Overall System']"
                 :labels="'Average Score for Three Main Part of the System'"
                 :show-legend="false"/>
 
