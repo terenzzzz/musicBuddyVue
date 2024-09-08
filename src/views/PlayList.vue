@@ -104,9 +104,8 @@ export default {
         async fetchRatings() {
             try {
                 const response = await getRatings();
-                let ratings = response.data.data
+                let ratings = response.data
                 if (this.title === playlistTypes.RATED_TRACKS){
-
                     this.tracks = ratings.ratedTracks;
                 }else if(this.title === playlistTypes.RATED_ARTISTS){
                     this.artists = ratings.ratedArtists;
